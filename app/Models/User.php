@@ -47,4 +47,8 @@ class User extends Authenticatable
     public function isAdmin(){
         return $this->role==2 || $this->role==1?true:false;
     }
+
+    public function hotel(){
+        return $this->belongsTo(Hotel::class, 'id_hotel', 'id');
+    }
 }

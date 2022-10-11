@@ -1,3 +1,8 @@
+
+@extends('hotel/layouts/app')
+
+
+@section('contents')
 <div class="grid grid-rows-1 gap-2 grid-flow-col">
 
     <p>{{$hotel->name}}</p>
@@ -10,3 +15,6 @@
     @endforeach --}}
 
 </div>
+
+@endsection
+
