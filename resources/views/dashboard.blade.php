@@ -3,7 +3,15 @@
         {{ __('Dashboard') }}
     </x-slot>
 
-    <div class="p-4 bg-white rounded-lg shadow-xs">
-        {{ __('You are logged in!') }}
+    <div class="grid grid-rows-1 gap-2 grid-flow-col">
+
+        @foreach ($hotels as $hotel)
+          
+        <div class="p-4 bg-white rounded-lg shadow-xs">
+            <a>{{$hotel->name}}</a>
+        </div>
+
+        @endforeach
+
     </div>
 </x-app-layout>
