@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html x-data="data" lang="en">
+
 <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <!-- Scripts -->
-        <script src="{{ asset('js/init-alpine.js') }}"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- Scripts -->
+    <script src="{{ asset('js/init-alpine.js') }}"></script>
 </head>
+
 <body>
-<div
-    class="flex h-screen bg-gray-50"
-    :class="{ 'overflow-hidden': isSideMenuOpen }"
->
-    <!-- Desktop sidebar -->
-    @include('hotel.layouts.navigation')
-    <!-- Mobile sidebar -->
-    <!-- Backdrop -->
-    @include('hotel.layouts.navigation-mobile')
-    <div class="flex flex-col flex-1 w-full">
-        @include('hotel.layouts.top-menu')
-        <main class="h-full overflow-y-auto">
-            <div class="container p-6 mx-auto grid">
-                <div class="pt-4">
-                    @yield('contents')
+    <div class="flex h-screen bg-gray-50" :class="{ 'overflow-hidden': isSideMenuOpen }">
+        <!-- Desktop sidebar -->
+        @include('employee.layouts.navigation')
+        <!-- Mobile sidebar -->
+        <!-- Backdrop -->
+        @include('employee.layouts.navigation-mobile')
+        <div class="flex flex-col flex-1 w-full">
+            @include('employee.layouts.top-menu')
+            <main class="h-full overflow-y-auto">
+                <div class="container p-6 mx-auto grid">
+                    <div class="pt-4">
+                        @yield('contents')
+                    </div>
                 </div>
-            </div>
-        </main>
+            </main>
+        </div>
     </div>
-</div>
 </body>
+
 </html>

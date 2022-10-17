@@ -42,6 +42,7 @@ Route::middleware('auth', 'admin')->group(function () {
 
 //pegawai
 Route::middleware('auth')->group(function () {
+
     Route::get('/hotel/book', [\App\Http\Controllers\BookController::class, 'create'])->name('hotel.book');
     Route::post('/hotel/book', [\App\Http\Controllers\BookController::class, 'checkin'])->name("insertcheckin");
 

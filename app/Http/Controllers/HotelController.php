@@ -32,7 +32,7 @@ class HotelController extends Controller
         $idHotel = Auth::user()->id_hotel;
         $idUser = Auth::id();
         $book = Book::where('id_hotel',$idHotel)->where('id_user', $idUser)->get();
-        return view('hotel.shift', [
+        return view('employee.shift', [
             "books" => $book,
         ]);
     }
