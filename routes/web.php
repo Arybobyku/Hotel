@@ -1,7 +1,11 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\HotelController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +41,10 @@ Route::middleware('auth', 'admin')->group(function () {
 
 //pegawai
 Route::middleware('auth')->group(function () {
+    Route::get('/hotel/book', [\App\Http\Controllers\BookController::class, 'create'])->name('hotel.book');
+    Route::post('/hotel/book', [\App\Http\Controllers\BookController::class, 'checkin'])->name("insertcheckin");
 
     Route::get('hotel/dashboard', [\App\Http\Controllers\HotelController::class, 'index'])->name('hotel.dashboard');
     Route::get('hotel/rooms', [\App\Http\Controllers\HotelController::class, 'rooms'])->name('hotel.rooms');
+    Route::get('hotel/shift', [\App\Http\Controllers\HotelController::class, 'shift'])->name('hotel.shift');
 });
