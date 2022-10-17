@@ -13,7 +13,7 @@ class HotelController extends Controller
     {
         $idHotel = Auth::user()->id_hotel;
         $hotel = Hotel::where('id',$idHotel)->first();
-        return view('hotel.dashboard', [
+        return view('employee.dashboard', [
             "hotel" => $hotel,
         ]);
     }
@@ -22,7 +22,7 @@ class HotelController extends Controller
     {
         $idHotel = Auth::user()->id_hotel;
         $rooms = Room::where('id_hotel',$idHotel)->get();
-        return view('hotel.room', [
+        return view('employee.room', [
             "rooms" => $rooms,
         ]);
     }

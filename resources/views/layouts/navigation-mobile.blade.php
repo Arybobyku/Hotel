@@ -22,7 +22,7 @@
 >
     <div class="py-4 text-gray-500 dark:text-gray-400">
         <a class="ml-6 text-lg font-bold text-gray-800" href="{{ route('dashboard') }}">
-            Windmill
+            Super Admin
         </a>
         <ul class="mt-6">
             <li class="relative px-6 py-3">
@@ -55,7 +55,7 @@
                             <path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
                         </svg>
                     </x-slot>
-                    {{ __('About us') }}
+                    {{ __('Hotel') }}
                 </x-nav-link>
             </li>
 
