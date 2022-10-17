@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Hotel;
 use App\Models\Room;
+use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,4 +27,14 @@ class HotelController extends Controller
             "rooms" => $rooms,
         ]);
     }
+    public function shift()
+    {
+        $idHotel = Auth::user()->id_hotel;
+        $idUser = Auth::id();
+        $book = Book::where('id_hotel',$idHotel)->where('id_user', $idUser)->get();
+        return view('hotel.shift', [
+            "books" => $book,
+        ]);
+    }
+
 }

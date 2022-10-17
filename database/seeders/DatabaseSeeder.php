@@ -48,34 +48,74 @@ class DatabaseSeeder extends Seeder
 
 
         Hotel::create([
-            'name' => 'Hotel 1',
+            'name' => 'Denatio Binjai',
         ]);
         Hotel::create([
-            'name' => 'Hotel 2',
+            'name' => 'Denatio Durung',
         ]);
         Hotel::create([
-            'name' => 'Hotel 3',
+            'name' => 'Denatio Gaharu',
         ]);
         Hotel::create([
-            'name' => 'Hotel 4',
+            'name' => 'Denatio Kertas',
         ]);
         Hotel::create([
-            'name' => 'Hotel 5',
+            'name' => 'Denatio Sempurna',
         ]);
 
         Room::create([
             'id_hotel' => 1,
-            'name' => 'Ruangan 1',
+            'name' => 'Room 101',
             'is_available' => true,
         ]);
         Room::create([
             'id_hotel' => 1,
-            'name' => 'Ruangan 2',
+            'name' => 'Room 102',
             'is_available' => true,
         ]);
         Room::create([
             'id_hotel' => 1,
-            'name' => 'Ruangan 3',
+            'name' => 'Room 103',
+            'is_available' => true,
+        ]);
+        Room::create([
+            'id_hotel' => 1,
+            'name' => 'Room 104',
+            'is_available' => true,
+        ]);
+        Room::create([
+            'id_hotel' => 1,
+            'name' => 'Room 105',
+            'is_available' => true,
+        ]);
+        Room::create([
+            'id_hotel' => 1,
+            'name' => 'Room 106',
+            'is_available' => true,
+        ]);
+        Room::create([
+            'id_hotel' => 1,
+            'name' => 'Room 201',
+            'is_available' => true,
+        ]);
+        Room::create([
+            'id_hotel' => 1,
+            'name' => 'Room 202',
+            'is_available' => true,
+        ]);
+        Room::create([
+            'id_hotel' => 1,
+            'name' => 'Room 203',
+            'is_available' => true,
+        ]);
+        Room::create([
+            'id_hotel' => 2,
+            'name' => 'Room 101',
+            'is_available' => true,
+        ]);
+        Room::create([
+            'id_hotel' => 2,
+            'name' => 'Room 102',
             'is_available' => true,
         ]);
 
