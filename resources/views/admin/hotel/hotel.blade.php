@@ -1,10 +1,17 @@
 <x-app-layout>
+
+    @php
+        $user = Auth::user();
+        $user->id_hotel = $hotel->id;
+        Auth::setUser($user);
+    @endphp
+
     <a class="font-bold text-4xl">{{$hotel->name }}</a>
     <div class="p-4 bg-white rounded-lg shadow-xs flex flex-col items-center w-fit mt-4">
         <img class="mb-4 h-40"
             src="https://img.freepik.com/free-vector/flat-hotel-facade-background_23-2148157379.jpg?w=2000"
             alt="">
-        <a class="font-bold" href="hotel/{{ $hotel->id }}">{{ $hotel->name }}</a>
+        <a class="font-bold" href="{{Route('hotel.dashboard')}}">{{ $hotel->name }}</a>
     </div>
 
     <div class="mt-10 flex gap-4 items-center">

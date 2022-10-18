@@ -21,4 +21,7 @@ class Book extends Model
     public function nameroom(){
         return $this->hasOne(Room::class, 'id', 'id_room');
     }
+    public function pegawai(){
+        return $this->hasOne(User::class, 'id', 'id_user');
+    }
 }

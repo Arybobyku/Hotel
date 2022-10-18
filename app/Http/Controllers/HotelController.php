@@ -24,7 +24,7 @@ class HotelController extends Controller
     public function rooms(Request $request)
     {
         $idHotel = Auth::user()->id_hotel;
-        $date = date('Y-m-d');;
+        $date = date('Y-m-d');
         $rooms = Room::where("id_hotel", $idHotel)->get();
         $availableRooms = [];
         // var_dump($request->dateChange);die();

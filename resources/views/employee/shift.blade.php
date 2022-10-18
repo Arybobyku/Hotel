@@ -27,7 +27,7 @@
                                 {{ $book->nameroom->name }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->name }}
+                                {{ $book->pegawai->name }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->book_date }}
