@@ -20,8 +20,9 @@ return new class extends Migration
             $table->bigInteger('id_user');
             $table->string('name');
             $table->string('nik');
-            $table->date('checkin');
-            $table->date('checkout');
+            $table->date('book_date');
+            $table->date('checkin')->nullable();
+            $table->date('checkout')->nullable();
             $table->timestamps();
         });
     }

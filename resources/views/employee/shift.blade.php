@@ -12,6 +12,7 @@
                         <th class="px-4 py-3">No</th>
                         <th class="px-4 py-3">Room</th>
                         <th class="px-4 py-3">Nama</th>
+                        <th class="px-4 py-3">Booking</th>
                         <th class="px-4 py-3">Checkin</th>
                         <th class="px-4 py-3">Checkout</th>
                     </tr>
@@ -27,6 +28,9 @@
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->name }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                {{ $book->book_date }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->checkin }}

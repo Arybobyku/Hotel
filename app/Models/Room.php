@@ -13,4 +13,8 @@ class Room extends Model
         'name',
         'is_available',
     ];
+
+    public function bookings(){
+        return $this->hasMany(Book::class,"id_room","id");
+    }
 }

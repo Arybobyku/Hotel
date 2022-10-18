@@ -6,7 +6,7 @@
 
         <ul class="mt-6">
             <li class="relative px-6 py-3">
-                <a href="/hotel/dashboard" :active="request() - > routeIs('hotel.dashboard')"
+                <a href="{{ route('hotel.dashboard') }}" :active="request() - > routeIs('hotel.dashboard')"
                     class="flex flex-wrap gap-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6">
@@ -17,7 +17,7 @@
                 </a>
             </li>
             <li class="relative px-6 py-3">
-                <a href="rooms" :active="request() - > routeIs('hotel.rooms')" class="flex flex-wrap gap-4">
+                <a href="{{ route('hotel.rooms') }}" :active="request() - > routeIs('hotel.rooms')" class="flex flex-wrap gap-4">
                     <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke-linecap="round"
                         stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                         <path
@@ -28,7 +28,7 @@
                 </a>
             </li>
             <li class="relative px-6 py-3">
-                <a href="shift" :active="request() - > routeIs('hotel.shift')" class="flex flex-wrap gap-4">
+                <a href="{{ route('hotel.shift') }}" :active="request() - > routeIs('hotel.shift')" class="flex flex-wrap gap-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -38,7 +38,7 @@
                 </a>
             </li>
             <li class="relative px-6 py-3">
-                <a href="shift" :active="request() - > routeIs('hotel.shift')" class="flex flex-wrap gap-4">
+                <a href="{{ route('hotel.shift') }}" :active="request() - > routeIs('hotel.shift')" class="flex flex-wrap gap-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round"

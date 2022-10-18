@@ -13,34 +13,49 @@ use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
-    public function create()
+    public function index(Request $request)
     {
         $idHotel = Auth::user()->id_hotel;
-        $from = Book::where('id_hotel', $idHotel);
-        $rooms = Room::where('id_hotel', $idHotel)->where('is_available', TRUE)->pluck('name', 'id')->prepend(trans('Pilih Kamar'), '');
-        return view('hotel.book',
-            compact('rooms'));
+        $room = Room::where('id', $request->id)->first();
+        return view('employee.book',["room"=>$room,"date"=>$request->date]);
     }
 
-    public function checkin(Request $request)
+    public function checkIn(Request $request){
+        $date = date('Y-m-d');
+        Book::where('id',$request->id_booking)->update([
+            'checkIn'=>$date,
+        ]);
+        return redirect('hotel/dashboard');
+
+    }
+
+    public function checkOut(Request $request){
+        $date = date('Y-m-d');
+        Book::where('id',$request->id_booking)->update([
+            'checkOut'=>$date,
+        ]);
+        return redirect('hotel/dashboard');
+        
+    }
+
+    public function booking(Request $request)
     {
         $userId = Auth::id();
         $hotelId = Auth::user()->id_hotel;
+
 
         $request->validate([
             'id_room' => ['required', 'integer'],
             'name' => ['required', 'string', 'max:255'],
             'nik' => ['required', 'string', 'max:255'],
-            'checkin' => ['required'],
-            'checkout' => ['required'],
         ]);
-
        Book::create([
             'name' => $request->name,
             'id_room' => $request->id_room,
             'id_hotel' => $hotelId,
             'id_user' => $userId,
             'nik' => $request->nik,             
+            'book_date' => $request->booking,             
             'checkin' => $request->checkin,             
             'checkout' => $request->checkout,             
         ]);

@@ -36,18 +36,20 @@ Route::middleware('auth', 'admin')->group(function () {
 
     Route::resource('/dashboard/user', AdminController::class)->middleware('auth', 'admin');
 
-    Route::get('hotel/{id}', [\App\Http\Controllers\AdminHotelController::class, 'index'])->name('admin.hotel');
+    Route::get('admin/hotel/{id}', [\App\Http\Controllers\AdminHotelController::class, 'index'])->name('admin.hotel');
     Route::get('dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
 });
 
 //pegawai
 Route::middleware('auth')->group(function () {
 
-    Route::get('/hotel/book', [\App\Http\Controllers\BookController::class, 'create'])->name('hotel.book');
-    Route::post('/hotel/book', [\App\Http\Controllers\BookController::class, 'checkin'])->name("insertcheckin");
+    Route::get('hotel/book/{date}/{id}', [\App\Http\Controllers\BookController::class, 'index'])->name('hotel.book');
+    Route::post('hotel/book', [\App\Http\Controllers\BookController::class, 'booking'])->name("insertcheckin");
 
-    Route::get('dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('hotel/dashboard', [\App\Http\Controllers\HotelController::class, 'index'])->name('hotel.dashboard');
+    Route::POST('hotel/dashboard/checkin', [\App\Http\Controllers\BookController::class, 'checkIn'])->name('hotel.dashboard.checkIn');
+    Route::POST('hotel/dashboard/checkout', [\App\Http\Controllers\BookController::class, 'checkOut'])->name('hotel.dashboard.checkOut');
+
     Route::get('hotel/rooms', [\App\Http\Controllers\HotelController::class, 'rooms'])->name('hotel.rooms');
-    Route::get('hotel/shift', [\App\Http\Controllers\HotelController::class, 'shift'])->name('hotel.shift');
+    Route::get('hotel/shift', [\App\Http\Controllers\ShiftController::class, 'index'])->name('hotel.shift');
 });

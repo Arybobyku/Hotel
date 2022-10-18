@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Book;
 use App\Models\Hotel;
 use App\Models\Room;
 use App\Models\User;
@@ -118,6 +119,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Room 102',
             'is_available' => true,
         ]);
+
 
     }
 }

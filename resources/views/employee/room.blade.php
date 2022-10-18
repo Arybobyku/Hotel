@@ -3,24 +3,32 @@
 
 @section('contents')
     {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
-    <h1 class="text-center text-2xl font-bold"> Rooms </h1>
+    <h1 class="text-center text-2xl font-bold"> Rooms Available</h1>
+    <h1 class="text-center text-2xl font-bold">{{$date}}</h1>
 
-    <div class="w-full grid grid-cols-3 pl-6">
+    <div class="mx-10 mt-10">
+        <form method="GET" action="rooms">
+            <div class="flex items-center gap-4">
+                <input type="date" id="dateChange" name="dateChange" min="{{date('Y-m-d')}}">
+                <div class="bg-black text-white py-2 px-8">
+                    <button type="submit" href="">Cari</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="w-full grid grid-cols-3 pl-2">
         @foreach ($rooms as $room)
             <div class="mb-2 m-4 ">
-                <a href='/hotel/book' class="flex flex-col items-center p-3 bg-teal-200  rounded-md shadow-xl">
-                    <p class="text-xl">
+                <a href='/hotel/book/{{$date}}/{{$room->id}}' class="flex flex-col p-3 rounded-md shadow-xl">
+                    <div class="grid mt-2 place-items-center">
+                        <img class="rounded-md" src="{{ asset('images/denatiobinjai.jpg') }}">
+                    </div>
+                    <p class="text-xl mt-2">
                         {{ $room->name }}
                     </p>
-                    <div class="grid mt-2 place-items-center">
-
-                        <img class="" src="{{ asset('images/denatiobinjai.jpg') }}">
-
-                    </div>
-                    <p class="font-light ">
-                        {{ $room->is_available == 1 ? 'Kosong' : 'Full' }}
-                    </p>
-                    <p class="font-light text-sm mt-2">
+                    <p class="font-light text-sm">
                         Harga : Rp220.000,00
                     </p>
                 </a>
@@ -30,3 +38,11 @@
 
     {{-- </div> --}}
 @endsection
+
+
+<script>
+    function onChange() {
+        var x = document.getElementById("dateChange").value;
+        document.getElementById("CurrentDate").innerHTML = "You selected: " + x;
+    }
+</script>

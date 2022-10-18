@@ -15,7 +15,7 @@
         </svg>
     </div>
 
-    <div class="grid grid-rows-1 gap-4 grid-flow-col mt-5">
+    <div class="grid grid-cols-3 gap-4 mt-5">
 
         @foreach ($hotel->rooms as $room)
             <div class="p-4 bg-white rounded-lg shadow-xs flex flex-col">

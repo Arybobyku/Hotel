@@ -102,7 +102,7 @@
             </div>
             <div
                 class="px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase bg-gray-50 border-t sm:grid-cols-9">
-                {{ $users->links() }}
+                {{-- {{ $users->links() }} --}}
             </div>
         </div>
 
