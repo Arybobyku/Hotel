@@ -11,7 +11,7 @@ class Room extends Model
     protected $fillable = [
         'id_hotel',
         'name',
-        'is_available',
+        'image',
     ];
 
     public function bookings(){

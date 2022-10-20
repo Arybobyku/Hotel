@@ -37,6 +37,9 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::resource('/dashboard/user', AdminController::class)->middleware('auth', 'admin');
 
     Route::get('admin/hotel/{id}', [\App\Http\Controllers\AdminHotelController::class, 'index'])->name('admin.hotel');
+    Route::get('admin/hotel/{id}/create', [\App\Http\Controllers\AdminHotelController::class, 'create'])->name('admin.createroom');
+    Route::post('admin/hotel/{id}/create', [\App\Http\Controllers\AdminHotelController::class, 'createroom'])->name('createroom');
+    Route::post('admin/hotel/{id}', [App\Http\Controllers\AdminHotelController::class, 'deleteroom'])->name('deleteroom');
     Route::get('dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
 });
 
