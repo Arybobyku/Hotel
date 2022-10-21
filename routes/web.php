@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AssetController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProfileController;
@@ -47,6 +48,8 @@ Route::middleware('auth', 'admin')->group(function () {
 
 //pegawai
 Route::middleware('auth')->group(function () {
+
+    Route::resource('hotel/asset', AssetController::class);
 
     Route::get('hotel/book/{date}/{id}', [\App\Http\Controllers\BookController::class, 'index'])->name('hotel.book');
     Route::post('hotel/book', [\App\Http\Controllers\BookController::class, 'booking'])->name("insertcheckin");
