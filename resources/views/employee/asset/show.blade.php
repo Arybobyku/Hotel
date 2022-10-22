@@ -31,7 +31,7 @@
                         @if ($asset->image)
                             <div class="grid m-6 place-items-center">
                                 <label for="sub_bab" class="block mb-2 text-sm font-medium text-gray-900 ">Gambar</label>
-                                <img src="{{ asset( $asset->image) }}" class="rounded max-h-96">
+                                <img src="{{ asset('images/'. $asset->image) }}" class="rounded max-h-72">
 
                             </div>
                         @endif

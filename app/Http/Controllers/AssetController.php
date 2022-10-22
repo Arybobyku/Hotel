@@ -47,18 +47,16 @@ class AssetController extends Controller
             'image' => 'image|file|max:1024',
         ]);
 
-        if($request->hasfile('image'))
-        {
+        if ($request->hasfile('image')) {
             $request->file('image')->move(public_path('images/asset-images/'), $request->file('image')->getClientOriginalName());
         }
-
 
         Asset::create([
             'name' => $request->name,
             'jumlah' => $request->jumlah,
             'satuan' => $request->satuan,
             'id_hotel' => $hotelId,
-            'image' => $request->image = 'images/asset-images/' . $request->file('image')->getClientOriginalName(),
+            'image' => ($request->image = 'asset-images/' . $request->file('image')->getClientOriginalName()),
         ]);
 
         return redirect('/hotel/asset')->with('success', 'Asset Barang Baru Telah Ditambahkan');
@@ -73,7 +71,7 @@ class AssetController extends Controller
     public function show(Asset $asset)
     {
         return view('employee.asset.show', [
-            'asset' => $asset
+            'asset' => $asset,
         ]);
     }
 
@@ -85,7 +83,9 @@ class AssetController extends Controller
      */
     public function edit(Asset $asset)
     {
-        //
+        return view('employee.asset.edit', [
+            'asset' => $asset,
+        ]);
     }
 
     /**
@@ -97,7 +97,17 @@ class AssetController extends Controller
      */
     public function update(Request $request, Asset $asset)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'jumlah' => 'required|max:11',
+            'satuan' => 'required|max:255',
+            'image' => 'image|file|max:1024',
+        ]);
+        if ($request->file('image')) {
+            $validatedData['image'] = $request->file('image')->store('asset-images');
+        }
+        Asset::where('id', $asset->id)->update($validatedData);
+        return redirect('hotel/asset')->with('status', 'Berhasil Mengedit Asset');
     }
 
     /**
@@ -108,6 +118,9 @@ class AssetController extends Controller
      */
     public function destroy(Asset $asset)
     {
-        //
+                Asset::destroy($asset->id);
+        return redirect('hotel/asset')->with('status', 'Berhasil Menghapus Asset');
+
+
     }
 }

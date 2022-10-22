@@ -38,7 +38,7 @@
                 </a>
             </li>
             <li class="relative px-6 py-3">
-                <a href="{{ route('hotel.shift') }}" :active="request() - > routeIs('hotel.shift')" class="flex flex-wrap gap-4">
+                <a href="/hotel/asset" :active="request() - > routeIs('hotel.shift')" class="flex flex-wrap gap-4">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
