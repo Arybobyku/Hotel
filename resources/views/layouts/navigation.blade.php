@@ -1,7 +1,7 @@
 <aside class="z-20 hidden w-64 overflow-y-auto bg-white md:block flex-shrink-0">
     <div class="py-4 text-gray-500">
         <a class="ml-6 text-lg font-bold text-gray-800" href="{{ route('dashboard') }}">
-            Windmill
+            Super Admin
         </a>
 
         <ul class="mt-6">
@@ -18,7 +18,7 @@
             </li>
 
             <li class="relative px-6 py-3">
-                <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.index')">
+                <x-nav-link href="/dashboard/user" :active="request()->routeIs('/dashboard/user')" >
                     <x-slot name="icon">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                              xmlns="http://www.w3.org/2000/svg">
@@ -31,7 +31,7 @@
             </li>
 
             <li class="relative px-6 py-3">
-                <x-nav-link href="{{ route('about') }}" :active="request()->routeIs('about')">
+                <x-nav-link href="{{ route('about') }}" :active="request()->routeIs('about')" >
                     <x-slot name="icon">
                         <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
                              stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">

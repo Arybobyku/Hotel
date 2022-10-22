@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,18 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
+
+    public static function redirectTo() {
+        $role = Auth::user()->role; 
+        switch ($role) {
+          case 1:
+            return 'dashboard';
+            break;
+          case 0:
+            return 'hotel/dashboard';
+          break;
+        }
+      }
     public const HOME = '/dashboard';
 
     /**

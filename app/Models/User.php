@@ -20,6 +20,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'id_hotel',
+        'role',
         'password',
     ];
 
@@ -41,4 +43,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin(){
+        return $this->role==2 || $this->role==1?true:false;
+    }
+
+    public function hotel(){
+        return $this->belongsTo(Hotel::class, 'id_hotel', 'id');
+    }
 }
