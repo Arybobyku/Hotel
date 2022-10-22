@@ -3126,6 +3126,7 @@
         },
         {
             "name": "symfony/error-handler",
+
             "version": "v6.0.14",
             "source": {
                 "type": "git",
@@ -3136,6 +3137,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/error-handler/zipball/81e57c793d9a573f29f8b5296d5d8ee4602badcb",
                 "reference": "81e57c793d9a573f29f8b5296d5d8ee4602badcb",
+
                 "shasum": ""
             },
             "require": {
@@ -3177,7 +3179,9 @@
             "description": "Provides tools to manage errors and ease debugging PHP code",
             "homepage": "https://symfony.com",
             "support": {
+
                 "source": "https://github.com/symfony/error-handler/tree/v6.0.14"
+
             },
             "funding": [
                 {
@@ -3194,6 +3198,7 @@
                 }
             ],
             "time": "2022-10-07T08:02:12+00:00"
+
         },
         {
             "name": "symfony/event-dispatcher",
@@ -3430,6 +3435,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/http-foundation/zipball/e8aa505d35660877e6695d68be53df2ceac7cf57",
                 "reference": "e8aa505d35660877e6695d68be53df2ceac7cf57",
+
                 "shasum": ""
             },
             "require": {
@@ -3475,7 +3481,9 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
+
                 "source": "https://github.com/symfony/http-foundation/tree/v6.0.14"
+
             },
             "funding": [
                 {
@@ -3585,6 +3593,7 @@
             "homepage": "https://symfony.com",
             "support": {
                 "source": "https://github.com/symfony/http-kernel/tree/v6.0.14"
+
             },
             "funding": [
                 {
@@ -3601,6 +3610,7 @@
                 }
             ],
             "time": "2022-10-12T07:43:45+00:00"
+
         },
         {
             "name": "symfony/mailer",
@@ -3688,6 +3698,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/mime/zipball/c01b88b63418131daf2edd0bdc17fc8a6d1c939a",
                 "reference": "c01b88b63418131daf2edd0bdc17fc8a6d1c939a",
+
                 "shasum": ""
             },
             "require": {
@@ -3741,6 +3752,7 @@
             ],
             "support": {
                 "source": "https://github.com/symfony/mime/tree/v6.0.14"
+
             },
             "funding": [
                 {
@@ -3757,6 +3769,7 @@
                 }
             ],
             "time": "2022-10-07T08:02:12+00:00"
+
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -4738,6 +4751,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/string/zipball/3db7da820a6e4a584b714b3933c34c6a7db4d86c",
                 "reference": "3db7da820a6e4a584b714b3933c34c6a7db4d86c",
+
                 "shasum": ""
             },
             "require": {
@@ -5070,6 +5084,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/var-dumper/zipball/72af925ddd41ca0372d166d004bc38a00c4608cc",
                 "reference": "72af925ddd41ca0372d166d004bc38a00c4608cc",
+
                 "shasum": ""
             },
             "require": {
