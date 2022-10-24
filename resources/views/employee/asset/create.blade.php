@@ -11,7 +11,7 @@
             </div>
 
             <div class="block w-full overflow-x-auto p-8">
-                <form method="POST" action="/hotel/asset/" enctype="multipart/form-data">
+                <form method="POST" action="/hotel/asset/create" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-6">
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Nama Barang</label>

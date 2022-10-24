@@ -32,13 +32,13 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => '/home/u1605375/public_html/checkdenatio.com',
             'throw' => false,
         ],
 
         'public' => [
             'driver' => 'local',
-            'root' => public_path('images'),
+            'root' => '/home/u1605375/public_html/checkdenatio.com',
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
@@ -70,7 +70,7 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        public_path('storage') => '/home/u1605375/public_html/checkdenatio.com',
     ],
 
 ];

@@ -48,8 +48,7 @@ class AssetController extends Controller
         ]);
 
         if ($request->hasfile('image')) {
-            $request->file('image')->move(public_path('images/asset-images/'), $request->file('image')->getClientOriginalName());
-            $nama = $request->image = 'asset-images/' . $request->file('image')->getClientOriginalName();
+           $nama = $request->file('image')->store('images/asset-images');
         }
 
         Asset::create([
@@ -57,7 +56,7 @@ class AssetController extends Controller
             'jumlah' => $request->jumlah,
             'satuan' => $request->satuan,
             'id_hotel' => $hotelId,
-            'image' => $request->image,
+            'image' => $nama,
         ]);
 
         return redirect('/hotel/asset')->with('success', 'Asset Barang Baru Telah Ditambahkan');
