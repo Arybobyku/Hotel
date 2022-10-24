@@ -49,6 +49,7 @@ class AssetController extends Controller
 
         if ($request->hasfile('image')) {
             $request->file('image')->move(public_path('images/asset-images/'), $request->file('image')->getClientOriginalName());
+            $nama = $request->image = 'asset-images/' . $request->file('image')->getClientOriginalName();
         }
 
         Asset::create([
@@ -56,7 +57,7 @@ class AssetController extends Controller
             'jumlah' => $request->jumlah,
             'satuan' => $request->satuan,
             'id_hotel' => $hotelId,
-            'image' => ($request->image = 'asset-images/' . $request->file('image')->getClientOriginalName()),
+            'image' => $request->image,
         ]);
 
         return redirect('/hotel/asset')->with('success', 'Asset Barang Baru Telah Ditambahkan');
@@ -118,9 +119,7 @@ class AssetController extends Controller
      */
     public function destroy(Asset $asset)
     {
-                Asset::destroy($asset->id);
+        Asset::destroy($asset->id);
         return redirect('hotel/asset')->with('status', 'Berhasil Menghapus Asset');
-
-
     }
 }
