@@ -50,8 +50,8 @@ Route::middleware('auth', 'admin')->group(function () {
 Route::middleware('auth')->group(function () {
 
     Route::resource('hotel/asset', AssetController::class);
-        Route::post('hotel/asset/create', [\App\Http\Controllers\AssetController::class, 'store'])->name("hotel.asset.store");
-    Route::post('hotel/asset/{id}', [\App\Http\Controllers\AssetController::class, 'destroy'])->name("hotel.asset.delete");
+    Route::post('hotel/asset/create', [\App\Http\Controllers\AssetController::class, 'store'])->name("hotel.asset.store");
+    Route::post('hotel/asset/delete/{id}', [\App\Http\Controllers\AssetController::class, 'destroy'])->name("hotel.asset.delete");
 
     Route::get('hotel/book/{date}/{id}', [\App\Http\Controllers\BookController::class, 'index'])->name('hotel.book');
     Route::post('hotel/book', [\App\Http\Controllers\BookController::class, 'booking'])->name("insertcheckin");
