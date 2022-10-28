@@ -6,7 +6,7 @@
 
         <ul class="mt-6">
             <li class="relative px-6 py-3">
-                <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard') || request()->routeIs('admin.hotel') || request()->routeIs('admin.shift') || request()->routeIs('admin.editroom') || request()->routeIs('admin.shiftdetail') || request()->routeIs('admin.createroom') || request()->routeIs('admin.roomdetail')" >
                     <x-slot name="icon">
                         <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
                              stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
@@ -18,7 +18,7 @@
             </li>
 
             <li class="relative px-6 py-3">
-                <x-nav-link href="/dashboard/user" :active="request()->routeIs('/dashboard/user')" >
+                <x-nav-link href="/dashboard/user" :active="request()->routeIs('user.index') || request()->routeIs('user.create') || request()->routeIs('user.edit') || request()->routeIs('user.show')" >
                     <x-slot name="icon">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                              xmlns="http://www.w3.org/2000/svg">

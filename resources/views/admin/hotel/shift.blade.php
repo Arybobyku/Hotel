@@ -43,7 +43,7 @@
 
                 <div class="relative pl-3">
                     <select name="id_user" class="bg-white border border-gray-300 text-gray-900 w-full rounded-md">
-                            <option value=""> Pilih Pegawai </option>
+                        <option value=""> Pilih Pegawai </option>
 
                         @foreach ($pegawais as $pegawai)
                             <option value="{{ $pegawai->id }}" @if ($pegawai->id == old('id_user')) selected @endif>
@@ -51,16 +51,13 @@
                         @endforeach
                     </select>
                 </div>
-                <div
+                <button type="submit"
                     class="bg-blue-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                    </svg>
-
-                    <button type="submit" href="">Filter</button>
-                </div>
+                    </svg>Filter</button>
 
             </div>
 
@@ -106,8 +103,7 @@
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 <a href="/admin/hotel/{{ $book->id_hotel }}/shift/detail/{{ $book->id }}"
-                                    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                                    >
+                                    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     Lihat Tamu
                                 </a>
                             </td>
