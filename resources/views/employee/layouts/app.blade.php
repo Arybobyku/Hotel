@@ -13,16 +13,17 @@
     <script src="{{ asset('js/init-alpine.js') }}"></script>
 </head>
 
-<body>
-    <div class="flex h-screen bg-gray-50" :class="{ 'overflow-hidden': isSideMenuOpen }">
+<body >
+    <div class="flex h-screen bg-gray-50" :class="{ 'overflow-hidden': isSideMenuOpen }" >
         <!-- Desktop sidebar -->
         @include('employee.layouts.navigation')
         <!-- Mobile sidebar -->
         <!-- Backdrop -->
         @include('employee.layouts.navigation-mobile')
-        <div class="flex flex-col flex-1 w-full">
+        <div class="flex flex-col flex-1 w-full" >
             @include('employee.layouts.top-menu')
-            <main class="h-full overflow-y-auto">
+            <main class="h-full overflow-y-auto"  style="background-image: url('{{ asset('images/register_bg_2.png') }}');
+  background-size:100% auto;">
                 <div class="container p-6 mx-auto grid">
                     <div class="pt-4">
                         @yield('contents')

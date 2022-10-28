@@ -3,6 +3,18 @@
 
 @section('contents')
     {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
+    <div class="mx-10 my-10 ">
+        <form method="GET" action="shift">
+            <div class="flex items-center gap-4">
+                <input type="date" id="from" name="from" value="{{Request::old('from')}}">
+                <input type="date" id="to" name="to" value="{{Request::old('to')}}">
+                <div class="bg-black text-white py-2 px-8">
+                    <button type="submit" href="">Cari</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
     <div class="overflow-hidden mb-8 w-full rounded-lg border shadow-xs">
 
         <div class="overflow-x-auto w-full">

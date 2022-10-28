@@ -13,18 +13,21 @@
     <script src="{{ asset('js/init-alpine.js') }}"></script>
 </head>
 
-<body class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 flex justify-center items-center h-screen lg:mx-80">
+<body
+    class="bg-gradient-to-r from-indigo-500 via-purple-500 to-green-500 flex justify-center items-center h-screen lg:mx-80" style="background-color: #1e293b  ; background-image: url('{{ asset('images/register_bg_2.png') }}');  background-repeat: no-repeat;
+  background-size:100% auto;">
     <div class="bg-white rounded-3xl">
         <div class="flex flex-col overflow-y-auto md:flex-row">
             <div class="h-32 md:h-auto md:w-1/2">
-                <img aria-hidden="true" class="object-cover rounded-3xl w-full h-full" src="{{ asset('images/login-office.jpeg') }}"
-                    alt="Office" />
+                <img aria-hidden="true" class="object-cover rounded-3xl w-full h-full"
+                    src="{{ asset('images/login-office.jpeg') }}" alt="Office" />
             </div>
             <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
                 <div class="w-full">
-                    <h1 class="mb-4 text-xl font-semibold text-gray-700">
-                        Login
-                    </h1>
+                    .
+                        <center>
+                        <img src="{{ asset('images/LOGO_DENATIO.png') }}" class="w-24">
+                        </center>
 
                     <x-auth-validation-errors :errors="$errors" />
 
@@ -72,6 +75,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </body>
 

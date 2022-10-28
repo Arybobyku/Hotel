@@ -20,7 +20,7 @@
 
     <div class="w-full grid grid-cols-3 pl-2">
         @foreach ($rooms as $room)
-            <div class="mb-2 m-4 ">
+            <div class="mb-2 m-4 bg-white">
                 <a href='/hotel/book/{{ $date }}/{{ $room->id }}'
                     class="flex flex-col p-3 rounded-md shadow-xl">
                     @if ($room->image)

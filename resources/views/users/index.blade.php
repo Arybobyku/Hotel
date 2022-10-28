@@ -1,6 +1,6 @@
 <x-app-layout>
     @if (session('status'))
-    <div class="card-body">
+    <div class="card-body" >
         <div class="alert alert-success" role="alert">
             {{ session('status') }}
         </div>
@@ -17,7 +17,7 @@
         Tambah Pegawai
     </a>
 
-    <div class="p-4 bg-white rounded-lg shadow-xs">
+    <div class="p-4 bg-white rounded-lg shadow-xs" >
 
         {{-- <div class="inline-flex overflow-hidden mb-4 w-full bg-white rounded-lg shadow-md">
             <div class="flex justify-center items-center w-12 bg-blue-500">
@@ -36,7 +36,7 @@
             </div>
         </div> --}}
 
-        <div class="overflow-hidden mb-8 w-full rounded-lg border shadow-xs">
+        <div class="overflow-hidden mb-8 w-full rounded-lg border shadow-xs" >
             <div class="overflow-x-auto w-full">
                 <table class="w-full whitespace-no-wrap">
                     <thead>

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout >
     @php
         $user = Auth::user();
         $user->id_hotel = $hotel->id;

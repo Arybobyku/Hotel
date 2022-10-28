@@ -1,11 +1,12 @@
-<x-app-layout>
+<x-app-layout >
 
     @php
         $user = Auth::user();
         $user->id_hotel = $hotel->id;
         Auth::setUser($user);
     @endphp
-
+<div class="" style="background-image: url('{{ asset('images/register_bg_2.png') }}');
+  background-size:100% auto;">
     <a class="font-bold text-4xl">{{ $hotel->name }}</a>
     <div class="p-4 bg-white rounded-lg shadow-xs flex flex-col items-center w-fit mt-4">
         <img class="mb-4 h-40"
@@ -14,7 +15,7 @@
         <a class="font-bold" href="{{ Route('hotel.dashboard') }}">{{ $hotel->name }}</a>
     </div>
 
-    <div class="mt-10 grid grid-cols-2 justify-end">
+    <div class="mt-10 grid grid-cols-2 justify-end" >
         <div class="">
             <a class="font-bold text-4xl">Rooms</a>
         </div>
@@ -30,7 +31,7 @@
         </a>
     </div>
 
-    <div class="grid grid-cols-3 gap-4 mt-5">
+    <div class="grid grid-cols-3 gap-4 mt-5" >
 
         @foreach ($hotel->rooms as $room)
             <div class=" p-4 bg-white rounded-lg shadow-xs flex flex-col">
@@ -75,5 +76,5 @@
         @endforeach
 
     </div>
-
+</div>
 </x-app-layout>
