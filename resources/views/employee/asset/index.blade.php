@@ -63,7 +63,8 @@
                                 </a>
                                 <div
                                     class="rounded-md text-center bg-gradient-to-r from-red-500 to-red-700  h-6 w-6 text-white hover:opacity-60">
-                                    <form action="/hotel/asset/delete/{{ $asset->id }}/" method="POST">
+                                    <form action="/hotel/asset/{{ $asset->id }}" method="POST">
+                                        @method('delete')
                                         @csrf
                                         <button class=""
                                             onclick="return confirm('Apakah Kamu Yakin Ingin Menghapus?') ">

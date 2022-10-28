@@ -22,6 +22,13 @@ class AdminController extends Controller
         ]);
     }
 
+    public function show(Request $request){
+        $user = User::where("id",$request->user)->first();
+        return view('users.detail',[
+            'user'=>$user
+        ]);
+    }
+
     public function create()
     {
         return view('users.create', [
@@ -57,9 +64,10 @@ class AdminController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'id_hotel' => ['required'],
         ]);
+
 
         User::where('id', $user->id)->update([
             'name' => $request->name,
