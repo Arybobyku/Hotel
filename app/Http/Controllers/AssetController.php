@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asset;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -40,6 +41,7 @@ class AssetController extends Controller
     public function store(Request $request)
     {
         $hotelId = Auth::user()->id_hotel;
+        $nameUser = Auth::user()->name;
         $request->validate([
             'name' => 'required|max:255',
             'jumlah' => 'required|max:11',
@@ -48,10 +50,9 @@ class AssetController extends Controller
         ]);
 
         if ($request->hasfile('image')) {
-           $nama = $request->file('image')->store('images/asset-images');
-        }
-        else {
-            $nama =NULL;
+            $nama = $request->file('image')->store('images/asset-images');
+        } else {
+            $nama = null;
         }
 
         Asset::create([
@@ -60,6 +61,10 @@ class AssetController extends Controller
             'satuan' => $request->satuan,
             'id_hotel' => $hotelId,
             'image' => $nama,
+        ]);
+        Log::create([
+            'activity' => "$nameUser Menambah Asset Barang $request->name $request->jumlah $request->satuan",
+            'id_hotel' => $hotelId,
         ]);
 
         return redirect('/hotel/asset')->with('success', 'Asset Barang Baru Telah Ditambahkan');
@@ -100,6 +105,8 @@ class AssetController extends Controller
      */
     public function update(Request $request, Asset $asset)
     {
+        $hotelId = Auth::user()->id_hotel;
+        $nameUser = Auth::user()->name;
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'jumlah' => 'required|max:11',
@@ -110,6 +117,11 @@ class AssetController extends Controller
             $validatedData['image'] = $request->file('image')->store('asset-images');
         }
         Asset::where('id', $asset->id)->update($validatedData);
+        Log::create([
+            'activity' => "$nameUser Mengubah Asset Barang $request->name $request->jumlah $request->satuan",
+            'id_hotel' => $hotelId,
+
+        ]);
         return redirect('hotel/asset')->with('status', 'Berhasil Mengedit Asset');
     }
 
@@ -119,9 +131,13 @@ class AssetController extends Controller
      * @param  \App\Models\Asset  $asset
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Asset $asset)
+    public function destroy(Request $request, Asset $asset)
     {
+        $nameUser = Auth::user()->name;
         Asset::destroy($asset->id);
+        Log::create([
+            'activity' => "$nameUser Menghapus Asset Barang $asset->name",
+        ]);
         return redirect('hotel/asset')->with('status', 'Berhasil Menghapus Asset');
     }
 }

@@ -15,6 +15,7 @@ class Book extends Model
         'name',
         'book_date',
         'nik',
+        'nota',
         'checkin',
         'checkout',
     ];

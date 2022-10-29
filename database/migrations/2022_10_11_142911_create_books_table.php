@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger('id_user');
             $table->string('name');
             $table->string('nik');
+            $table->string('nota');
             $table->date('book_date');
             $table->date('checkin')->nullable();
             $table->date('checkout')->nullable();

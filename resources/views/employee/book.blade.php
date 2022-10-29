@@ -6,14 +6,20 @@
         <div class="relative flex flex-col min-w-0 break-words w-full mb-2 shadow-lg rounded bg-white">
             <div class="flex  items-center mx-8 mt-10">
                 <h3 class="font-semibold text-xl text-blueGray-700">
-                    Reservation 
+                    Reservation
                 </h3>
             </div>
 
             <div class="block w-full overflow-x-auto p-8">
                 <form method="POST" action="{{ Route('insertcheckin') }}" enctype="multipart/form-data">
                     @csrf
-                    <input name="id_room" value="{{$room->id}}" hidden/>
+                    <input name="id_room" value="{{ $room->id }}" hidden />
+                    <div class="mb-6">
+                        <label for="nota" class="block mb-2 text-sm font-medium text-gray-900 ">Nomor Transaksi</label>
+                        <input type="text" id="nota" name="nota"
+                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                            placeholder="" required>
+                    </div>
                     <div class="mb-6">
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Nama</label>
                         <input type="text" id="name" name="name"
@@ -28,7 +34,7 @@
                     </div>
                     <div class="mb-6">
                         <label for="room" class="block mb-2 text-sm font-medium text-gray-900 ">Room</label>
-                        <input type="text" id="room" value="{{$room->name}}" name="room" readonly
+                        <input type="text" id="room" value="{{ $room->name }}" name="room" readonly
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="" required>
                     </div>
@@ -40,7 +46,7 @@
                     </div>
                     <div class="mb-6">
                         <label for="booking" class="block mb-2 text-sm font-medium text-gray-900 ">Tanggal Booking</label>
-                        <input type="date" id="booking" name="booking" value="{{$date}}"  readonly
+                        <input type="date" id="booking" name="booking" value="{{ $date }}" readonly
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="">
                     </div>
