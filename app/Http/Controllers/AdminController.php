@@ -18,7 +18,7 @@ class AdminController extends Controller
     public function index()
     {
         return view('users.index', [
-            'users' => User::whereNotNull('id_hotel')->get(),
+            'users' => User::whereNotNull('id_hotel')->where('role', 0)->get(),
         ]);
     }
 

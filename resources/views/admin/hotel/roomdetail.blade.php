@@ -22,7 +22,6 @@
                         <th class="px-4 py-3">Booking</th>
                         <th class="px-4 py-3">Checkin</th>
                         <th class="px-4 py-3">Checkout</th>
-                        <th class="px-4 py-3">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y">
@@ -44,13 +43,11 @@
                                 {{ $book->checkin }}
                             </td>
                             <td class="px-4 py-3 text-sm">
+                                @if ($book->checkout)
                                 {{ $book->checkout }}
-                            </td>
-                            <td class="px-4 py-3 text-sm">
-                                <a href="/admin/hotel/{{ $book->id_hotel }}/shift/detail/{{ $book->id }}"
-                                    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Lihat Tamu
-                                </a>
+                                @else
+                                    Belum Chekout
+                                @endif
                             </td>
                         </tr>
                     @endforeach

@@ -50,6 +50,9 @@ class AssetController extends Controller
         if ($request->hasfile('image')) {
            $nama = $request->file('image')->store('images/asset-images');
         }
+        else {
+            $nama =NULL;
+        }
 
         Asset::create([
             'name' => $request->name,

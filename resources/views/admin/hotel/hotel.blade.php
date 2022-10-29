@@ -5,9 +5,7 @@
         $user->id_hotel = $hotel->id;
         Auth::setUser($user);
     @endphp
-    <div class=""
-        style="background-image: url('{{ asset('images/register_bg_2.png') }}');
-  background-size:100% auto;">
+    
         <div class="grid grid-cols-1 mb-10 mx-24 w-lg rounded overflow-hidden shadow-lg bg-white">
             <img class="w-max flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
                 src='https://source.unsplash.com/1200x400?hotel'>
@@ -92,5 +90,4 @@
             @endforeach
 
         </div>
-    </div>
 </x-app-layout>

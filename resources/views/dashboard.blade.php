@@ -2,8 +2,7 @@
     <x-slot name="header">
         {{ __('Dashboard') }}
     </x-slot>
-    <div class="grid grid-cols-3 gap-4" style="background-image: url('{{ asset('images/register_bg_2.png') }}');
-  background-size:75% auto;">
+    <div class="grid grid-cols-3 gap-4">
         @foreach ($hotels as $hotel)
           
         <div class="p-4 bg-white rounded-lg shadow-xs flex flex-col items-center">

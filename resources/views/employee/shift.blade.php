@@ -83,7 +83,11 @@
                                 {{ $book->checkin }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->checkout }}
+                                @if ($book->checkout)
+                                    {{ $book->checkout }}
+                                @else
+                                    Belum Checkout
+                                @endif
                             </td>
                         </tr>
                     @endforeach
