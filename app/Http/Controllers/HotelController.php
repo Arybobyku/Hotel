@@ -24,13 +24,32 @@ class HotelController extends Controller
     public function rooms(Request $request)
     {
         $idHotel = Auth::user()->id_hotel;
-        $date = date('Y-m-d');
+        $startDate = date('Y-m-d');
+        $endDate = null;
         $rooms = Room::where("id_hotel", $idHotel)->get();
         $availableRooms = [];
         // var_dump($request->dateChange);die();
-        if ($request->dateChange) {
-            $date = $request->dateChange;
-            $bookings = Book::whereDate("book_date", $date)->where("id_hotel",$idHotel)->get();
+         if($request->startDateChange && $request->endDateChange!=null){
+            $startDate = $request->startDateChange;
+            $endDate = $request->endDateChange;
+            $date = "From ".$request->startDateChange ." Until ".$request->endDateChange;
+            $bookings = Book::whereBetween("book_date", [$startDate,$endDate])->where("id_hotel",$idHotel)->get();
+            foreach ($rooms as $room) {
+                $isAvailable = true;
+                foreach ($bookings as $booking) {
+                    if ($booking->id_room == $room->id) {
+                        $isAvailable = false;
+                        break;
+                    }
+                }
+                if($isAvailable){
+                    array_push($availableRooms, $room);
+                }
+            }
+        }
+       else if ($request->startDateChange) {
+            $startDate = $request->dateChange;
+            $bookings = Book::whereDate("book_date", $startDate)->where("id_hotel",$idHotel)->get();
             foreach ($rooms as $room) {
                 $isAvailable = true;
                 foreach ($bookings as $booking) {
@@ -44,7 +63,7 @@ class HotelController extends Controller
                 }
             }
         } else {
-            $bookings = Book::whereDate("book_date", $date)->where("id_hotel",$idHotel)->get();
+            $bookings = Book::whereDate("book_date", $startDate)->where("id_hotel",$idHotel)->get();
             foreach ($rooms as $room) {
                 $isAvailable = true;
                 foreach ($bookings as $booking) {
@@ -60,7 +79,8 @@ class HotelController extends Controller
         }
         return view('employee.room', [
             "rooms" => $availableRooms,
-            "date" =>$date
+            "startDate"=>$startDate,
+            "endDate"=>$endDate
         ]);
     }
 }

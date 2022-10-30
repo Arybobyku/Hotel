@@ -43,22 +43,28 @@ class BookController extends Controller
         $userId = Auth::id();
         $hotelId = Auth::user()->id_hotel;
 
-
         $request->validate([
             'id_room' => ['required', 'integer'],
             'name' => ['required', 'string', 'max:255'],
             'nik' => ['required', 'string', 'max:255'],
         ]);
-       Book::create([
-            'name' => $request->name,
-            'id_room' => $request->id_room,
-            'id_hotel' => $hotelId,
-            'id_user' => $userId,
-            'nik' => $request->nik,             
-            'book_date' => $request->booking,             
-            'checkin' => $request->checkin,             
-            'checkout' => $request->checkout,             
-        ]);
+        
+        for($i=0;$i<$request->jumlah_hari;$i++){
+            $date=date_create($request->booking);
+            date_add($date,date_interval_create_from_date_string($i." days"));
+            $dateBooking = date_format($date,"Y-m-d");
+            Book::create([
+                'name' => $request->name,
+                'id_room' => $request->id_room,
+                'id_hotel' => $hotelId,
+                'id_user' => $userId,
+                'nik' => $request->nik,             
+                'book_date' => $dateBooking,             
+                'checkin' => $request->checkin,             
+                'checkout' => $request->checkout,             
+            ]);
+
+        }
 
         return redirect ('hotel/rooms');
     }
