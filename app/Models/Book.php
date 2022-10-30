@@ -12,10 +12,11 @@ class Book extends Model
         'id_user',
         'id_room',
         'id_hotel',
-        'name',
+        'guestname',
         'book_date',
         'nik',
         'nota',
+        'price',
         'checkin',
         'checkout',
     ];

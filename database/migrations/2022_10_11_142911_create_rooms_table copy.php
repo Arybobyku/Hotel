@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->bigInteger('id_hotel');
             $table->string('name');
+            $table->bigInteger('price');
             $table->string('image')->nullable();
             $table->boolean('is_available')->default(true);
             $table->timestamps();

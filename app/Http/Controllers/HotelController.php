@@ -83,7 +83,7 @@ class HotelController extends Controller
         }
         $filter = Book::whereBetween('book_date', [$from, $to])
             ->where('id_user', $idUser)
-            ->get();
+            ->latest()->get();
         session()->flashInput($request->input());
         $book = Book::where('id_hotel', $idHotel)
             ->where('id_user', $idUser)

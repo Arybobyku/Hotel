@@ -3,15 +3,17 @@
     {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
     <h1 class="mx-10 text-2xl font-bold">Log Aktivitas</h1>
 
- <div class="mx-10 my-10">
+    <div class="mx-10 my-10">
         <form method="GET" action="log">
 
-           <div class="flex flex-warp gap-4">
-            <select class="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block     dark:focus:ring-blue-500 dark:focus:border-blue-500" name="id_hotel">
-                @foreach ($hotels as $hotel)
-                <option name="id_hotel" value="{{ $hotel->id }}">{{ $hotel->name }}</option>
-                @endforeach
-            </select>
+            <div class="flex flex-warp gap-4">
+                <select
+                    class="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block     dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    name="id_hotel">
+                    @foreach ($hotels as $hotel)
+                        <option name="id_hotel" value="{{ $hotel->id }}">{{ $hotel->name }}</option>
+                    @endforeach
+                </select>
                 <button type="submit"
                     class="bg-blue-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -34,6 +36,7 @@
                         class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-50 border-b">
                         <th class="px-4 py-3">No</th>
                         <th class="px-4 py-3">Aktivitas</th>
+                        <th class="px-4 py-3">Waktu</th>
                         <th class="px-4 py-3">Hotel</th>
                     </tr>
                 </thead>
@@ -45,6 +48,9 @@
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $log->activity }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                {{ $log->created_at }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $log->namehotel->name }}

@@ -18,9 +18,10 @@ return new class extends Migration
             $table->bigInteger('id_hotel');
             $table->bigInteger('id_room');
             $table->bigInteger('id_user');
-            $table->string('name');
+            $table->string('guestname');
             $table->string('nik');
             $table->string('nota');
+            $table->bigInteger('price');
             $table->date('book_date');
             $table->date('checkin')->nullable();
             $table->date('checkout')->nullable();

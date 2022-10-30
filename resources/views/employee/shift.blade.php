@@ -58,10 +58,10 @@
                     <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-50 border-b">
                         <th class="px-4 py-3">No</th>
                         <th class="px-4 py-3">Room</th>
-                        <th class="px-4 py-3">Nama Pegawai</th>
                         <th class="px-4 py-3">Booking</th>
                         <th class="px-4 py-3">Checkin</th>
                         <th class="px-4 py-3">Checkout</th>
+                        <th class="px-4 py-3">Uang Masuk</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y">
@@ -72,9 +72,6 @@
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->nameroom->name }}
-                            </td>
-                            <td class="px-4 py-3 text-sm">
-                                {{ $book->pegawai->name }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->book_date }}
@@ -88,6 +85,9 @@
                                 @else
                                     Belum Checkout
                                 @endif
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                Rp {{ number_format($book->price) }}
                             </td>
                         </tr>
                     @endforeach

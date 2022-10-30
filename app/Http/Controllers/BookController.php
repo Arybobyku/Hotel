@@ -52,17 +52,19 @@ class BookController extends Controller
         $nameUser = Auth::user()->name;
         $request->validate([
             'id_room' => ['required', 'integer'],
-            'name' => ['required', 'string', 'max:255'],
+            'guestname' => ['required', 'string', 'max:255'],
             'nik' => ['required', 'string', 'max:255'],
             'nota' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'integer'],
         ]);
         Book::create([
-            'name' => $request->name,
+            'guestname' => $request->guestname,
             'id_room' => $request->id_room,
             'id_hotel' => $hotelId,
             'id_user' => $userId,
             'nik' => $request->nik,
             'nota' => $request->nota,
+            'price' => $request->price,
             'book_date' => $request->booking,
             'checkin' => $request->checkin,
             'checkout' => $request->checkout,

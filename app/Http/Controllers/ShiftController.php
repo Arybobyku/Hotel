@@ -5,7 +5,8 @@ use App\Models\Book;
 use App\Models\Hotel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-
+use App\Exports\ShiftExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
 
@@ -25,12 +26,23 @@ class ShiftController extends Controller
                 ->where('id_hotel', $request->id)
                 ->where('id_user', $request->id_user)
                 ->get();
-        } else {
+        }
+           elseif (!empty($request->input('from')) && !empty($request->input('to')) && empty($request->input('id_user'))) {
+            $from = $request->from;
+            $to = $request->to;
+            $filter = Book::whereBetween('book_date', [$from, $to])
+                ->where('id_hotel', $request->id)
+                ->get();
+            
+
+        } 
+
+     else {
             $filter = Book::where('id_hotel', $request->id)->get();
         }
-
         session()->flashInput($request->input());
         $hotel = Hotel::where('id', $request->id)->first();
+
         return view('admin.hotel.shift', [
             'books' => $filter,
             'pegawais' => User::where('id_hotel', $request->id)
@@ -53,5 +65,13 @@ class ShiftController extends Controller
             'books' => $book,
             'hotel' => $hotel,
         ]);
+    }
+    public function export(Request $request) 
+    {
+        $from=$request->from;
+        $to = $request->to;
+        $id = $request->id;
+        $id_user = $request->id_user;
+        return Excel::download(new ShiftExport ($request->id, $request->from, $request->to, $request->id_user), 'users.xlsx');
     }
 }

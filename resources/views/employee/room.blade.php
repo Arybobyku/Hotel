@@ -52,7 +52,7 @@
                         {{ $room->name }}
                     </p>
                     <p class="font-light text-sm">
-                        Harga : Rp220.000,00
+                        Rp {{ number_format($room->price) }}
                     </p>
                 </a>
             </div>

@@ -31,6 +31,7 @@ require __DIR__ . '/auth.php';
 Route::middleware('auth', 'admin')->group(function () {
 
     Route::view('about', 'about')->name('about');
+    Route::get('admin/hotel/{id}/shift/export/', 'App\Http\Controllers\ShiftController@export')->name('export.shift');
 
     // Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');

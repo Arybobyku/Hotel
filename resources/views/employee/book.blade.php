@@ -2,6 +2,13 @@
 
 
 @section('contents')
+@php
+ function unique_id($digits)
+ {
+return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $digits);
+ }
+  // 12 digits
+@endphp
     <div class="w-full px-4">
         <div class="relative flex flex-col min-w-0 break-words w-full mb-2 shadow-lg rounded bg-white">
             <div class="flex  items-center mx-8 mt-10">
@@ -16,13 +23,13 @@
                     <input name="id_room" value="{{ $room->id }}" hidden />
                     <div class="mb-6">
                         <label for="nota" class="block mb-2 text-sm font-medium text-gray-900 ">Nomor Transaksi</label>
-                        <input type="text" id="nota" name="nota"
+                        <input type="text" id="nota" name="nota" value="{{ date('dm') }}{{ $transaction_id = unique_id(6) }}"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="" required>
+                            placeholder="" required readonly>
                     </div>
                     <div class="mb-6">
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Nama</label>
-                        <input type="text" id="name" name="name"
+                        <label for="guestname" class="block mb-2 text-sm font-medium text-gray-900 ">Nama</label>
+                        <input type="text" id="guestname" name="guestname"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="" required>
                     </div>
@@ -39,8 +46,8 @@
                             placeholder="" required>
                     </div>
                     <div class="mb-6">
-                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">Price</label>
-                        <input type="text" id="price" value="250.000" name="price" readonly
+                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">Harga</label>
+                        <input type="text" id="price" value="{{ $room->price }}" name="price" readonly
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="" required>
                     </div>

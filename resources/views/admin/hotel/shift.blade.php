@@ -59,9 +59,24 @@
                             d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>Filter</button>
 
-            </div>
+
 
         </form>
+        <form method="get" action="{{ route('export.shift', $user->id_hotel) }}">
+            <input type='hidden' name="from" value="{{ Request::old('from') }}">
+            <input type='hidden' name="to" value="{{ Request::old('to') }}">
+            <input type='hidden' name="id_user" value="{{ Request::old('id_user') }}">
+            <button type="submit"
+                class="bg-green-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+                Export</button>
+
+        </form>
+    </div>
     </div>
 
     <div class="overflow-hidden mb-8 w-full rounded-lg border shadow-xs">
@@ -72,11 +87,12 @@
                     <tr
                         class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-50 border-b">
                         <th class="px-4 py-3">No</th>
+                        <th class="px-4 py-3">Nama Tamu</th>
                         <th class="px-4 py-3">Room</th>
-                        <th class="px-4 py-3">Nama Pegawai</th>
                         <th class="px-4 py-3">Booking</th>
                         <th class="px-4 py-3">Checkin</th>
                         <th class="px-4 py-3">Checkout</th>
+                        <th class="px-4 py-3">Nama Pegawai</th>
                         <th class="px-4 py-3">Aksi</th>
                     </tr>
                 </thead>
@@ -87,10 +103,10 @@
                                 {{ $loop->iteration }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->nameroom->name }}
+                                {{ $book->guestname }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->pegawai->name }}
+                                {{ $book->nameroom->name }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->book_date }}
@@ -99,11 +115,18 @@
                                 {{ $book->checkin }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->checkout }}
+                                @if ($book->checkout)
+                                    {{ $book->checkout }}
+                                @else
+                                    Belum Checkout
+                                @endif
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                {{ $book->pegawai->name }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 <a href="/admin/hotel/{{ $book->id_hotel }}/shift/detail/{{ $book->id }}"
-                                    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                     Lihat Tamu
                                 </a>
                             </td>
