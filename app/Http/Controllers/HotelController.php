@@ -13,8 +13,10 @@ class HotelController extends Controller
     public function index()
     {
         $idHotel = Auth::user()->id_hotel;
+
         $hotel = Hotel::where('id', $idHotel)->first();
-        $bookings = Book::where("id_hotel",$idHotel)->get();
+        $startDate = date('Y-m-d');
+        $bookings = Book::where("id_hotel",$idHotel)->where('book_date','>=',$startDate)->get();
         return view('employee.dashboard', [
             "hotel" => $hotel,
             "bookings"=>$bookings
