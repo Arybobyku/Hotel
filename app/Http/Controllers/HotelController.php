@@ -82,7 +82,8 @@ class HotelController extends Controller
         session()->flashInput($request->input());
         return view('employee.room', [
             'rooms' => $availableRooms,
-            'date' => $date,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
         ]);
     }
 

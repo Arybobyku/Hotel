@@ -57,7 +57,11 @@ class BookController extends Controller
             'nota' => ['required', 'string', 'max:255'],
             'price' => ['required', 'integer'],
         ]);
-        
+
+        $date=date_create($request->booking);
+        date_add($date,date_interval_create_from_date_string($request->jumlah_hari." days"));
+        $dateBookingEnd = date_format($date,"Y-m-d");
+
         Book::create([
             'guestname' => $request->guestname,
             'id_room' => $request->id_room,
@@ -67,9 +71,12 @@ class BookController extends Controller
             'nota' => $request->nota,
             'price' => $request->price,
             'book_date' => $request->booking,
+            'book_date_end' => $dateBookingEnd,
+            'days' => $request->jumlah_hari,
             'checkin' => $request->checkin,
             'checkout' => $request->checkout,
         ]);
+        
         Log::create([
             'activity' => "$nameUser Membuat Reservation Nomor Transaksi $request->nota",
             'id_hotel' => $hotelId,

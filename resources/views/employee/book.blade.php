@@ -2,13 +2,14 @@
 
 
 @section('contents')
-@php
- function unique_id($digits)
- {
-return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $digits);
- }
-  // 12 digits
-@endphp
+    @php
+        function unique_id($digits)
+        {
+            return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $digits);
+        }
+        // 12 digits
+    @endphp
+    <input id="room_price" type="text" hidden value="{{ $room->price }}">
     <div class="w-full px-4">
         <div class="relative flex flex-col min-w-0 break-words w-full mb-2 shadow-lg rounded bg-white">
             <div class="flex  items-center mx-8 mt-10">
@@ -23,7 +24,8 @@ return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $digits);
                     <input name="id_room" value="{{ $room->id }}" hidden />
                     <div class="mb-6">
                         <label for="nota" class="block mb-2 text-sm font-medium text-gray-900 ">Nomor Transaksi</label>
-                        <input type="text" id="nota" name="nota" value="{{ date('dm') }}{{ $transaction_id = unique_id(6) }}"
+                        <input type="text" id="nota" name="nota"
+                            value="{{ date('dm') }}{{ $transaction_id = unique_id(6) }}"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="" required readonly>
                     </div>
@@ -47,10 +49,14 @@ return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $digits);
                     </div>
                     <div class="mb-6">
                         <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">Harga</label>
-                        <input type="text" id="price" value="{{ $room->price }}" name="price" readonly
+                        <input type="text" id="fakeprice" value="Rp. {{ $room->price }}" name="fakeprice" readonly
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="" required>
                     </div>
+                                           
+                    <input type="text" id="price" value="{{ $room->price }}" name="price"
+                    class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5 hidden"
+                    placeholder="" >
                     <div class="mb-6">
                         <label for="booking" class="block mb-2 text-sm font-medium text-gray-900 ">Tanggal Booking</label>
                         <input type="date" id="booking" name="booking" value="{{ $date }}" readonly
@@ -61,7 +67,7 @@ return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $digits);
                         <label for="nik" class="block mb-2 text-sm font-medium text-gray-900 ">Jumlah Hari</label>
                         <input type="number" id="jumlah_hari" name="jumlah_hari"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="Contoh: 1" required>
+                            placeholder="Contoh: 1" onchange="" required>
                     </div>
                     <div class="mb-6">
                         <label for="checkin" class="block mb-2 text-sm font-medium text-gray-900 ">Tanggal Checkin</label>
@@ -80,3 +86,21 @@ return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $digits);
 
     </div>
 @endsection
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Get value on button click and show alert
+        $("#jumlah_hari").change(function() {
+            var price = $("#room_price").val();
+            var jumlah_hari = $("#jumlah_hari").val();
+            var hasil = jumlah_hari * price;
+            console.log(hasil);
+            $("#fakeprice").attr("value",
+                `Rp. ${parseFloat(hasil, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()}`
+            );
+            $('#price').val(hasil);
+            // $('#total').val(hasil);
+        });
+    });
+</script>

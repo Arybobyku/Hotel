@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('nota');
             $table->bigInteger('price');
             $table->date('book_date');
+            $table->date('book_date_end');
+            $table->integer('days');
             $table->date('checkin')->nullable();
             $table->date('checkout')->nullable();
             $table->timestamps();

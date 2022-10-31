@@ -14,6 +14,8 @@ class Book extends Model
         'id_hotel',
         'guestname',
         'book_date',
+        'book_date_end',
+        'days',
         'nik',
         'nota',
         'price',
