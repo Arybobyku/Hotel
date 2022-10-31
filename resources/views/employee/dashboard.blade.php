@@ -67,6 +67,7 @@
                                         <form action="{{ Route('hotel.dashboard.checkOut') }}" method="POST">
                                             @csrf
                                             <input hidden name="id_booking" value="{{ $book->id }}">
+                                            <input hidden name="nota" value="{{ $book->nota }}">
                                             <button type="submit"
                                                 class="bg-red-400 p-2 text-white rounded-md" onclick="return confirm('Apakah Kamu Yakin Tamu Checkout?') ">CheckOut</button>
                                         </form>

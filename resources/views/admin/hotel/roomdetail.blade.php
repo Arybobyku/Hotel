@@ -31,7 +31,7 @@
                                 {{ $loop->iteration }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->name }}
+                                {{ $book->guestname }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->pegawai->name }}

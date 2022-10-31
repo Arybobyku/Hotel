@@ -38,8 +38,9 @@ class BookController extends Controller
         Book::where('id', $request->id_booking)->update([
             'checkOut' => $date,
         ]);
+
         Log::create([
-            'activity' => "$nameUser Melakukan   Checkout Nomor Transaksi $book->nota",
+            'activity' => "$nameUser Melakukan Checkout Nomor Transaksi $request->nota",
             'id_hotel' => $hotelId,
         ]);
         return redirect('hotel/dashboard');
