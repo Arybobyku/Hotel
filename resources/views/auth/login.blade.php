@@ -32,7 +32,6 @@
                     <x-auth-validation-errors :errors="$errors" />
 
                     <form method="POST" action="{{ route('login') }}">
-                        @csrf
 
                         <!-- Input[ype="email"] -->
                         <div class="mt-4">
