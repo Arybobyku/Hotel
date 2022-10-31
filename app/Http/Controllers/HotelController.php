@@ -117,4 +117,10 @@ class HotelController extends Controller
             'books' => $filter,
         ]);
     }
+
+    public function struk(Request $request){
+        $idHotel = Auth::user()->id_hotel;
+        $book = Book::where('id', $request->id)->first();
+        return view('employee.struk', ['book' => $book]);
+    }
 }

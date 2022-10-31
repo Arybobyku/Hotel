@@ -55,7 +55,7 @@
                                         Belum Checkout
                                     @endif
                                 </td>
-                                <td class="px-4 py-3 text-sm">
+                                <td class="px-4 py-3 text-sm flex">
                                     @if ($book->checkin == null)
                                         <form action="{{ Route('hotel.dashboard.checkIn') }}" method="POST">
                                             @csrf
@@ -72,6 +72,8 @@
                                                 class="bg-red-400 p-2 text-white rounded-md" onclick="return confirm('Apakah Kamu Yakin Tamu Checkout?') ">CheckOut</button>
                                         </form>
                                     @endif
+                                    <a href="struk/{{$book->id}}"
+                                    class="bg-blue-400 p-2 text-white rounded-md ml-2">Struk </a>
                                 </td>
                             </tr>
                         @endforeach
