@@ -57,6 +57,7 @@ class BookController extends Controller
             'nota' => ['required', 'string', 'max:255'],
             'price' => ['required', 'integer'],
         ]);
+        
         Book::create([
             'guestname' => $request->guestname,
             'id_room' => $request->id_room,

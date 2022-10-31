@@ -58,6 +58,12 @@ return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $digits);
                             placeholder="">
                     </div>
                     <div class="mb-6">
+                        <label for="nik" class="block mb-2 text-sm font-medium text-gray-900 ">Jumlah Hari</label>
+                        <input type="number" id="jumlah_hari" name="jumlah_hari"
+                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                            placeholder="Contoh: 1" required>
+                    </div>
+                    <div class="mb-6">
                         <label for="checkin" class="block mb-2 text-sm font-medium text-gray-900 ">Tanggal Checkin</label>
                         <input type="date" id="checkin" name="checkin"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
