@@ -68,4 +68,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('hotel/rooms', [\App\Http\Controllers\HotelController::class, 'rooms'])->name('hotel.rooms');
     Route::get('hotel/shift', [\App\Http\Controllers\HotelController::class, 'shift'])->name('hotel.shift');
+  
+    Route::get('hotel/struk/{id}', [\App\Http\Controllers\HotelController::class, 'struk'])->name('hotel.struk');
 });
