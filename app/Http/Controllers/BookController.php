@@ -59,7 +59,7 @@ class BookController extends Controller
         ]);
 
         $date=date_create($request->booking);
-        date_add($date,date_interval_create_from_date_string(($request->jumlah_hari-1)." days"));
+        date_add($date,date_interval_create_from_date_string($request->jumlah_hari." days"));
         $dateBookingEnd = date_format($date,"Y-m-d");
 
         Book::create([
