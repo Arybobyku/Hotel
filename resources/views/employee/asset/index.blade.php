@@ -3,6 +3,7 @@
 
 @section('contents')
     {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
+    <h1 class="mx-10 text-xl font-bold">Asset Barang</h1>
 
     <a href="/hotel/asset/create"
         class="flex flex-wrap gap-4 items-end justify-center bg-green-700 text-white w-52 py-2 mb-8 rounded-md hover:bg-green-400">

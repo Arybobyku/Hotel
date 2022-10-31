@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Hotel;
 use App\Models\Room;
 use App\Models\User;
+use App\Models\Book;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -92,5 +94,22 @@ class AdminHotelController extends Controller
 
         Room::where('id', $request['id'])->delete();
         return redirect('admin/hotel/' . $hotelId)->with('status', 'Berhasil menghapus room');
+    }
+    
+        public function detail(Request $request)
+    {
+        $myId = Auth::user()->id;
+        $hotels = Hotel::where('id', $request->id)->first();
+        User::where('id', $myId)->update([
+            'id_hotel' => $request->id,
+        ]);
+        $hotel = Hotel::where('id', $myId)->first();
+        $room = Room::where('id', $request->id)->first();
+        $book = Book::where('id_room', $request->id)->get();
+        return view('admin.hotel.roomdetail', [
+            'room' => $room,
+            'hotel' => $hotel,
+            'books' => $book,
+        ]);
     }
 }

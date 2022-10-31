@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout >
     @php
         $user = Auth::user();
         $user->id_hotel = $hotel->id;
@@ -17,8 +17,14 @@
                     @csrf
                     <input name="id_hotel" value="{{ $hotel->id }}" hidden />
                     <div class="mb-6">
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Nama Rooms</label>
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Nama Kamar</label>
                         <input type="text" id="name" name="name"
+                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                            placeholder="" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">Harga Kamar</label>
+                        <input type="number" id="price" name="price"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="" required>
                     </div>

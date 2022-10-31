@@ -1,11 +1,14 @@
-@extends('employee/layouts/app')
+<x-app-layout>
 
-
-@section('contents')
+    @php
+        $user = Auth::user();
+        $user->id_hotel = $hotel->id;
+        Auth::setUser($user);
+    @endphp
     {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
-    <h1 class="text-center text-3xl font-bold">LAPORAN PEMBUKUAN</h1>
+    <h1 class="mx-10 text-xl font-bold">Laporan Pembukuan {{ $hotel->name }}</h1>
 
-    <div class="mx-10 my-10">
+    <div class="mx-10 my-8">
         <form method="GET" action="shift">
 
             <div date-rangepicker class="flex items-center">
@@ -19,7 +22,7 @@
                         </svg>
                     </div>
                     <input name="from" type="date"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:border-gray-600  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        class="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5    dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Select date start" value="{{ Request::old('from') }}">
                 </div>
                 <span class="mx-4 text-gray-500">to</span>
@@ -34,8 +37,19 @@
                         </svg>
                     </div>
                     <input name="to" type="date"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:border-gray-600  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        class="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Select date end" name="to" value="{{ Request::old('to') }}">
+                </div>
+
+                <div class="relative pl-3">
+                    <select name="id_user" class="bg-white border border-gray-300 text-gray-900 w-full rounded-md">
+                        <option value=""> Pilih Pegawai </option>
+
+                        @foreach ($pegawais as $pegawai)
+                            <option value="{{ $pegawai->id }}" @if ($pegawai->id == old('id_user')) selected @endif>
+                                {{ $pegawai->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <button type="submit"
                     class="bg-blue-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">
@@ -45,9 +59,24 @@
                             d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>Filter</button>
 
-            </div>
+
 
         </form>
+        <form method="get" action="{{ route('export.shift', $user->id_hotel) }}">
+            <input type='hidden' name="from" value="{{ Request::old('from') }}">
+            <input type='hidden' name="to" value="{{ Request::old('to') }}">
+            <input type='hidden' name="id_user" value="{{ Request::old('id_user') }}">
+            <button type="submit"
+                class="bg-green-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+                Export</button>
+
+        </form>
+    </div>
     </div>
 
     <div class="overflow-hidden mb-8 w-full rounded-lg border shadow-xs">
@@ -55,13 +84,16 @@
         <div class="overflow-x-auto w-full">
             <table class="w-full whitespace-no-wrap">
                 <thead>
-                    <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-50 border-b">
+                    <tr
+                        class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-50 border-b">
                         <th class="px-4 py-3">No</th>
+                        <th class="px-4 py-3">Nama Tamu</th>
                         <th class="px-4 py-3">Room</th>
                         <th class="px-4 py-3">Booking</th>
                         <th class="px-4 py-3">Checkin</th>
                         <th class="px-4 py-3">Checkout</th>
-                        <th class="px-4 py-3">Uang Masuk</th>
+                        <th class="px-4 py-3">Nama Pegawai</th>
+                        <th class="px-4 py-3">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y">
@@ -69,6 +101,9 @@
                         <tr class="text-gray-700">
                             <td class="px-4 py-3 text-sm">
                                 {{ $loop->iteration }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                {{ $book->guestname }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->nameroom->name }}
@@ -87,7 +122,13 @@
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                Rp {{ number_format($book->price) }}
+                                {{ $book->pegawai->name }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <a href="/admin/hotel/{{ $book->id_hotel }}/shift/detail/{{ $book->id }}"
+                                    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Lihat Tamu
+                                </a>
                             </td>
                         </tr>
                     @endforeach
@@ -95,4 +136,6 @@
             </table>
         </div>
     </div>
-@endsection
+
+
+</x-app-layout>

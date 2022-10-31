@@ -1,6 +1,6 @@
 <x-app-layout>
     @if (session('status'))
-    <div class="card-body">
+    <div class="card-body" >
         <div class="alert alert-success" role="alert">
             {{ session('status') }}
         </div>
@@ -9,7 +9,7 @@
         <h1 class="text-center text-2xl font-bold"> Pegawai </h1>
 
     <a href="/dashboard/user/create"
-        class="flex flex-wrap gap-3 bg-blue-900 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded m-8 w-52">
+        class="flex flex-wrap gap-3 bg-green-700 hover:opacity-80 text-white font-bold py-2 px-4 rounded m-8 w-52">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
             class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -17,7 +17,7 @@
         Tambah Pegawai
     </a>
 
-    <div class="p-4 bg-white rounded-lg shadow-xs">
+    <div class="p-4 bg-white rounded-lg shadow-xs" >
 
         {{-- <div class="inline-flex overflow-hidden mb-4 w-full bg-white rounded-lg shadow-md">
             <div class="flex justify-center items-center w-12 bg-blue-500">
@@ -36,7 +36,7 @@
             </div>
         </div> --}}
 
-        <div class="overflow-hidden mb-8 w-full rounded-lg border shadow-xs">
+        <div class="overflow-hidden mb-8 w-full rounded-lg border shadow-xs" >
             <div class="overflow-x-auto w-full">
                 <table class="w-full whitespace-no-wrap">
                     <thead>

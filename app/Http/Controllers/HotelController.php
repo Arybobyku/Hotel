@@ -18,8 +18,8 @@ class HotelController extends Controller
         $startDate = date('Y-m-d');
         $bookings = Book::where("id_hotel",$idHotel)->where('book_date','>=',$startDate)->get();
         return view('employee.dashboard', [
-            "hotel" => $hotel,
-            "bookings"=>$bookings
+            'hotel' => $hotel,
+            'bookings' => $bookings,
         ]);
     }
 
@@ -60,7 +60,7 @@ class HotelController extends Controller
                         break;
                     }
                 }
-                if($isAvailable){
+                if ($isAvailable) {
                     array_push($availableRooms, $room);
                 }
             }
@@ -74,15 +74,39 @@ class HotelController extends Controller
                         break;
                     }
                 }
-                if($isAvailable){
+                if ($isAvailable) {
                     array_push($availableRooms, $room);
                 }
             }
         }
+        session()->flashInput($request->input());
         return view('employee.room', [
-            "rooms" => $availableRooms,
-            "startDate"=>$startDate,
-            "endDate"=>$endDate
+            'rooms' => $availableRooms,
+            'date' => $date,
+        ]);
+    }
+
+    public function shift(Request $request)
+    {
+        $idHotel = Auth::user()->id_hotel;
+        $idUser = Auth::id();
+
+        if (count($request->all()) == 0) {
+        $from = date('2010-10-01');
+        $to = date('2040-10-31');
+        } else {
+            $from = $request->from;
+            $to = $request->to;
+        }
+        $filter = Book::whereBetween('book_date', [$from, $to])
+            ->where('id_user', $idUser)
+            ->latest()->get();
+        session()->flashInput($request->input());
+        $book = Book::where('id_hotel', $idHotel)
+            ->where('id_user', $idUser)
+            ->get();
+        return view('employee.shift', [
+            'books' => $filter,
         ]);
     }
 }

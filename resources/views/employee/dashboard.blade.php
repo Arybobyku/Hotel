@@ -19,7 +19,7 @@
                             <th class="px-4 py-3">Booking</th>
                             <th class="px-4 py-3">Checkin</th>
                             <th class="px-4 py-3">Checkout</th>
-                            <th class="px-4 py-3">Aksi</th>
+                            <th class="px-8 py-3">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y">
@@ -29,7 +29,7 @@
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ $book->name }}
+                                    {{ $book->guestname }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     {{ $book->nameroom->name }}
@@ -41,7 +41,11 @@
                                     {{ $book->checkin }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ $book->checkout }}
+                                    @if ($book->checkout)
+                                        {{ $book->checkout }}
+                                    @else
+                                        Belum Checkout
+                                    @endif
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     @if ($book->checkin == null)
@@ -56,7 +60,7 @@
                                             @csrf
                                             <input hidden name="id_booking" value="{{ $book->id }}">
                                             <button type="submit"
-                                                class="bg-red-400 p-2 text-white rounded-md">CheckOut</button>
+                                                class="bg-red-400 p-2 text-white rounded-md" onclick="return confirm('Apakah Kamu Yakin Tamu Checkout?') ">CheckOut</button>
                                         </form>
                                     @endif
                                 </td>

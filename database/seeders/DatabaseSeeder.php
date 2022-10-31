@@ -47,7 +47,6 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('12345678'),
         ]);
 
-
         Hotel::create([
             'name' => 'Denatio Binjai',
         ]);
@@ -67,59 +66,69 @@ class DatabaseSeeder extends Seeder
         Room::create([
             'id_hotel' => 1,
             'name' => 'Room 101',
+            'price' => 200000,
             'is_available' => true,
         ]);
         Room::create([
             'id_hotel' => 1,
             'name' => 'Room 102',
+            'price' => 200000,
             'is_available' => true,
         ]);
         Room::create([
             'id_hotel' => 1,
             'name' => 'Room 103',
+            'price' => 200000,
             'is_available' => true,
         ]);
         Room::create([
             'id_hotel' => 1,
             'name' => 'Room 104',
+            'price' => 200000,
             'is_available' => true,
         ]);
         Room::create([
             'id_hotel' => 1,
             'name' => 'Room 105',
+            'price' => 200000,
             'is_available' => true,
         ]);
         Room::create([
             'id_hotel' => 1,
             'name' => 'Room 106',
+            'price' => 200000,
             'is_available' => true,
         ]);
         Room::create([
-            'id_hotel' => 1,
+            'id_hotel' => 2,
             'name' => 'Room 201',
+            'price' => 220000,
             'is_available' => true,
         ]);
         Room::create([
-            'id_hotel' => 1,
+            'id_hotel' => 2,
             'name' => 'Room 202',
+            'price' => 220000,
             'is_available' => true,
         ]);
         Room::create([
-            'id_hotel' => 1,
+            'id_hotel' => 2,
             'name' => 'Room 203',
+            'price' => 220000,
             'is_available' => true,
         ]);
         Room::create([
             'id_hotel' => 2,
             'name' => 'Room 101',
+            'price' => 220000,
             'is_available' => true,
         ]);
         Room::create([
             'id_hotel' => 2,
             'name' => 'Room 102',
+            'price' => 220000,
             'is_available' => true,
         ]);
-
 
     }
 }
