@@ -28,6 +28,8 @@ class HotelController extends Controller
         $idHotel = Auth::user()->id_hotel;
         $startDate = date('Y-m-d');
         $endDate = null;
+
+        $now = date('Y-m-d');
         $rooms = Room::where("id_hotel", $idHotel)->get();
         $availableRooms = [];
         // var_dump($request->dateChange);die();
@@ -35,11 +37,16 @@ class HotelController extends Controller
             $startDate = $request->startDateChange;
             $endDate = $request->endDateChange;
             $date = "From ".$request->startDateChange ." Until ".$request->endDateChange;
-            $bookings = Book::whereBetween("book_date", [$startDate,$endDate])->where("id_hotel",$idHotel)->get();
+            
+            $bookings = Book::Where(function($query) use ($startDate,$endDate){
+                $query->WhereDate('book_date','>',$startDate)
+                ->orWhereDate('book_date_end','>=',$startDate);
+            })->where("id_hotel",$idHotel)->get();
+
             foreach ($rooms as $room) {
                 $isAvailable = true;
                 foreach ($bookings as $booking) {
-                    if ($booking->id_room == $room->id) {
+                    if (($booking->id_room == $room->id)) {
                         $isAvailable = false;
                         break;
                     }

@@ -16,9 +16,9 @@
                             <th class="px-4 py-3">No</th>
                             <th class="px-4 py-3">Customer</th>
                             <th class="px-4 py-3">Room</th>
-                            <th class="px-4 py-3">Booking</th>
+                            <th class="px-4 py-3">Tanggal Masuk</th>
+                            <th class="px-4 py-3">Tanggal Keluar</th>
                             <th class="px-4 py-3">Jumlah Hari</th>
-                            <th class="px-4 py-3">Tanggal Checkout</th>
                             <th class="px-4 py-3">Checkin</th>
                             <th class="px-4 py-3">Checkout</th>
                             <th class="px-8 py-3">Aksi</th>
@@ -40,10 +40,10 @@
                                     {{ $book->book_date }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ $book->days }} Hari
+                                    {{ $book->book_date_end }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ $book->book_date_end }}
+                                    {{ $book->days }} Hari
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     {{ $book->checkin }}

@@ -22,9 +22,6 @@
                     <h1>End Date</h1>
                     <input type="date" id="endDateChange" name="endDateChange" min="{{ date('Y-m-d') }}">          
                 </div>
-                <div class="bg-black text-white py-2 px-8">
-                    <button type="submit" href="">Cari</button>
-                </div>
                 <button type="submit"
                     class="bg-blue-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
