@@ -15,14 +15,14 @@
                         class="text-gray-900 font-bold text-2xl mb-2">{{ $hotel->name }}</a>
                     <p class="text-gray-700 text-base"></p>
                 </div>
-                <div class="text-sm flex bg-blue-800 text-white px-6 py-2 rounded-lg font-bold hover:opacity-75 mx-80 gap-4 items-center">
+                <div class=" text-sm flex bg-blue-800 text-white px-6 py-2 rounded-lg font-bold hover:opacity-75 mx-auto gap-4 items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                     </svg>
                     <a href="{{ Route('admin.shift', $user->id_hotel) }}"
-                        class=" "> Pembukuan</a>
+                        >Pembukuan</a>
                 </div>
 
             </div>
