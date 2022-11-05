@@ -92,6 +92,7 @@
                         <th class="px-4 py-3">Booking</th>
                         <th class="px-4 py-3">Checkin</th>
                         <th class="px-4 py-3">Checkout</th>
+                        <th class="px-4 py-3">Uang Masuk</th>
                         <th class="px-4 py-3">Nama Pegawai</th>
                         <th class="px-4 py-3">Aksi</th>
                     </tr>
@@ -120,6 +121,9 @@
                                 @else
                                     Belum Checkout
                                 @endif
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                Rp {{ number_format($book->price) }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->pegawai->name }}

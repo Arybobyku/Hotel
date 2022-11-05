@@ -7,8 +7,12 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ShiftExport implements FromQuery, WithHeadings
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+
+class ShiftExport implements FromQuery, WithHeadings, WithStyles,ShouldAutoSize
 {
     /**
      * @return \Illuminate\Support\Collection
@@ -29,31 +33,62 @@ class ShiftExport implements FromQuery, WithHeadings
             $data = Book::whereBetween('books.book_date', [$this->from, $this->to])
                 ->where('books.id_hotel', $this->id)
                 ->where('books.id_user', $this->id_user)
-                ->select('books.guestname', 'books.nota', 'books.book_date', 'books.checkin', 'books.checkout', 'users.name')
-                ->join('users', 'books.id_user', '=', 'users.id');
+                ->select('books.guestname', 'books.book_date', 'books.nota', 'books.days', 'rooms.name','books.price')
+                ->join('users', 'books.id_user', '=', 'users.id')
+                ->join('rooms', 'books.id_room', '=', 'rooms.id');
 
         } elseif (empty($this->from) && empty($this->to) && !empty($this->id_user)) {
             $data = Book::where('books.id_hotel', $this->id)
                 ->where('books.id_user', $this->id_user)
-                ->select('books.guestname', 'books.nota', 'books.book_date', 'books.checkin', 'books.checkout', 'users.name')
-                ->join('users', 'books.id_user', '=', 'users.id');
+                ->select('books.guestname', 'books.book_date', 'books.nota', 'books.days', 'rooms.name','books.price')
+                ->join('users', 'books.id_user', '=', 'users.id')
+                ->join('rooms', 'books.id_room', '=', 'rooms.id');
 
         }elseif (!empty($this->from) && !empty($this->to) && empty($this->id_user)) {
             $data = Book::whereBetween('books.book_date', [$this->from, $this->to])->where('books.id_hotel', $this->id)
-                ->select('books.guestname', 'books.nota', 'books.book_date', 'books.checkin', 'books.checkout', 'users.name')
-                ->join('users', 'books.id_user', '=', 'users.id');
+                ->select('books.guestname', 'books.book_date', 'books.nota', 'books.days', 'rooms.name','books.price')
+                ->join('users', 'books.id_user', '=', 'users.id')
+                ->join('rooms', 'books.id_room', '=', 'rooms.id');
         }else {
             $data = Book::where('books.id_hotel', $this->id)
-                ->select('books.guestname', 'books.nota', 'books.book_date', 'books.checkin', 'books.checkout', 'users.name')
-                ->join('users', 'books.id_user', '=', 'users.id');
+                ->select('books.guestname', 'books.book_date', 'books.nota', 'books.days', 'rooms.name','books.price')
+                ->join('users', 'books.id_user', '=', 'users.id')
+                ->join('rooms', 'books.id_room', '=', 'rooms.id');
         }
 
         return $data;
     }
     public function headings(): array
     {
-        return ['Nama Tamu', 'Nomor Transaksi', 'Tanggal Booking', 'Tanggal Checkin', 'Tanggal Checkout', 'Nama Pegawai'];
+        if ($this->id = 1){
+         $data = 'Hotel Denatio Binjai';
+         }
+         else if ($this->id = 2){
+         $data = 'Hotel Denatio Durung';
+         }
+                  else if ($this->id = 3){
+         $data = 'Hotel Denatio Gaharu';
+         }
+                 else if ($this->id = 4){
+         $data = 'Hotel Denatio Kertas';
+         }
+            else if ($this->id = 5){
+         $data = 'Hotel Denatio Sempurna';
+         }
+        return [[$data],['Guest Name','Booking Date', 'Booking ID',  'Day', 'Room', 'Room Night', 'Charge']];
+        
     }
+    public function styles(Worksheet $sheet)
+{
+        
+
+    return [
+
+       // Style the first row as bold text.
+
+       1    => ['font' => ['bold' => true]],
+    ];
+}
     // public function id($id) {
     //     $this->id = $id;
     // }
