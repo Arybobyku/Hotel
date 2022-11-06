@@ -21,6 +21,7 @@ class Book extends Model
         'price',
         'checkin',
         'checkout',
+        'payment_type',
     ];
     public function nameroom(){
         return $this->hasOne(Room::class, 'id', 'id_room');
@@ -31,4 +32,9 @@ class Book extends Model
     public function pegawai(){
         return $this->hasOne(User::class, 'id', 'id_user');
     }
+
+    public function chargePivot(){
+        return $this->hasMany(ChargePivot::class,'id_book','id');
+    }
+
 }

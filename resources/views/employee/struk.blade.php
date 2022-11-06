@@ -42,8 +42,10 @@
                     <h4>Kamar</h4>
                     <h4>CheckIn</h4>
                     <h4>CheckOut</h4>
+                    <h4>Jenis Pembayaran</h4>
                 </div>
                 <div class="flex-col">
+                    <h4>:</h4>
                     <h4>:</h4>
                     <h4>:</h4>
                     <h4>:</h4>
@@ -52,6 +54,7 @@
                     <h4>{{ $book->nameroom->name }}</h4>
                     <h4>{{ $book->checkin }}</h4>
                     <h4>{{ $book->checkout }}</h4>
+                    <h4>{{ $book->payment_type }}</h4>
                 </div>
             </div>
 
@@ -61,16 +64,34 @@
                     <h4>Harga Kamar</h4>
                     <h4>Jumlah Hari</h4>
                     <h4>Total</h4>
+                    <h4>Charges</h4>
+                    @foreach ($charges as $charge)
+                    <h4>{{$charge->charge->name}}</h4>
+                    @endforeach
+                    <br>
+                    <h4>Total</h4>
                 </div>
                 <div>
                     <h4>:</h4>
                     <h4>:</h4>
+                    <h4>:</h4>
+                    <h4>-</h4>
+                    @foreach ($charges as $charge)
+                    <h4>:</h4>
+                    @endforeach
+                    <br>
                     <h4>:</h4>
                 </div>
                 <div class="flex-col">
                     <h4>Rp. {{ number_format($book->nameroom->price) }},-</h4>
                     <h4>{{ $book->days }}</h4>
                     <h4>Rp. {{ number_format($book->days * $book->nameroom->price) }},-</h4>
+                    <h4>--------------</h4>
+                    @foreach ($charges as $charge)
+                    <h4> Rp. {{ number_format($charge->charge->charge) }},-</h4>
+                    @endforeach
+                    <br>
+                    <h4>Rp. {{ number_format(($book->days * $book->nameroom->price )+($totalCharge)) }},-</h4>
                 </div>
             </div>
         </div>
@@ -101,4 +122,7 @@
 
         document.body.innerHTML = originalContents;
     }
+
+
+
 </script>

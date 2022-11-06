@@ -5,9 +5,11 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Book;
+use App\Models\ChargeType;
 use App\Models\Hotel;
 use App\Models\Room;
 use App\Models\User;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -134,6 +136,27 @@ class DatabaseSeeder extends Seeder
             'name' => 'Room 102',
             'price' => 220000,
             'is_available' => true,
+        ]);
+
+        ChargeType::create([
+            'name'=>'Bad Towel',
+            'charge'=> 150000
+        ]);
+        ChargeType::create([
+            'name'=> 'Bath Math Big',
+            'charge'=> 200000
+        ]);
+        ChargeType::create([
+            'name'=> 'Sheet Double',
+            'charge'=>  200000
+        ]);
+        ChargeType::create([
+            'name'=> 'Duve Cover Double',
+            'charge'=>  350000
+        ]);
+        ChargeType::create([
+            'name'=> 'Inner Duve Double',
+            'charge'=> 1050000
         ]);
 
     }

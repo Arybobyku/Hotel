@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('guestname');
             $table->string('nik');
             $table->string('nota');
+            $table->string('payment_type');
             $table->bigInteger('price');
             $table->date('book_date');
             $table->date('book_date_end');

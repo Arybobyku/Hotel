@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\ChargePivot;
+use App\Models\ChargeType;
 use App\Models\Log;
 use App\Models\kuesioner;
 use App\Models\Room;
@@ -32,6 +34,15 @@ class BookController extends Controller
 
     public function checkOut(Request $request, Book $book)
     {
+        $chargers = $request->charge;
+        if ($chargers != null) {
+            foreach ($chargers as $idCharge) {
+                ChargePivot::create([
+                    "id_charge" => $idCharge,
+                    "id_book" => $request->id_booking
+                ]);
+            }
+        }
         $hotelId = Auth::user()->id_hotel;
         $nameUser = Auth::user()->name;
         $date = date('Y-m-d');
@@ -59,9 +70,9 @@ class BookController extends Controller
             'price' => ['required', 'integer'],
         ]);
 
-        $date=date_create($request->booking);
-        date_add($date,date_interval_create_from_date_string($request->jumlah_hari." days"));
-        $dateBookingEnd = date_format($date,"Y-m-d");
+        $date = date_create($request->booking);
+        date_add($date, date_interval_create_from_date_string($request->jumlah_hari . " days"));
+        $dateBookingEnd = date_format($date, "Y-m-d");
 
         Book::create([
             'guestname' => $request->guestname,
@@ -76,8 +87,9 @@ class BookController extends Controller
             'days' => $request->jumlah_hari,
             'checkin' => $request->checkin,
             'checkout' => $request->checkout,
+            'payment_type' => $request->jenisPembayaran,
         ]);
-        
+
         Log::create([
             'activity' => "$nameUser Membuat Reservation Nomor Transaksi $request->nota",
             'id_hotel' => $hotelId,

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Hotel;
 use App\Models\Room;
 use App\Models\Book;
+use App\Models\ChargePivot;
+use App\Models\ChargeType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,11 +17,13 @@ class HotelController extends Controller
         $idHotel = Auth::user()->id_hotel;
 
         $hotel = Hotel::where('id', $idHotel)->first();
+        $charges = ChargeType::all();
         $startDate = date('Y-m-d');
         $bookings = Book::where("id_hotel",$idHotel)->where('book_date','>=',$startDate)->get();
         return view('employee.dashboard', [
             'hotel' => $hotel,
             'bookings' => $bookings,
+            'charges'=>$charges
         ]);
     }
 
@@ -119,8 +123,20 @@ class HotelController extends Controller
     }
 
     public function struk(Request $request){
+
         $idHotel = Auth::user()->id_hotel;
         $book = Book::where('id', $request->id)->first();
-        return view('employee.struk', ['book' => $book]);
+
+        $charges = ChargePivot::where('id_book',$request->id)->with('charge')->get();
+
+        $totalCharge = 0;
+        foreach($charges as $charge){
+            $totalCharge += $charge->charge->charge;
+        }
+        return view('employee.struk', [
+            'book' => $book,
+            'charges' => $charges,
+            'totalCharge'=>$totalCharge
+        ]);
     }
 }
