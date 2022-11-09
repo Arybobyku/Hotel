@@ -37,20 +37,23 @@
                                     {{ $book->nameroom->name }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ $book->book_date }}
+                                    {{ $book->book_date->format('d/m/Y') }}
+
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ $book->book_date_end }}
+                                    {{ $book->book_date_end->format('d/m/Y') }}
+
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     {{ $book->days }} Hari
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ $book->checkin }}
+                                    {{ $book->checkin->format('d/m/Y') }}
+
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     @if ($book->checkout)
-                                        {{ $book->checkout }}
+                                        {{ $book->checkout->format('d/m/Y') }}
                                     @else
                                         Belum Checkout
                                     @endif
@@ -64,9 +67,9 @@
                                                 class="bg-green-400 p-2 text-white rounded-md">CheckIn</button>
                                         </form>
                                     @elseif ($book->checkout == null)
-                                    @csrf
+                                        @csrf
                                         <button type="submit" class="bg-red-400 p-2 text-white rounded-md"type="button"
-                                            onclick="toggleModal('modal-id',<?php echo(json_encode($book->id)); ?>,'{{$book->nota}}')">CheckOut</button>
+                                            onclick="toggleModal('modal-id',<?php echo json_encode($book->id); ?>,'{{ $book->nota }}')">CheckOut</button>
 
                                         {{-- <form action="{{ Route('hotel.dashboard.checkOut') }}" method="POST">
                                             @csrf
@@ -111,14 +114,16 @@
                         <div class="relative p-6 w-full">
                             @foreach ($charges as $charge)
                                 <div class="flex items-center gap-4 w-screen">
-                                    <input id="checked-checkbox" type="checkbox" name="charge[]" value="{{$charge->id}}">
-                                    <label for="checked-checkbox" class="text-xl">{{$charge->name}}</label>
-                                    <label for="checked-checkbox" class="text-xl">Rp. {{number_format($charge->charge)}}</label>
+                                    <input id="checked-checkbox" type="checkbox" name="charge[]"
+                                        value="{{ $charge->id }}">
+                                    <label for="checked-checkbox" class="text-xl">{{ $charge->name }}</label>
+                                    <label for="checked-checkbox" class="text-xl">Rp.
+                                        {{ number_format($charge->charge) }}</label>
                                 </div>
                             @endforeach
                         </div>
-                        <input hidden id="id_booking" name="id_booking" >
-                        <input hidden id="nota" name="nota" >
+                        <input hidden id="id_booking" name="id_booking">
+                        <input hidden id="nota" name="nota">
                         <!--footer-->
                         <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
                             <button
@@ -126,9 +131,7 @@
                                 type="button" onclick="toggleModal('modal-id',0,0)">
                                 Close
                             </button>
-                            <button class="bg-red-400 p-3 rounded-xl text-white" type="submit   "
-                                {{-- onclick="toggleModal('modal-id',0,0)" --}}
-                                >
+                            <button class="bg-red-400 p-3 rounded-xl text-white" type="submit   " {{-- onclick="toggleModal('modal-id',0,0)" --}}>
                                 Submit checkout
                             </button>
                         </div>
@@ -142,7 +145,7 @@
     </div>
 
     <script type="text/javascript">
-        function toggleModal(modalID,bookId,notaId) {
+        function toggleModal(modalID, bookId, notaId) {
             console.log(modalID);
             console.log(bookId);
             console.log(notaId);

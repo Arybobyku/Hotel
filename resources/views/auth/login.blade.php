@@ -14,8 +14,12 @@
 </head>
 
 <body
-    class="bg-gradient-to-r from-indigo-500 via-purple-500 to-green-500 flex justify-center items-center h-screen lg:mx-80" style="background-color: #1e293b  ; background-image: url('{{ asset('images/register_bg_2.png') }}');  background-repeat: no-repeat;
-  background-size:100% auto;">
+    class="bg-gradient-to-r from-indigo-500 via-purple-500 to-green-500 flex justify-center items-center h-screen lg:mx-80" >
+  @if(Session::has('error'))
+<div class="text-red-900">
+  {{ Session::get('error')}}
+</div>
+@endif
     <div class="bg-white rounded-3xl">
         <div class="flex flex-col overflow-y-auto md:flex-row">
             <div class="h-32 md:h-auto md:w-1/2">

@@ -32,18 +32,21 @@ class DatabaseSeeder extends Seeder
             'name' => 'Yudha Triya',
             'email' => 'yudhatriya07@gmail.com',
             'role' => '1',
+            'isfinance' => '0',
             'password' => bcrypt('12345678'),
         ]);
         User::create([
             'name' => 'Ary Boby Siregar',
             'email' => 'arybobyku@gmail.com',
             'role' => '1',
+            'isfinance' => '0',
             'password' => bcrypt('12345678'),
         ]);
         User::create([
             'name' => 'Super Admin',
             'email' => 'superadmin@gmail.com',
             'role' => '1',
+            'isfinance' => '0',
             'password' => bcrypt('12345678'),
         ]);
 
@@ -51,24 +54,41 @@ class DatabaseSeeder extends Seeder
             'name' => 'pegawai1',
             'email' => 'pegawai1@gmail.com',
             'role' => '0',
+            'isfinance' => '0',
+            'id_hotel' => 1,
+            'password' => bcrypt('12345678'),
+        ]);
+        User::create([
+            'name' => 'pegawai1finance',
+            'email' => 'pegawai1f@gmail.com',
+            'role' => '0',
+            'isfinance' => '1',
             'id_hotel' => 1,
             'password' => bcrypt('12345678'),
         ]);
 
         Hotel::create([
             'name' => 'Denatio Binjai',
+            'alamat' => 'Jl. Medan - Binjai Maruli Nation Convention Medan Sunggal 20228, Sumatera Utara.'
         ]);
         Hotel::create([
             'name' => 'Denatio Durung',
+            'alamat' => 'Jl. Durung No.106, Sidorejo Hilir, Kec. Medan Tembung, Kota Medan, Sumatera Utara 20222'
         ]);
         Hotel::create([
             'name' => 'Denatio Gaharu',
+            'alamat' => 'Jl. Gaharu No.89, Gaharu, Kec. Medan Timur, Medan 20235, Sumatera Utara'
+
         ]);
         Hotel::create([
             'name' => 'Denatio Kertas',
+            'alamat' => 'Jalan Kertas No 33 ,Sei Putih Barat ,Medan Petisah , Kota Medan, Sumatera Utara'
+
         ]);
         Hotel::create([
             'name' => 'Denatio Sempurna',
+            'alamat' => 'Jl. Sempurna No.29, Tj. Sari, Kec. Medan Selayang, Kota Medan, Sumatera Utara 20132'
+
         ]);
 
         Room::create([

@@ -78,7 +78,7 @@
                     
                     <div class="mb-6">
                         <label for="checkin" class="block mb-2 text-sm font-medium text-gray-900 ">Jenis Pembayaran</label>
-                        <select class="form-select" name="jenisPembayaran" id="jenisPembayaran" required>
+                        <select class="form-select bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5" name="jenisPembayaran" id="jenisPembayaran" required>
                             <option value="cash">Cash</option>
                             <option value="app">Dari Aplikasi</option>
                         </select>
@@ -116,7 +116,7 @@
         payEl.change(function () {
             // $( "select option:selected" ).each(function() {
             // if($( this ).text() === 'walkin'){
-                console.log('kontol')
+                console.log('')
             // }
     });
   })

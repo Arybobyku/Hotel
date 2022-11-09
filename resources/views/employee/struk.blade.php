@@ -14,7 +14,7 @@
             <div>
                 <h1 class="text-4xl font-bold">{{ $book->hotel->name }}</h1>
                 <h4 class="text-lg">Kwitansi Pembayaran</h4>
-                <h4 class="text-sm">Jalan binjai kota binjai nomor telepon (0821313049)</h4>
+                <h4 class="text-sm">{{ $book->hotel->alamat  }}</h4>
             </div>
         </div>
 
@@ -39,6 +39,7 @@
             {{-- center --}}
             <div class="flex justify-between gap-4">
                 <div class="flex-col">
+                    <h4>Tanggal</h4>
                     <h4>Kamar</h4>
                     <h4>CheckIn</h4>
                     <h4>CheckOut</h4>
@@ -49,17 +50,28 @@
                     <h4>:</h4>
                     <h4>:</h4>
                     <h4>:</h4>
+                    <h4>:</h4>
                 </div>
                 <div class="flex-col">
+                    <h4> {{ $book->book_date->format('d/m/Y') }}</h4>
                     <h4>{{ $book->nameroom->name }}</h4>
-                    <h4>{{ $book->checkin }}</h4>
-                    <h4>{{ $book->checkout }}</h4>
+                    <h4>{{ $book->checkin->format('d/m/Y') }}</h4>
+                    <h4> @if ($book->checkout)
+                                        {{ $book->checkout->format('d/m/Y') }}
+                                    @else
+                                        <span class="text-sm">Belum Checkout</span>
+                                    @endif</h4>
                     <h4>{{ $book->payment_type }}</h4>
                 </div>
             </div>
 
             {{-- Right --}}
-            <div class="flex justify-between gap-4">
+
+        </div>
+                <h1 class="my-4 font-bold text-2xl">Rincian Pembayaran</h1>
+
+            <div class="flex gap-4">
+
                 <div class="flex-col">
                     <h4>Harga Kamar</h4>
                     <h4>Jumlah Hari</h4>
@@ -94,11 +106,9 @@
                     <h4>Rp. {{ number_format(($book->days * $book->nameroom->price )+($totalCharge)) }},-</h4>
                 </div>
             </div>
-        </div>
-
         <div class="w-full flex justify-end my-12">
             <div>
-                <h4>{{ $book->book_date }}</h4>
+                <h4> {{ $book->book_date->format('d/m/Y') }}</h4>
                 <br>
                 <br>
                 <br>

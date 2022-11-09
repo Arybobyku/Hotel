@@ -2,13 +2,22 @@
 
 
 @section('contents')
+    @php
+        $user = Auth::user();
+        $userh = $user->id_hotel ;
+        $isfinance = $user->isfinance;
+
+        Auth::setUser($user);
+
+        
+    @endphp
     {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
     <h1 class="text-center text-3xl font-bold">LAPORAN PEMBUKUAN</h1>
 
     <div class="mx-10 my-10">
         <form method="GET" action="shift">
 
-            <div date-rangepicker class="flex items-center">
+            <div  class="flex items-center">
                 <div class="relative">
                     <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                         <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
@@ -45,9 +54,26 @@
                             d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>Filter</button>
 
-            </div>
 
         </form>
+        @if  ($isfinance == 0)
+                <form method="get" action="{{ route('export.shift', $userh) }}">
+            <input type='hidden' name="from" value="{{ Request::old('from') }}">
+            <input type='hidden' name="to" value="{{ Request::old('to') }}">
+            <input type='hidden' name="id_user" value="{{ Request::old('id_user') }}">
+            <button type="submit"
+                class="bg-green-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+                Export</button>
+
+        </form>
+        @endif
+            </div>
+
     </div>
 
     <div class="overflow-hidden mb-8 w-full rounded-lg border shadow-xs">
