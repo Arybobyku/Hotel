@@ -62,7 +62,7 @@
 
 
         </form>
-        <form method="get" action="{{ route('export.shift', $user->id_hotel) }}">
+        <form method="get" action="{{ route('export.shiftfinance', $user->id_hotel) }}">
             <input type='hidden' name="from" value="{{ Request::old('from') }}">
             <input type='hidden' name="to" value="{{ Request::old('to') }}">
             <input type='hidden' name="id_user" value="{{ Request::old('id_user') }}">

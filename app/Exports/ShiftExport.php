@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Book;
+use App\Models\ChargePivot;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -47,6 +48,7 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles,ShouldAutoSize
         }elseif (!empty($this->from) && !empty($this->to) && empty($this->id_user)) {
             $data = Book::whereBetween('books.book_date', [$this->from, $this->to])->where('books.id_hotel', $this->id)
                 ->select('books.guestname', 'books.book_date', 'books.nota', 'books.days', 'rooms.name','books.price')
+
                 ->join('users', 'books.id_user', '=', 'users.id')
                 ->join('rooms', 'books.id_room', '=', 'rooms.id');
         }else {
@@ -54,8 +56,8 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles,ShouldAutoSize
                 ->select('books.guestname', 'books.book_date', 'books.nota', 'books.days', 'rooms.name','books.price')
                 ->join('users', 'books.id_user', '=', 'users.id')
                 ->join('rooms', 'books.id_room', '=', 'rooms.id');
+            $data2 = ChargePivot::select('id_charge');
         }
-
         return $data;
     }
     public function headings(): array
@@ -75,7 +77,7 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles,ShouldAutoSize
             else if ($this->id = 5){
          $data = 'Hotel Denatio Sempurna';
          }
-        return [[$data],['Guest Name','Booking Date', 'Booking ID',  'Day', 'Room', 'Room Night', 'Charge']];
+        return [[$data],['Guest Name','Booking Date', 'Booking ID',  'Day', 'Room', 'Room Night', ' Total Charge', 'Platform Fee', ' Assured Stay',  'Tip For Staff', ' Upgrade Room', ' Travel Protection', ' Member Redclub', ' Breakfast', ' Early Checkin', ' Late Checkout', 'Total Amount', ' Type Pemesanan', 'Potongan TA OTA']];
         
     }
     public function styles(Worksheet $sheet)

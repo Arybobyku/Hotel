@@ -53,7 +53,7 @@
                     <h4>:</h4>
                 </div>
                 <div class="flex-col">
-                    <h4> {{ $book->book_date->format('d/m/Y') }}</h4>
+                    <h4> {{ $book->book_date }}</h4>
                     <h4>{{ $book->nameroom->name }}</h4>
                     <h4>{{ $book->checkin->format('d/m/Y') }}</h4>
                     <h4> @if ($book->checkout)
@@ -108,7 +108,7 @@
             </div>
         <div class="w-full flex justify-end my-12">
             <div>
-                <h4> {{ $book->book_date->format('d/m/Y') }}</h4>
+                <h4> {{ $book->book_date }}</h4>
                 <br>
                 <br>
                 <br>

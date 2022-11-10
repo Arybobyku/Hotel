@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
-    protected $dates = ['book_date', 'checkin', 'checkout', 'book_date_end'];
+    protected $dates = ['checkin', 'checkout', 'book_date_end'];
     protected $fillable = [
         'id_user',
         'id_room',

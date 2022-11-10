@@ -4,11 +4,11 @@
 @section('contents')
     @php
         $user = Auth::user();
-        $userh = $user->id_hotel ;
+        $userh = $user->id_hotel;
         $isfinance = $user->isfinance;
+        
 
         Auth::setUser($user);
-
         
     @endphp
     {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
@@ -17,7 +17,7 @@
     <div class="mx-10 my-10">
         <form method="GET" action="shift">
 
-            <div  class="flex items-center">
+            <div class="flex items-center">
                 <div class="relative">
                     <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                         <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
@@ -56,23 +56,23 @@
 
 
         </form>
-        @if  ($isfinance == 0)
-                <form method="get" action="{{ route('export.shift', $userh) }}">
-            <input type='hidden' name="from" value="{{ Request::old('from') }}">
-            <input type='hidden' name="to" value="{{ Request::old('to') }}">
-            <input type='hidden' name="id_user" value="{{ Request::old('id_user') }}">
-            <button type="submit"
-                class="bg-green-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                </svg>
-                Export</button>
+        @if ($isfinance == 1)
+            <form method="get" action="{{ route('export.shiftfinance', $userh) }}">
+                <input type='hidden' name="from" value="{{ Request::old('from') }}">
+                <input type='hidden' name="to" value="{{ Request::old('to') }}">
+                <input type='hidden' name="id_user" value="{{ Request::old('id_user') }}">
+                <button type="submit"
+                    class="bg-green-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                    </svg>
+                    Export</button>
 
-        </form>
+            </form>
         @endif
-            </div>
+    </div>
 
     </div>
 
@@ -88,6 +88,7 @@
                         <th class="px-4 py-3">Checkin</th>
                         <th class="px-4 py-3">Checkout</th>
                         <th class="px-4 py-3">Uang Masuk</th>
+                        <th class="px-4 py-3">Charge</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y">
@@ -103,17 +104,31 @@
                                 {{ $book->book_date }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->checkin }}
+                                @if ($book->checkin)
+                                    {{ $book->checkin->format('d/m/Y') }}
+                                @else
+                                    Belum Checkout
+                                @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 @if ($book->checkout)
-                                    {{ $book->checkout }}
+                                    {{ $book->checkout->format('d/m/Y') }}
                                 @else
                                     Belum Checkout
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 Rp {{ number_format($book->price) }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <?php 
+                                    $total=0 ?>
+                                @foreach($book->chargePivot as $charge)
+                                <?php 
+                                     $total+=$charge->charge->charge ?>
+                                     {{-- $total=+$charge->charge->charge --}}
+                                    @endforeach
+                                Rp {{ $total }}
                             </td>
                         </tr>
                     @endforeach

@@ -41,11 +41,13 @@ class AdminController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'isfinance' => ['required', 'integer'],
         ]);
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'isfinance' => $request->isfinance,
             'role' => 0,
             'id_hotel' => $request->id_hotel,
             'password' => Hash::make($request->password),
@@ -65,6 +67,7 @@ class AdminController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
+            'isfinance' => ['required', 'integer'],
             'id_hotel' => ['required'],
         ]);
 
@@ -72,6 +75,7 @@ class AdminController extends Controller
         User::where('id', $user->id)->update([
             'name' => $request->name,
             'email' => $request->email,
+            'isfinance' => $request->isfinance,
             'role' => 0,
             'id_hotel' => $request->id_hotel,
             'password' => Hash::make($request->password),

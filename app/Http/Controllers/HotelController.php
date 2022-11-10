@@ -19,11 +19,13 @@ class HotelController extends Controller
         $hotel = Hotel::where('id', $idHotel)->first();
         $charges = ChargeType::all();
         $startDate = date('Y-m-d');
-        $bookings = Book::where("id_hotel",$idHotel)->where('book_date','>=',$startDate)->get();
+        $bookings = Book::where('id_hotel', $idHotel)
+            ->where('book_date', '>=', $startDate)
+            ->get();
         return view('employee.dashboard', [
             'hotel' => $hotel,
             'bookings' => $bookings,
-            'charges'=>$charges
+            'charges' => $charges,
         ]);
     }
 
@@ -34,35 +36,37 @@ class HotelController extends Controller
         $endDate = null;
 
         $now = date('Y-m-d');
-        $rooms = Room::where("id_hotel", $idHotel)->get();
+        $rooms = Room::where('id_hotel', $idHotel)->get();
         $availableRooms = [];
         // var_dump($request->dateChange);die();
-         if($request->startDateChange && $request->endDateChange!=null){
+        if ($request->startDateChange && $request->endDateChange != null) {
             $startDate = $request->startDateChange;
             $endDate = $request->endDateChange;
-            $date = "From ".$request->startDateChange ." Until ".$request->endDateChange;
-            
-            $bookings = Book::Where(function($query) use ($startDate,$endDate){
-                $query->WhereDate('book_date','>',$startDate)
-                ->orWhereDate('book_date_end','>=',$startDate);
-            })->where("id_hotel",$idHotel)->get();
+            $date = 'From ' . $request->startDateChange . ' Until ' . $request->endDateChange;
+
+            $bookings = Book::Where(function ($query) use ($startDate, $endDate) {
+                $query->WhereDate('book_date', '>', $startDate)->orWhereDate('book_date_end', '>=', $startDate);
+            })
+                ->where('id_hotel', $idHotel)
+                ->get();
 
             foreach ($rooms as $room) {
                 $isAvailable = true;
                 foreach ($bookings as $booking) {
-                    if (($booking->id_room == $room->id)) {
+                    if ($booking->id_room == $room->id) {
                         $isAvailable = false;
                         break;
                     }
                 }
-                if($isAvailable){
+                if ($isAvailable) {
                     array_push($availableRooms, $room);
                 }
             }
-        }
-       else if ($request->startDateChange) {
+        } elseif ($request->startDateChange) {
             $startDate = $request->dateChange;
-            $bookings = Book::whereDate("book_date", $startDate)->where("id_hotel",$idHotel)->get();
+            $bookings = Book::whereDate('book_date', $startDate)
+                ->where('id_hotel', $idHotel)
+                ->get();
             foreach ($rooms as $room) {
                 $isAvailable = true;
                 foreach ($bookings as $booking) {
@@ -76,7 +80,9 @@ class HotelController extends Controller
                 }
             }
         } else {
-            $bookings = Book::whereDate("book_date", $startDate)->where("id_hotel",$idHotel)->get();
+            $bookings = Book::whereDate('book_date', $startDate)
+                ->where('id_hotel', $idHotel)
+                ->get();
             foreach ($rooms as $room) {
                 $isAvailable = true;
                 foreach ($bookings as $booking) {
@@ -100,43 +106,55 @@ class HotelController extends Controller
 
     public function shift(Request $request)
     {
+        $idBook = Book::all();
+        $charges = ChargePivot::with('book')
+            ->get();
         $idHotel = Auth::user()->id_hotel;
+        $isFinance = Auth::user()->isfinance;
         $idUser = Auth::id();
 
         if (count($request->all()) == 0) {
-        $from = date('2010-10-01');
-        $to = date('2040-10-31');
+            $from = date('2010-10-01');
+            $to = date('2040-10-31');
         } else {
             $from = $request->from;
             $to = $request->to;
         }
-        $filter = Book::whereBetween('book_date', [$from, $to])
-            ->where('id_user', $idUser)
-            ->latest()->get();
+        if ($isFinance == 0) {
+            $filter = Book::whereBetween('book_date', [$from, $to])
+                ->where('id_user', $idUser)
+                ->latest()
+                ->get();
+        } else {
+            $filter = Book::whereBetween('book_date', [$from, $to])
+                ->where('id_hotel', $idHotel)
+                ->latest()
+                ->get();
+        }
         session()->flashInput($request->input());
-        $book = Book::where('id_hotel', $idHotel)
-            ->where('id_user', $idUser)
-            ->get();
         return view('employee.shift', [
             'books' => $filter,
+            // 'charges' => $totalCharge,
         ]);
     }
 
-    public function struk(Request $request){
-
+    public function struk(Request $request)
+    {
         $idHotel = Auth::user()->id_hotel;
         $book = Book::where('id', $request->id)->first();
 
-        $charges = ChargePivot::where('id_book',$request->id)->with('charge')->get();
+        $charges = ChargePivot::where('id_book', $request->id)
+            ->with('charge')
+            ->get();
 
         $totalCharge = 0;
-        foreach($charges as $charge){
+        foreach ($charges as $charge) {
             $totalCharge += $charge->charge->charge;
         }
         return view('employee.struk', [
             'book' => $book,
             'charges' => $charges,
-            'totalCharge'=>$totalCharge
+            'totalCharge' => $totalCharge,
         ]);
     }
 }

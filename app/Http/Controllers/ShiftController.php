@@ -18,20 +18,20 @@ class ShiftController extends Controller
         $idUser = Auth::id();
 
         if ((empty($request->input('from')) || empty($request->input('to'))) && $request->id_user) {
-            $filter = Book::where('id_user', $request->id_user)->get();
+            $filter = Book::where('id_user', $request->id_user)->latets()->get();
         } elseif (!empty($request->input('from')) && !empty($request->input('to')) && $request->id_user) {
             $from = $request->from;
             $to = $request->to;
             $filter = Book::whereBetween('book_date', [$from, $to])
                 ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
+                ->where('id_user', $request->id_user)->latets()
                 ->get();
         }
            elseif (!empty($request->input('from')) && !empty($request->input('to')) && empty($request->input('id_user'))) {
             $from = $request->from;
             $to = $request->to;
             $filter = Book::whereBetween('book_date', [$from, $to])
-                ->where('id_hotel', $request->id)
+                ->where('id_hotel', $request->id)->latets()
                 ->get();
             
 

@@ -31,6 +31,16 @@
                     @endforeach
                 </select>
             </div>
+            <div class="flex items-center mb-6">
+                <input id="default-radio-1" type="radio" value="0" name="isfinance"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500  focus:ring-2 ">
+                <label for="default-radio-1" class="ml-2 text-sm font-medium text-gray-900 ">Bukan Pegawai Finance</label>
+            </div>
+            <div class="flex items-center mb-6">
+                <input checked id="default-radio-2" type="radio" value="1" name="isfinance"
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+                <label for="default-radio-2" class="ml-2 text-sm font-medium text-gray-900">Pegawai Finance</label>
+            </div>
             <div class="mb-6">
                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Password</label>
                 <input type="password" id="sub_bab" name="password"

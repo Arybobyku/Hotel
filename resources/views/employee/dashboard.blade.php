@@ -37,7 +37,7 @@
                                     {{ $book->nameroom->name }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ $book->book_date->format('d/m/Y') }}
+                                    {{ $book->book_date }}
 
                                 </td>
                                 <td class="px-4 py-3 text-sm">
@@ -48,7 +48,11 @@
                                     {{ $book->days }} Hari
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ $book->checkin->format('d/m/Y') }}
+                                    @if ($book->checkin)
+                                        {{ $book->checkin->format('d/m/Y') }}
+                                    @else
+                                        Belum Checkin
+                                    @endif
 
                                 </td>
                                 <td class="px-4 py-3 text-sm">
