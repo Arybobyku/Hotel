@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProfileController;
@@ -37,6 +38,12 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 
+    Route::put('/dashboard/charge/{id}/edit', [ChargeController::class, 'update']);
+    Route::post('/dashboard/charge/create', [ChargeController::class, 'store']);
+    Route::delete('/dashboard/charge/{id}', [ChargeController::class, 'destroy']);
+    Route::get('/dashboard/charge/create', [ChargeController::class, 'create']);
+    Route::get('/dashboard/charge/{id}/edit', [ChargeController::class, 'edit']);
+    Route::get('/dashboard/charge', [ChargeController::class, 'index']);
     Route::resource('/dashboard/user', AdminController::class)->middleware('auth', 'admin');
     Route::get('/dashboard/user/{id}', [AdminController::class,'userDetail'])->name('dashboard/user/detail');
     Route::get('/dashboard/log', [LogController::class,'index'])->name('log');

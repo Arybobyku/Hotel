@@ -7,7 +7,6 @@
         $userh = $user->id_hotel;
         $isfinance = $user->isfinance;
         
-
         Auth::setUser($user);
         
     @endphp
@@ -83,6 +82,8 @@
                 <thead>
                     <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-50 border-b">
                         <th class="px-4 py-3">No</th>
+                        <th class="px-4 py-3">Nama Tamu</th>
+                        <th class="px-4 py-3">Nomor Transaksi</th>
                         <th class="px-4 py-3">Room</th>
                         <th class="px-4 py-3">Booking</th>
                         <th class="px-4 py-3">Checkin</th>
@@ -96,6 +97,12 @@
                         <tr class="text-gray-700">
                             <td class="px-4 py-3 text-sm">
                                 {{ $loop->iteration }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                {{ $book->guestname }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                {{ $book->nota }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->nameroom->name }}
@@ -121,13 +128,13 @@
                                 Rp {{ number_format($book->price) }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                <?php 
-                                    $total=0 ?>
-                                @foreach($book->chargePivot as $charge)
-                                <?php 
-                                     $total+=$charge->charge->charge ?>
-                                     {{-- $total=+$charge->charge->charge --}}
-                                    @endforeach
+                                <?php
+                                $total = 0; ?>
+                                @foreach ($book->chargePivot as $charge)
+                                    <?php
+                                    $total += $charge->charge->charge; ?>
+                                    {{-- $total=+$charge->charge->charge --}}
+                                @endforeach
                                 Rp {{ $total }}
                             </td>
                         </tr>

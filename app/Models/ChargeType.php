@@ -9,7 +9,7 @@ class ChargeType extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name",
+        "namecharge",
         "charge"
     ];
 

@@ -38,7 +38,7 @@ class ShiftController extends Controller
         } 
 
      else {
-            $filter = Book::where('id_hotel', $request->id)->get();
+            $filter = Book::where('id_hotel', $request->id)->latest()->get();
         }
         session()->flashInput($request->input());
         $hotel = Hotel::where('id', $request->id)->first();

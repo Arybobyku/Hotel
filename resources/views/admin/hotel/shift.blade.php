@@ -88,11 +88,13 @@
                         class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-50 border-b">
                         <th class="px-4 py-3">No</th>
                         <th class="px-4 py-3">Nama Tamu</th>
+                        <th class="px-4 py-3">Nomor Transaksi</th>
                         <th class="px-4 py-3">Room</th>
                         <th class="px-4 py-3">Booking</th>
                         <th class="px-4 py-3">Checkin</th>
                         <th class="px-4 py-3">Checkout</th>
                         <th class="px-4 py-3">Uang Masuk</th>
+                        <th class="px-4 py-3">Charge</th>
                         <th class="px-4 py-3">Nama Pegawai</th>
                         <th class="px-4 py-3">Aksi</th>
                     </tr>
@@ -107,23 +109,40 @@
                                 {{ $book->guestname }}
                             </td>
                             <td class="px-4 py-3 text-sm">
+                                {{ $book->nota }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
                                 {{ $book->nameroom->name }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->book_date }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->checkin }}
+                                @if ($book->checkin)
+                                    {{ $book->checkin->format('d/m/Y') }}
+                                @else
+                                    Belum Checkout
+                                @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 @if ($book->checkout)
-                                    {{ $book->checkout }}
+                                    {{ $book->checkout->format('d/m/Y') }}
                                 @else
                                     Belum Checkout
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 Rp {{ number_format($book->price) }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                <?php
+                                $total = 0; ?>
+                                @foreach ($book->chargePivot as $charge)
+                                    <?php
+                                    $total += $charge->charge->charge; ?>
+                                    {{-- $total=+$charge->charge->charge --}}
+                                @endforeach
+                                Rp {{ $total }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->pegawai->name }}
