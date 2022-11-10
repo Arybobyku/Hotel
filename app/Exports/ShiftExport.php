@@ -56,10 +56,9 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles,ShouldAutoSize
                 ->select('books.guestname', 'books.book_date', 'books.nota', 'books.days', 'rooms.name','books.price')
                 ->join('users', 'books.id_user', '=', 'users.id')
                 ->join('rooms', 'books.id_room', '=', 'rooms.id');
-            $data2 = ChargePivot::select('id_charge');
         }
         return $data;
-    }
+        }
     public function headings(): array
     {
         if ($this->id = 1){
