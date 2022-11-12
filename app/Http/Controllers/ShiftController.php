@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Hotel;
 use App\Models\User;
+use App\Models\ChargePivot;
 use Illuminate\Support\Facades\Auth;
 use App\Exports\ShiftExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -18,27 +19,28 @@ class ShiftController extends Controller
         $idUser = Auth::id();
 
         if ((empty($request->input('from')) || empty($request->input('to'))) && $request->id_user) {
-            $filter = Book::where('id_user', $request->id_user)->latest()->get();
+            $filter = Book::where('id_user', $request->id_user)
+                ->latest()
+                ->get();
         } elseif (!empty($request->input('from')) && !empty($request->input('to')) && $request->id_user) {
             $from = $request->from;
             $to = $request->to;
             $filter = Book::whereBetween('book_date', [$from, $to])
                 ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)->latest()
+                ->where('id_user', $request->id_user)
+                ->latest()
                 ->get();
-        }
-           elseif (!empty($request->input('from')) && !empty($request->input('to')) && empty($request->input('id_user'))) {
+        } elseif (!empty($request->input('from')) && !empty($request->input('to')) && empty($request->input('id_user'))) {
             $from = $request->from;
             $to = $request->to;
             $filter = Book::whereBetween('book_date', [$from, $to])
-                ->where('id_hotel', $request->id)->latest()
+                ->where('id_hotel', $request->id)
+                ->latest()
                 ->get();
-            
-
-        } 
-
-     else {
-            $filter = Book::where('id_hotel', $request->id)->latest()->get();
+        } else {
+            $filter = Book::where('id_hotel', $request->id)
+                ->latest()
+                ->get();
         }
         session()->flashInput($request->input());
         $hotel = Hotel::where('id', $request->id)->first();
@@ -59,20 +61,28 @@ class ShiftController extends Controller
         User::where('id', $myId)->update([
             'id_hotel' => $request->id,
         ]);
+        $charges = ChargePivot::where('id_book', $request->id)
+            ->with('charge')
+            ->get();
+        $totalCharge = 0;
+        foreach ($charges as $charge) {
+            $totalCharge += $charge->charge->charge;
+        }
         $hotel = Hotel::where('id', $myId)->first();
         $book = Book::where('id', $request->id)->first();
         return view('admin.hotel.shiftdetail', [
             'books' => $book,
             'hotel' => $hotel,
+            'charges' => $charges,
+            'totalCharge' => $totalCharge,
         ]);
     }
-    public function export(Request $request) 
+    public function export(Request $request)
     {
-        
-        $from=$request->from;
+        $from = $request->from;
         $to = $request->to;
         $id = $request->id;
         $id_user = $request->id_user;
-        return Excel::download(new ShiftExport ($request->id, $request->from, $request->to, $request->id_user), 'users.xlsx');
+        return Excel::download(new ShiftExport($request->id, $request->from, $request->to, $request->id_user), 'users.xlsx');
     }
 }

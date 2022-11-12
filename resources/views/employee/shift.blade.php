@@ -90,6 +90,10 @@
                         <th class="px-4 py-3">Checkout</th>
                         <th class="px-4 py-3">Uang Masuk</th>
                         <th class="px-4 py-3">Charge</th>
+                        @if ($isfinance == 1)
+                            <th class="px-4 py-3">Aksi</th>
+                        @endif
+
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y">
@@ -137,6 +141,15 @@
                                 @endforeach
                                 Rp {{ $total }}
                             </td>
+                            @if ($isfinance == 1)
+                                <td class="px-4 py-3 text-sm">
+                                    <a href="/hotel/shift/detail/{{ $book->id }}"
+                                        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        Detail
+                                    </a>
+                                </td>
+                            @endif
+
                         </tr>
                     @endforeach
                 </tbody>

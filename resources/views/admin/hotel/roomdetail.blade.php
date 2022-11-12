@@ -40,13 +40,17 @@
                                 {{ $book->book_date }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->checkin }}
+                                @if ($book->checkin)
+                                    {{ $book->checkin->format('d/m/Y') }}
+                                @else
+                                    Belum Checkout
+                                @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 @if ($book->checkout)
-                                {{ $book->checkout }}
+                                    {{ $book->checkout->format('d/m/Y') }}
                                 @else
-                                    Belum Chekout
+                                    Belum Checkout
                                 @endif
                             </td>
                         </tr>

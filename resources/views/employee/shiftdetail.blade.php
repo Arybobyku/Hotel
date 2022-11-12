@@ -1,15 +1,13 @@
-<x-app-layout>
-    @php
-        $user = Auth::user();
-        Auth::setUser($user);
-    @endphp
+@extends('employee/layouts/app')
 
+
+@section('contents')
     <div class="w-full px-4">
 
         <div class="relative flex flex-col min-w-0 break-words w-full mb-2 shadow-lg rounded bg-white">
 
             <div class="flex  items-center mx-8 mt-10">
-                <a href='/admin/hotel/{{ $user->id_hotel }}/shift'
+                <a href='/hotel/shift'
                     class="text-md font-light text-white bg-blue-800 px-4 py-2 mr-4 rounded-md hover:bg-slate-600">Kembali
                 </a>
                 <h3 class="font-semibold text-xl text-blueGray-700">
@@ -89,4 +87,5 @@
 
 
     </div>
-</x-app-layout>
+@endsection
+

@@ -107,8 +107,7 @@ class HotelController extends Controller
     public function shift(Request $request)
     {
         $idBook = Book::all();
-        $charges = ChargePivot::with('book')
-            ->get();
+        $charges = ChargePivot::with('book')->get();
         $idHotel = Auth::user()->id_hotel;
         $isFinance = Auth::user()->isfinance;
         $idUser = Auth::id();
@@ -122,7 +121,7 @@ class HotelController extends Controller
         }
         if ($isFinance == 0) {
             $filter = Book::whereBetween('book_date', [$from, $to])
-                ->where('id_user', $idUser)
+                ->where('id_user', $idUser)->where('id_hotel', $idHotel)
                 ->latest()
                 ->get();
         } else {
@@ -135,6 +134,24 @@ class HotelController extends Controller
         return view('employee.shift', [
             'books' => $filter,
             // 'charges' => $totalCharge,
+        ]);
+    }
+
+    public function detailshift(Request $request)
+    {
+        $myId = Auth::user()->id;
+        $book = Book::where('id', $request->id)->first();
+        $charges = ChargePivot::where('id_book', $request->id)
+            ->with('charge')
+            ->get();
+        $totalCharge = 0;
+        foreach ($charges as $charge) {
+            $totalCharge += $charge->charge->charge;
+        }
+        return view('employee.shiftdetail', [
+            'books' => $book,
+            'charges' => $charges,
+            'totalCharge' => $totalCharge,
         ]);
     }
 

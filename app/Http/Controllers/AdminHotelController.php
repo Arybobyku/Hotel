@@ -105,7 +105,7 @@ class AdminHotelController extends Controller
         ]);
         $hotel = Hotel::where('id', $myId)->first();
         $room = Room::where('id', $request->id)->first();
-        $book = Book::where('id_room', $request->id)->get();
+        $book = Book::where('id_room', $request->id)->latest()->get();
         return view('admin.hotel.roomdetail', [
             'room' => $room,
             'hotel' => $hotel,
