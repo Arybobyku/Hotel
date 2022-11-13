@@ -78,7 +78,7 @@
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Charge</label>
                     @foreach ($charges as $charge)
                         <h4 class="font-light bg-gray-50 mx-auto mt-2 p-2 rounded-lg border border-gray-300">
-                            {{ $charge->charge->namecharge }} : Rp {{ number_format($charge->charge->charge) }}</h4>
+                            {{ $charge->charge->name }} : Rp {{ number_format($charge->charge->charge) }}</h4>
                     @endforeach
                 </div>
             </div>

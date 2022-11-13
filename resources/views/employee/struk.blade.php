@@ -78,7 +78,7 @@
                     <h4>Total</h4>
                     <h4>Charges</h4>
                     @foreach ($charges as $charge)
-                    <h4>{{$charge->charge->namecharge}}</h4>
+                    <h4>{{$charge->charge->name}}</h4>
                     @endforeach
                     <br>
                     <h4>Total</h4>
