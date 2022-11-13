@@ -38,7 +38,7 @@
                                     {{ $loop->iteration }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ $charge->namecharge }}
+                                    {{ $charge->name }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     Rp {{ number_format($charge->charge) }}

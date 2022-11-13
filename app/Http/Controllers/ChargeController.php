@@ -32,7 +32,7 @@ class ChargeController extends Controller
         ]);
 
         ChargeType::create([
-            'namecharge' => $request->namecharge,
+            'name' => $request->namecharge,
             'charge' => $request->charge,
         ]);
 
@@ -53,7 +53,7 @@ class ChargeController extends Controller
         ]);
 
         ChargeType::where('id', $request->id)->update([
-            'namecharge' => $request->namecharge,
+            'name' => $request->namecharge,
             'charge' => $request->charge,
         ]);
 
