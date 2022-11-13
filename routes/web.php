@@ -62,7 +62,7 @@ Route::middleware('auth', 'admin')->group(function () {
 
 //pegawai
 Route::middleware('auth')->group(function () {
-    Route::get('admin/hotel/{id}/shift/export/', 'App\Http\Controllers\ShiftController@export')->name('export.shiftfinance');
+    Route::get('admin/hotel/{user:id_hotel}/shift/export/', 'App\Http\Controllers\ShiftController@export')->name('export.shiftfinance');
 
     Route::resource('hotel/asset', AssetController::class);
     Route::post('hotel/asset/create', [\App\Http\Controllers\AssetController::class, 'store'])->name("hotel.asset.store");

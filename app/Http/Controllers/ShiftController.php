@@ -79,10 +79,7 @@ class ShiftController extends Controller
     }
     public function export(Request $request)
     {
-        $from = $request->from;
-        $to = $request->to;
-        $id = $request->id;
-        $id_user = $request->id_user;
-        return Excel::download(new ShiftExport($request->id, $request->from, $request->to, $request->id_user), 'users.xlsx');
+                $myId = Auth::user()->id_hotel;
+        return Excel::download(new ShiftExport($myId, $request->from, $request->to, $request->id_user), 'users.xlsx');
     }
 }
