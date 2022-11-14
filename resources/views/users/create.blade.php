@@ -25,7 +25,7 @@
             </div>
             <div class="mb-6">
                 <label for="id_materi" class="block mb-2 text-sm font-medium text-gray-900">Hotel</label>
-                <select class="form-select" name="id_hotel" id="id_hotel">
+                <select class="form-select bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"" name="id_hotel" id="id_hotel">
                     @foreach ($hotels as $hotel)
                         <option value="{{ $hotel->id }}">{{ $hotel->name }}</option>
                     @endforeach
@@ -38,7 +38,7 @@
             </div>
             <div class="flex items-center mb-6">
                 <input checked id="default-radio-2" type="radio" value="1" name="isfinance"
-                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
+                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
                 <label for="default-radio-2" class="ml-2 text-sm font-medium text-gray-900">Pegawai Finance</label>
             </div>
             <div class="mb-6">

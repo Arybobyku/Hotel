@@ -22,6 +22,7 @@ class Book extends Model
         'price',
         'checkin',
         'checkout',
+        'booking_type',
         'payment_type',
     ];
     public function nameroom(){

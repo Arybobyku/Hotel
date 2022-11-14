@@ -11,6 +11,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Scripts -->
     <script src="{{ asset('js/init-alpine.js') }}"></script>
+    <link rel="icon" href="{{ asset('images/LOGO_DENATIO.png') }}">
+
 </head>
 
 <body >

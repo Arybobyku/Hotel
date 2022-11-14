@@ -87,6 +87,7 @@ class BookController extends Controller
             'days' => $request->jumlah_hari,
             'checkin' => $request->checkin,
             'checkout' => $request->checkout,
+            'booking_type' => $request->jenisPesan,
             'payment_type' => $request->jenisPembayaran,
         ]);
 

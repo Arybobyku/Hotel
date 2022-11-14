@@ -75,13 +75,28 @@
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="">
                     </div>
-                    
+
                     <div class="mb-6">
-                        <label for="checkin" class="block mb-2 text-sm font-medium text-gray-900 ">Jenis Pembayaran</label>
-                        <select class="form-select bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5" name="jenisPembayaran" id="jenisPembayaran" required>
-                            <option value="cash">Cash</option>
+                        <label for="jenisPesan" class="block mb-2 text-sm font-medium text-gray-900 ">Jenis
+                            Pemesanan</label>
+                        <select
+                            class="form-select bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                            name="jenisPesan" id="jenisPesan" required>
                             <option value="app">Dari Aplikasi</option>
+                            <option value="walkin">Walkin</option>
                         </select>
+                    </div>
+                    <label for="jenisPembayaran" class="block mb-2 text-sm font-medium text-gray-900 ">Jenis
+                        Pembayaran</label>
+                    <div class="flex items-center mb-6">
+                        <input checked id="cash" type="radio" value="cash" name="jenisPembayaran"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500  focus:ring-2 ">
+                        <label for="default-radio-1" class="ml-2 text-sm font-medium text-gray-900 ">Cash</label>
+                    </div>
+                    <div class="flex items-center mb-6">
+                        <input id="app" type="radio" value="app" name="jenisPembayaran"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+                        <label for="default-radio-2" class="ml-2 text-sm font-medium text-gray-900">Dari Aplikasi </label>
                     </div>
 
                     <button type="submit"
@@ -109,21 +124,24 @@
             );
             $('#price').val(hasil);
             // $('#total').val(hasil);
-
-        });
-
-        const payEl = $('#pay')
-        payEl.change(function () {
-            // $( "select option:selected" ).each(function() {
-            // if($( this ).text() === 'walkin'){
-                console.log('')
-            // }
-    });
-  })
-        console.log(payEl)
-
-      
-    });
-
+        })
+    })
 </script>
 
+<script>
+    $(document).ready(function() {
+        // Get value on button click and show alert
+        $("#jenisPesan").change(function() {
+            var price = $("#jenisPesan").val();
+            if (price == 'walkin') {
+                //disable all the radio button 
+                document.getElementById("app").disabled = true;
+            } else {
+                //enable all the radio button
+                document.getElementById("app").disabled = false;
+            }
+            // $('#total').val(hasil);
+
+        })
+    });
+</script>

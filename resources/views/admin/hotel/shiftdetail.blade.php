@@ -49,6 +49,19 @@
                         placeholder="" disabled>
                 </div>
                 <div class="mb-6">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Booking Dari</label>
+                    <input type="text" value="{{ $books->booking_type }}" id="jenisPesan" name="jenisPesan"
+                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                        placeholder="" disabled>
+                </div>
+                <div class="mb-6">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Pembayaran
+                        Melalui</label>
+                    <input type="text" value="{{ $books->payment_type }}" id="jenisPesan" name="jenisPesan"
+                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                        placeholder="" disabled>
+                </div>
+                <div class="mb-6">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Tanggal Booking</label>
                     <input type="text" value="{{ $books->book_date }}" id="name" name="name"
                         class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
