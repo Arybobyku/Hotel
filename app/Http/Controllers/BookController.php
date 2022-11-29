@@ -8,6 +8,7 @@ use App\Models\ChargePivot;
 use App\Models\ChargeType;
 use App\Models\Log;
 use App\Models\kuesioner;
+use App\Models\Platform;
 use App\Models\Room;
 use App\Models\UserAnswere;
 use App\Models\UserResult;
@@ -16,11 +17,21 @@ use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
-    public function index(Request $request)
+    public function indexwalkin(Request $request)
     {
         $idHotel = Auth::user()->id_hotel;
         $room = Room::where('id', $request->id)->first();
-        return view('employee.book', ['room' => $room, 'date' => $request->date]);
+        return view('employee.book', ['room' => $room, 'date' => $request->date, 
+    ]);
+    }
+    
+    public function indexapp(Request $request)
+    {
+        $idHotel = Auth::user()->id_hotel;
+        return view('employee.book2', [
+            'platforms' => Platform::all()
+
+        ]);
     }
 
     public function checkIn(Request $request)
@@ -89,6 +100,7 @@ class BookController extends Controller
             'checkout' => $request->checkout,
             'booking_type' => $request->jenisPesan,
             'payment_type' => $request->jenisPembayaran,
+            'id_platform' => $request->id_platform,
         ]);
 
         Log::create([

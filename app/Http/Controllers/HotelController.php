@@ -8,12 +8,17 @@ use App\Models\Book;
 use App\Models\ChargePivot;
 use App\Models\ChargeType;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;    
 
 class HotelController extends Controller
 {
     public function index()
     {
+
+        //         $startDate = date_create(date('Y-m-d'));
+        // date_add($startDate, date_interval_create_from_date_string(-1 . " days"));
+        // $date = date_format($startDate, "Y-m-d");
+        // $bookings = Book::where('id_hotel', $idHotel)
         $idHotel = Auth::user()->id_hotel;
 
         $hotel = Hotel::where('id', $idHotel)->first();
@@ -27,6 +32,11 @@ class HotelController extends Controller
             'bookings' => $bookings,
             'charges' => $charges,
         ]);
+    }
+
+    public function typebook(Request $request){
+        return view('employee.typebook');
+
     }
 
     public function rooms(Request $request)

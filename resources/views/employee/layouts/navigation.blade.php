@@ -18,7 +18,7 @@
                 </x-nav-link>
             </li>
             <li class="relative px-6 py-3">
-                <x-nav-link href="/hotel/rooms" :active="request()->routeIs('hotel.rooms')">
+                <x-nav-link href="/hotel/typebook" :active="request()->routeIs('hotel.typebook')">
                     <x-slot name="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6">

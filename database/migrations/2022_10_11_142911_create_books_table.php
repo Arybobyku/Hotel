@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('id_hotel');
             $table->bigInteger('id_room');
             $table->bigInteger('id_user');
+            $table->bigInteger('id_platform');
             $table->string('guestname');
             $table->string('nik');
             $table->string('nota');

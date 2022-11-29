@@ -118,10 +118,10 @@
                         <div class="relative p-6 w-full">
                             @foreach ($charges as $charge)
                                 <div class="flex items-center gap-4 w-screen">
-                                    <input id="checked-checkbox" type="checkbox" name="charge[]"
+                                    <input id="checked-checkbox" class="w-3 h-3" type="checkbox" name="charge[]"
                                         value="{{ $charge->id }}">
-                                    <label for="checked-checkbox" class="text-xl">{{ $charge->name }}</label>
-                                    <label for="checked-checkbox" class="text-xl">Rp.
+                                    <label for="checked-checkbox" class="text-xs">{{ $charge->name }}</label>
+                                    <label for="checked-checkbox" class="text-xs    ">Rp.
                                         {{ number_format($charge->charge) }}</label>
                                 </div>
                             @endforeach

@@ -6,9 +6,11 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\ChargeController;
+use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Platform;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,11 +43,20 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::put('/dashboard/charge/{id}/edit', [ChargeController::class, 'update']);
     Route::post('/dashboard/charge/create', [ChargeController::class, 'store']);
     Route::delete('/dashboard/charge/{id}', [ChargeController::class, 'destroy']);
-    Route::get('/dashboard/charge/create', [ChargeController::class, 'create']);
-    Route::get('/dashboard/charge/{id}/edit', [ChargeController::class, 'edit']);
-    Route::get('/dashboard/charge', [ChargeController::class, 'index']);
+    Route::get('/dashboard/charge/create', [ChargeController::class, 'create'])->name('charge.create');
+    Route::get('/dashboard/charge/{id}/edit', [ChargeController::class, 'edit'])->name('charge.edit');
+    Route::get('/dashboard/charge', [ChargeController::class, 'index'])->name('charge.index');
+
+    Route::put('/dashboard/platform/{id}/edit', [PlatformController::class, 'update']);
+    Route::post('/dashboard/platform/create', [PlatformController::class, 'store']);
+    Route::delete('/dashboard/platform/{id}', [PlatformController::class, 'destroy']);
+    Route::get('/dashboard/platform/create', [PlatformController::class, 'create'])->name('platform.create');
+    Route::get('/dashboard/platform/{id}/edit', [PlatformController::class, 'edit'])->name('platform.edit');
+    Route::get('/dashboard/platform', [PlatformController::class, 'index'])->name('platform.index');
+
     Route::resource('/dashboard/user', AdminController::class)->middleware('auth', 'admin');
     Route::get('/dashboard/user/{id}', [AdminController::class,'userDetail'])->name('dashboard/user/detail');
+
     Route::get('/dashboard/log', [LogController::class,'index'])->name('log');
     // Route::post('dashboard/user/{id}', [AdminController::class,"update"])->name("dashboard.user.edit");
     Route::get('admin/hotel/{id}/shift', [\App\Http\Controllers\ShiftController::class, 'index'])->name('admin.shift');
@@ -67,7 +78,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('hotel/asset', AssetController::class);
     Route::post('hotel/asset/create', [\App\Http\Controllers\AssetController::class, 'store'])->name("hotel.asset.store");
 
-    Route::get('hotel/book/{date}/{id}', [\App\Http\Controllers\BookController::class, 'index'])->name('hotel.book');
+    Route::get('hotel/book/{date}/{id}', [\App\Http\Controllers\BookController::class, 'indexwalkin'])->name('hotel.book');
+    Route::get('hotel/book', [\App\Http\Controllers\BookController::class, 'indexapp'])->name('hotel.book2');
     Route::post('hotel/book', [\App\Http\Controllers\BookController::class, 'booking'])->name("insertcheckin");
 
     Route::get('hotel/dashboard', [\App\Http\Controllers\HotelController::class, 'index'])->name('hotel.dashboard');
@@ -75,6 +87,7 @@ Route::middleware('auth')->group(function () {
     Route::POST('hotel/dashboard/checkout', [\App\Http\Controllers\BookController::class, 'checkOut'])->name('hotel.dashboard.checkOut');
 
     Route::get('hotel/rooms', [\App\Http\Controllers\HotelController::class, 'rooms'])->name('hotel.rooms');
+    Route::get('hotel/typebook', [\App\Http\Controllers\HotelController::class, 'typebook'])->name('hotel.typebook');
     Route::get('hotel/shift', [\App\Http\Controllers\HotelController::class, 'shift'])->name('hotel.shift');
     Route::get('hotel/shift/detail/{id}', [\App\Http\Controllers\HotelController::class, 'detailshift']);
   

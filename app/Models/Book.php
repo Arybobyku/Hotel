@@ -24,6 +24,7 @@ class Book extends Model
         'checkout',
         'booking_type',
         'payment_type',
+        'id_platform',
     ];
     public function nameroom(){
         return $this->hasOne(Room::class, 'id', 'id_room');
@@ -37,6 +38,9 @@ class Book extends Model
 
     public function chargePivot(){
         return $this->hasMany(ChargePivot::class,'id_book','id');
+    }
+    public function platform(){
+        return $this->belongsTo(Platform::class, 'id_platform','id');
     }
 
 }

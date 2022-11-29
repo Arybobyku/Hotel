@@ -2,14 +2,7 @@
 
 
 @section('contents')
-    @php
-        function unique_id($digits)
-        {
-            return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $digits);
-        }
-        // 12 digits
-    @endphp
-    <input id="room_price" type="text" hidden value="{{ $room->price }}">
+
     <div class="w-full px-4">
         <div class="relative flex flex-col min-w-0 break-words w-full mb-2 shadow-lg rounded bg-white">
             <div class="flex  items-center mx-8 mt-10">
@@ -21,13 +14,12 @@
             <div class="block w-full overflow-x-auto p-8">
                 <form method="POST" action="{{ Route('insertcheckin') }}" enctype="multipart/form-data">
                     @csrf
-                    <input name="id_room" value="{{ $room->id }}" hidden />
+                    {{-- <input name="id_room" value="{{ $room->id }}" hidden /> --}}
                     <div class="mb-6">
                         <label for="nota" class="block mb-2 text-sm font-medium text-gray-900 ">Nomor Transaksi</label>
                         <input type="text" id="nota" name="nota"
-                            value="{{ date('dm') }}{{ $transaction_id = unique_id(6) }}"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="" required readonly>
+                            placeholder="" required>
                     </div>
                     <div class="mb-6">
                         <label for="guestname" class="block mb-2 text-sm font-medium text-gray-900 ">Nama</label>
@@ -43,23 +35,19 @@
                     </div>
                     <div class="mb-6">
                         <label for="room" class="block mb-2 text-sm font-medium text-gray-900 ">Room</label>
-                        <input type="text" id="room" value="{{ $room->name }}" name="room" readonly
+                        <input type="text" id="id_room" name="id_room"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="" required>
                     </div>
                     <div class="mb-6">
                         <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">Harga</label>
-                        <input type="text" id="fakeprice" value="Rp. {{ $room->price }}" name="fakeprice" readonly
+                        <input type="text" id="price" value="" name="price"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="" required>
                     </div>
-
-                    <input type="text" id="price" value="{{ $room->price }}" name="price"
-                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5 hidden"
-                        placeholder="">
                     <div class="mb-6">
                         <label for="booking" class="block mb-2 text-sm font-medium text-gray-900 ">Tanggal Booking</label>
-                        <input type="date" id="booking" name="booking" value="{{ $date }}" readonly
+                        <input type="date" id="booking" name="booking" value="" required
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="">
                     </div>
@@ -76,33 +64,37 @@
                             placeholder="">
                     </div>
 
-                    {{-- <div class="mb-6">
+                    <div class="mb-6">
                         <label for="jenisPesan" class="block mb-2 text-sm font-medium text-gray-900 ">Jenis
-                            Pemesanan</label>
+                            Pembayaran</label>
                         <select
                             class="form-select bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             name="jenisPesan" id="jenisPesan" required>
+                            <option value="cash">Cash</option>
                             <option value="app">Dari Aplikasi</option>
-                            <option value="walkin">Walkin</option>
                         </select>
-                    </div> --}}
-                    {{-- <label for="jenisPembayaran" class="block mb-2 text-sm font-medium text-gray-900 ">Jenis
-                        Pembayaran</label>
+                    </div>
+                    <label for="jenisPembayaran" class="block mb-2 text-sm font-medium text-gray-900 ">Post/Pre Paid</label>
                     <div class="flex items-center mb-6">
-                        <input checked id="cash" type="radio" value="cash" name="jenisPembayaran"
+                        <input checked id="jenisPembayaran" type="radio" value="post" name="jenisPembayaran"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500  focus:ring-2 ">
-                        <label for="default-radio-1" class="ml-2 text-sm font-medium text-gray-900 ">Cash</label>
+                        <label for="default-radio-1" class="ml-2 text-sm font-medium text-gray-900 ">Post</label>
                     </div>
                     <div class="flex items-center mb-6">
-                        <input id="app" type="radio" value="app" name="jenisPembayaran"
+                        <input id="jenisPembayaran" type="radio" value="pre" name="jenisPembayaran"
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
-                        <label for="default-radio-2" class="ml-2 text-sm font-medium text-gray-900">Dari Aplikasi </label>
-                    </div> --}}
-                    <input name="jenisPembayaran" value="0" hidden />
-                    <input name="jenisPesan" value="0" hidden />
-                    <input name="id_platform" value="0" hidden />
+                        <label for="default-radio-2" class="ml-2 text-sm font-medium text-gray-900">Pre </label>
+                    </div>
+                <div class="mb-6">
+                    <label for="id_platform" class="block mb-2 text-sm font-medium text-gray-900">Platform</label>
+                   <select class="form-select bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5" name="id_platform" id="id_platform">
+                    @foreach ($platforms as $platform)
 
+                    <option value="{{ $platform->id }}">{{ $platform->platform_name }}</option>
 
+                    @endforeach
+                   </select>
+                </div>
                     <button type="submit"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                 </form>
@@ -133,19 +125,19 @@
 </script>
 
 <script>
-    $(document).ready(function() {
-        // Get value on button click and show alert
-        $("#jenisPesan").change(function() {
-            var price = $("#jenisPesan").val();
-            if (price == 'walkin') {
-                //disable all the radio button 
-                document.getElementById("app").disabled = true;
-            } else {
-                //enable all the radio button
-                document.getElementById("app").disabled = false;
-            }
-            // $('#total').val(hasil);
+    // $(document).ready(function() {
+    //     // Get value on button click and show alert
+    //     $("#jenisPesan").change(function() {
+    //         var price = $("#jenisPesan").val();
+    //         if (price == 'walkin') {
+    //             //disable all the radio button 
+    //             document.getElementById("app").disabled = true;
+    //         } else {
+    //             //enable all the radio button
+    //             document.getElementById("app").disabled = false;
+    //         }
+    //         // $('#total').val(hasil);
 
-        })
-    });
+    //     })
+    // });
 </script>
