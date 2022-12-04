@@ -10,10 +10,10 @@ class LogController extends Controller
 {
     public function index(Request $request)
     {
-        if (count($request->all()) == 0) {
-            $logs = Log::latest()->get();
+        if ($request->id_hotel == Null) {
+            $logs = Log::latest()->paginate(15);
         } else {
-            $logs = Log::where('id_hotel', $request->id_hotel)->latest()->get();
+            $logs = Log::where('id_hotel', $request->id_hotel)->latest()->paginate(15);
         }
         return view('admin.hotel.log', [
             'logs' => $logs,

@@ -14,7 +14,7 @@ class PlatformController extends Controller
     public function index()
     {
         return view('platform.index', [
-            'platforms' => Platform::all(),
+            'platforms' => Platform::get()->where('platform_name' ,'!=', 'Walkin'),
         ]);
     }
 

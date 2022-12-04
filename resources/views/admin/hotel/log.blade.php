@@ -60,6 +60,9 @@
                 </tbody>
             </table>
         </div>
+        <div class="p-4">
+            {{ $logs->links() }}
+        </div>
     </div>
 
 
