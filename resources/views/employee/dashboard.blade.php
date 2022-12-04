@@ -34,9 +34,14 @@
                                     {{ $book->guestname }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
+                                    @if ($book->id_room != 0)
                                     {{ $book->nameroom->name }}
+                                    @else  
+                                    {{ $book->room }}
+                                    @endif
                                 </td>
                                 <td class="px-4 py-3 text-sm">
+                                    
                                     {{ $book->book_date }}
 
                                 </td>

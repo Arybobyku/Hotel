@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Book;
 use App\Models\ChargeType;
 use App\Models\Hotel;
+use App\Models\Platform;
 use App\Models\Room;
 use App\Models\User;
 use GuzzleHttp\Promise\Create;
@@ -69,26 +70,23 @@ class DatabaseSeeder extends Seeder
 
         Hotel::create([
             'name' => 'Denatio Binjai',
-            'alamat' => 'Jl. Medan - Binjai Maruli Nation Convention Medan Sunggal 20228, Sumatera Utara.'
+            'alamat' => 'Jl. Medan - Binjai Maruli Nation Convention Medan Sunggal 20228, Sumatera Utara.',
         ]);
         Hotel::create([
             'name' => 'Denatio Durung',
-            'alamat' => 'Jl. Durung No.106, Sidorejo Hilir, Kec. Medan Tembung, Kota Medan, Sumatera Utara 20222'
+            'alamat' => 'Jl. Durung No.106, Sidorejo Hilir, Kec. Medan Tembung, Kota Medan, Sumatera Utara 20222',
         ]);
         Hotel::create([
             'name' => 'Denatio Gaharu',
-            'alamat' => 'Jl. Gaharu No.89, Gaharu, Kec. Medan Timur, Medan 20235, Sumatera Utara'
-
+            'alamat' => 'Jl. Gaharu No.89, Gaharu, Kec. Medan Timur, Medan 20235, Sumatera Utara',
         ]);
         Hotel::create([
             'name' => 'Denatio Kertas',
-            'alamat' => 'Jalan Kertas No 33 ,Sei Putih Barat ,Medan Petisah , Kota Medan, Sumatera Utara'
-
+            'alamat' => 'Jalan Kertas No 33 ,Sei Putih Barat ,Medan Petisah , Kota Medan, Sumatera Utara',
         ]);
         Hotel::create([
             'name' => 'Denatio Sempurna',
-            'alamat' => 'Jl. Sempurna No.29, Tj. Sari, Kec. Medan Selayang, Kota Medan, Sumatera Utara 20132'
-
+            'alamat' => 'Jl. Sempurna No.29, Tj. Sari, Kec. Medan Selayang, Kota Medan, Sumatera Utara 20132',
         ]);
 
         Room::create([
@@ -159,25 +157,32 @@ class DatabaseSeeder extends Seeder
         ]);
 
         ChargeType::create([
-            'name'=>'Bad Towel',
-            'charge'=> 150000
+            'name' => 'Bad Towel',
+            'charge' => 150000,
         ]);
         ChargeType::create([
-            'name'=> 'Bath Math Big',
-            'charge'=> 200000
+            'name' => 'Bath Math Big',
+            'charge' => 200000,
         ]);
         ChargeType::create([
-            'name'=> 'Sheet Double',
-            'charge'=>  200000
+            'name' => 'Sheet Double',
+            'charge' => 200000,
         ]);
         ChargeType::create([
-            'name'=> 'Duve Cover Double',
-            'charge'=>  350000
+            'name' => 'Duve Cover Double',
+            'charge' => 350000,
         ]);
         ChargeType::create([
-            'name'=> 'Inner Duve Double',
-            'charge'=> 1050000
+            'name' => 'Inner Duve Double',
+            'charge' => 1050000,
         ]);
-
+        Platform::create([
+            'platform_name' => 'Wallkin',
+            'platform_fee' => 0,
+        ]);
+        Platform::create([
+            'platform_name' => 'Redor',
+            'platform_fee' => 10000,
+        ]);
     }
 }

@@ -22,6 +22,16 @@
                 <form method="POST" action="{{ Route('insertcheckin') }}" enctype="multipart/form-data">
                     @csrf
                     <input name="id_room" value="{{ $room->id }}" hidden />
+                    {{-- <input name="room" value="-" hidden /> --}}
+                    {{-- <input name="price_app" value="0" hidden /> --}}
+                    <input name="platform_fee2" value="0" hidden />
+                    <input name="assured_stay" value="0" hidden />
+                    <input name="tipforstaf" value="0" hidden />
+                    <input name="upgrade_room" value="0" hidden />
+                    <input name="travel_protection" value="0" hidden />
+                    <input name="breakfast" value="0" hidden />
+                    <input name="member_redclub" value="0" hidden />
+                    <input name="early_checkin" value="0" hidden />
                     <div class="mb-6">
                         <label for="nota" class="block mb-2 text-sm font-medium text-gray-900 ">Nomor Transaksi</label>
                         <input type="text" id="nota" name="nota"
@@ -100,7 +110,7 @@
                     </div> --}}
                     <input name="jenisPembayaran" value="0" hidden />
                     <input name="jenisPesan" value="0" hidden />
-                    <input name="id_platform" value="0" hidden />
+                    <input name="id_platform" value="1" hidden />
 
 
                     <button type="submit"

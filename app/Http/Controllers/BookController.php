@@ -76,6 +76,7 @@ class BookController extends Controller
         $request->validate([
             'id_room' => ['required', 'integer'],
             'guestname' => ['required', 'string', 'max:255'],
+            'room' => ['required','string', 'max:255'],
             'nik' => ['required', 'string', 'max:255'],
             'nota' => ['required', 'string', 'max:255'],
             'price' => ['required', 'integer'],
@@ -90,9 +91,11 @@ class BookController extends Controller
             'id_room' => $request->id_room,
             'id_hotel' => $hotelId,
             'id_user' => $userId,
+            'room' => $request->room,
             'nik' => $request->nik,
             'nota' => $request->nota,
             'price' => $request->price,
+            // 'price_app' => $request->price_app,
             'book_date' => $request->booking,
             'book_date_end' => $dateBookingEnd,
             'days' => $request->jumlah_hari,
@@ -101,6 +104,14 @@ class BookController extends Controller
             'booking_type' => $request->jenisPesan,
             'payment_type' => $request->jenisPembayaran,
             'id_platform' => $request->id_platform,
+            'platform_fee2' => $request->platform_fee2,
+            'assured_stay' => $request->assured_stay,
+            'tipforstaf' => $request->tipforstaf,
+            'upgrade_room' => $request->upgrade_room,
+            'travel_protection' => $request->travel_protection,
+            'member_redclub' => $request->member_redclub,
+            'breakfast' => $request->breakfast,
+            'early_checkin' => $request->early_checkin,
         ]);
 
         Log::create([

@@ -112,7 +112,11 @@
                                 {{ $book->nota }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->nameroom->name }}
+                                @if ($book->id_room != 0)
+                                    {{ $book->nameroom->name }}
+                                @else
+                                    {{ $book->room }}
+                                @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->book_date }}
@@ -132,7 +136,7 @@
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                Rp {{ number_format($book->price) }}
+                                    Rp {{ number_format($book->price) }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 <?php

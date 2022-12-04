@@ -50,7 +50,7 @@
                 </div>
                 <div class="mb-6">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Booking Dari</label>
-                    <input type="text" value="{{ $books->booking_type }}" id="jenisPesan" name="jenisPesan"
+                    <input type="text" value="{{ $books->platform->platform_name }}" id="jenisPesan" name="jenisPesan"
                         class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                         placeholder="" disabled>
                 </div>
