@@ -20,27 +20,24 @@ class ShiftController extends Controller
 
         if ((empty($request->input('from')) || empty($request->input('to'))) && $request->id_user) {
             $filter = Book::where('id_user', $request->id_user)
-                ->latest()
-                ->get();
+                ->latest()->paginate(15);
+                
         } elseif (!empty($request->input('from')) && !empty($request->input('to')) && $request->id_user) {
             $from = $request->from;
             $to = $request->to;
             $filter = Book::whereBetween('book_date', [$from, $to])
                 ->where('id_hotel', $request->id)
                 ->where('id_user', $request->id_user)
-                ->latest()
-                ->get();
+                ->latest()->paginate(15);
         } elseif (!empty($request->input('from')) && !empty($request->input('to')) && empty($request->input('id_user'))) {
             $from = $request->from;
             $to = $request->to;
             $filter = Book::whereBetween('book_date', [$from, $to])
                 ->where('id_hotel', $request->id)
-                ->latest()
-                ->get();
+                ->latest()->paginate(15);
         } else {
             $filter = Book::where('id_hotel', $request->id)
-                ->latest()
-                ->get();
+                ->latest()->paginate(15);
         }
         session()->flashInput($request->input());
         $hotel = Hotel::where('id', $request->id)->first();

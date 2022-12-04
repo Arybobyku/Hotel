@@ -136,7 +136,7 @@
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                    Rp {{ number_format($book->price) }}
+                                Rp {{ number_format($book->price) }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 <?php
@@ -161,6 +161,9 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="p-4">
+            {{ $books->links() }}
         </div>
     </div>
 

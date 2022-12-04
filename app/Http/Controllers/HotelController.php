@@ -122,7 +122,7 @@ class HotelController extends Controller
         $isFinance = Auth::user()->isfinance;
         $idUser = Auth::id();
 
-        if (count($request->all()) == 0) {
+        if ($request->from == Null && $request->to == Null) {
             $from = date('2010-10-01');
             $to = date('2040-10-31');
         } else {
@@ -132,13 +132,13 @@ class HotelController extends Controller
         if ($isFinance == 0) {
             $filter = Book::whereBetween('book_date', [$from, $to])
                 ->where('id_user', $idUser)->where('id_hotel', $idHotel)
-                ->latest()
-                ->get();
+                ->latest()->paginate(15);
+
         } else {
             $filter = Book::whereBetween('book_date', [$from, $to])
                 ->where('id_hotel', $idHotel)
-                ->latest()
-                ->get();
+                ->latest()->paginate(15);
+
         }
         session()->flashInput($request->input());
         return view('employee.shift', [
