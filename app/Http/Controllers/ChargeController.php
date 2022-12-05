@@ -61,7 +61,7 @@ class ChargeController extends Controller
     }
     public function destroy(ChargeType $charge, Request $request)
     {
-        ChargeType::destroy($request    ->id);
+        ChargeType::destroy($request->id);
 
         return redirect('/dashboard/charge')->with('delete', 'Telah Dihapus');
     }

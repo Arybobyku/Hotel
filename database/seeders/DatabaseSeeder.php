@@ -177,7 +177,7 @@ class DatabaseSeeder extends Seeder
             'charge' => 1050000,
         ]);
         Platform::create([
-            'platform_name' => 'Wallkin',
+            'platform_name' => 'Walkin',
             'platform_fee' => 0,
         ]);
         Platform::create([

@@ -15,13 +15,13 @@
             <div class="mb-6">
                 <input type="hidden" value="{{ $platform->id }}" name="id">
                 <label for="namecharge" class="block mb-2 text-sm font-medium text-gray-900 ">Nama</label>
-                <input type="text" id="namecharge" name="namecharge" value="{{ $platform->platform_name }}"
+                <input type="text" id="platform_name" name="platform_name" value="{{ $platform->platform_name }}"
                     class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                     placeholder="" required>
             </div>
                         <div class="mb-6">
                 <label for="platform" class="block mb-2 text-sm font-medium text-gray-900 ">Harga</label>
-                <input type="number" id="platform" name="platform" value="{{ $platform->platform_fee }}"
+                <input type="number" id="platform_fee" name="platform_fee" value="{{ $platform->platform_fee }}"
                     class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                     placeholder="" required>
             </div>

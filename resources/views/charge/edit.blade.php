@@ -15,7 +15,7 @@
             <div class="mb-6">
                 <input type="hidden" value="{{ $charge->id }}" name="id">
                 <label for="namecharge" class="block mb-2 text-sm font-medium text-gray-900 ">Nama</label>
-                <input type="text" id="namecharge" name="namecharge" value="{{ $charge->namecharge }}"
+                <input type="text" id="namecharge" name="namecharge" value="{{ $charge->name }}"
                     class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                     placeholder="" required>
             </div>
