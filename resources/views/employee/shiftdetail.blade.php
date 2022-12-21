@@ -72,19 +72,87 @@
                 </div>
                 <div class="mb-6">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Tanggal Checkin</label>
+                    @if ($books->checkin)
+                    <input type="date" value="{{ $books->checkin }}" id="name" name="name"
+                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                        placeholder="" disabled>
+                        @else 
                     <input type="text"
-                        value="@if ($books->checkin) {{ $books->checkin->format('d/m/Y') }}@else Belum Checkout @endif"
+                        value="Belum Checkin "
                         id="name" name="name"
+                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                        placeholder="" disabled>
+                        @endif
+                </div>
+                <div class="mb-6">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Tanggal Checkout</label>
+                    @if ($books->checkout)
+                    <input type="date" value="{{ $books->checkout }}" id="name" name="name"
+                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                        placeholder="" disabled>
+                        @else 
+                    <input type="text"
+                        value="Belum Checkout "
+                        id="name" name="name"
+                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                        placeholder="" disabled>
+                        @endif
+                </div>
+                <div class="mb-6">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Platform Fee</label>
+                    <input type="text" value="Rp {{ number_format($books->platform_fee2) }}" id="name" name="name"
                         class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                         placeholder="" disabled>
                 </div>
                 <div class="mb-6">
-                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Tanggal Checkout</label>
-                    <input type="text"
-                        value="@if ($books->checkout) {{ $books->checkout->format('d/m/Y') }}@else Belum Checkout @endif"
-                        id="name" name="name"
+                    <label for="assured_stay" class="block mb-2 text-sm font-medium text-gray-900 ">Assured
+                        Stay</label>
+                    <input type="text" id="assured_stay" value="{{ $books->assured_stay }}" name="assured_stay"
                         class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                        placeholder="" disabled>
+                        placeholder="Jika Tidak Ada Isi : 0 " disabled>
+                </div>
+                <div class="mb-6">
+                    <label for="text" class="block mb-2 text-sm font-medium text-gray-900 ">Tip For
+                        Staf</label>
+                    <input type="number" id="tipforstaf" value="{{ $books->tipforstaf }}" name="tipforstaf"
+                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                        placeholder="Jika Tidak Ada Isi : 0 " disabled>
+                </div>
+                <div class="mb-6">
+                    <label for="text" class="block mb-2 text-sm font-medium text-gray-900 ">Upgrade
+                        Room</label>
+                    <input type="number" id="upgrade_room" value="{{ $books->upgrade_room }}" name="upgrade_room"
+                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                        placeholder="Jika Tidak Ada Isi : 0 " disabled>
+                </div>
+                <div class="mb-6">
+                    <label for="travel_protection" class="block mb-2 text-sm font-medium text-gray-900 ">Travel
+                        Protection</label>
+                    <input type="text" id="travel_protection" value="{{ $books->travel_protection }}"
+                        name="travel_protection"
+                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                        placeholder="Jika Tidak Ada Isi : 0 " disabled>
+                </div>
+                <div class="mb-6">
+                    <label for="travel_protection" class="block mb-2 text-sm font-medium text-gray-900 ">Member
+                        Redclub</label>
+                    <input type="text" id="member_redclub" value="{{ $books->member_redclub }}"
+                        name="member_redclub"
+                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                        placeholder="Jika Tidak Ada Isi : 0 " disabled>
+                </div>
+                <div class="mb-6">
+                    <label for="travel_protection" class="block mb-2 text-sm font-medium text-gray-900 ">Breakfast</label>
+                    <input type="text" id="breakfast" value="{{ $books->breakfast }}" name="breakfast"
+                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                        placeholder="Jika Tidak Ada Isi : 0 " disabled>
+                </div>
+                <div class="mb-6">
+                    <label for="early_checkin" class="block mb-2 text-sm font-medium text-gray-900 ">Early
+                        Checkin</label>
+                    <input type="text" id="early_checkin" value="{{ $books->early_checkin }}" name="early_checkin"
+                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                        placeholder="Jika Tidak Ada Isi : 0 " disabled>
                 </div>
                 <div class="mb-6">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Charge</label>

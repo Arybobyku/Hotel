@@ -59,10 +59,10 @@
                     @else
                         <h4>{{ $book->room }}</h4>
                     @endif
-                    <h4>{{ $book->checkin->format('d/m/Y') }}</h4>
+                    <h4>{{ $book->checkin}}</h4>
                     <h4>
                         @if ($book->checkout)
-                            {{ $book->checkout->format('d/m/Y') }}
+                            {{ $book->checkout }}
                         @else
                             <span class="text-sm">Belum Checkout</span>
                         @endif

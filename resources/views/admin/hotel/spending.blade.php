@@ -5,11 +5,12 @@
         $user->id_hotel = $hotel->id;
         Auth::setUser($user);
     @endphp
-    {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
-    <h1 class="mx-10 text-xl font-bold">Laporan Pembukuan {{ $hotel->name }}</h1>
 
-    <div class="mx-10 my-8">
-        <form method="GET" action="shift">
+    {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
+        
+    <h1 class="mx-10 mb-6 text-xl font-bold text-center">Pengeluaran Hotel {{ $hotel->name }}</h1>
+ <div class="mx-10 my-8">
+        <form method="GET" action="spending">
 
             <div date-rangepicker class="flex items-center">
                 <div class="relative">
@@ -41,16 +42,6 @@
                         placeholder="Select date end" name="to" value="{{ Request::old('to') }}">
                 </div>
 
-                <div class="relative pl-3">
-                    <select name="id_user" class="bg-white border border-gray-300 text-gray-900 w-full rounded-md">
-                        <option value=""> Pilih Pegawai </option>
-
-                        @foreach ($pegawais as $pegawai)
-                            <option value="{{ $pegawai->id }}" @if ($pegawai->id == old('id_user')) selected @endif>
-                                {{ $pegawai->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
                 <button type="submit"
                     class="bg-blue-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -62,7 +53,7 @@
 
 
         </form>
-        <form method="get" action="{{ route('export.shift', $user->id_hotel) }}">
+        <form method="get" action="{{ route('export.spending', $user->id_hotel) }}">
             <input type='hidden' name="from" value="{{ Request::old('from') }}">
             <input type='hidden' name="to" value="{{ Request::old('to') }}">
             <input type='hidden' name="id_user" value="{{ Request::old('id_user') }}">
@@ -78,7 +69,6 @@
         </form>
     </div>
     </div>
-
     <div class="overflow-hidden mb-8 w-full rounded-lg border shadow-xs">
 
         <div class="overflow-x-auto w-full">
@@ -87,83 +77,66 @@
                     <tr
                         class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-50 border-b">
                         <th class="px-4 py-3">No</th>
-                        <th class="px-4 py-3">Nama Tamu</th>
-                        <th class="px-4 py-3">Nomor Transaksi</th>
-                        <th class="px-4 py-3">Room</th>
-                        <th class="px-4 py-3">Booking</th>
-                        <th class="px-4 py-3">Checkin</th>
-                        <th class="px-4 py-3">Checkout</th>
-                        <th class="px-4 py-3">Uang Masuk</th>
-                        <th class="px-4 py-3">Charge</th>
-                        <th class="px-4 py-3">Nama Pegawai</th>
+                        <th class="px-4 py-3">Nama Pengeluaran</th>
+                        <th class="px-4 py-3">Jumlah Pengeluaran</th>
+                        <th class="px-4 py-3">Tanggal</th>
+                        <th class="px-4 py-3">Keterangan</th>
                         <th class="px-4 py-3">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y">
-                    @foreach ($books as $book)
+                    @foreach ($spendings as $spending)
                         <tr class="text-gray-700">
                             <td class="px-4 py-3 text-sm">
                                 {{ $loop->iteration }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->guestname }}
+                                {{ $spending->name }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->nota }}
+                                {{ $spending->tanggal }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                @if ($book->id_room != 0)
-                                    {{ $book->nameroom->name }}
-                                @else
-                                    {{ $book->room }}
-                                @endif
+                                Rp {{ number_format($spending->jumlah) }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->book_date }}
+                                {{ $spending->keterangan }}
                             </td>
-                            <td class="px-4 py-3 text-sm">
-                                @if ($book->checkin)
-                                    {{ $book->checkin}}
-                                @else
-                                    Belum Checkout
-                                @endif
-                            </td>
-                            <td class="px-4 py-3 text-sm">
-                                @if ($book->checkout)
-                                    {{ $book->checkout }}
-                                @else
-                                    Belum Checkout
-                                @endif
-                            </td>
-                            <td class="px-4 py-3 text-sm">
-                                Rp {{ number_format($book->price) }}
-                            </td>
-                            <td class="px-4 py-3 text-sm">
-                                <?php
-                                $total = 0; ?>
-                                @foreach ($book->chargePivot as $charge)
-                                    <?php
-                                    $total += $charge->charge->charge; ?>
-                                    {{-- $total=+$charge->charge->charge --}}
-                                @endforeach
-                                Rp {{ $total }}
-                            </td>
-                            <td class="px-4 py-3 text-sm">
-                                {{ $book->pegawai->name }}
-                            </td>
-                            <td class="px-4 py-3 text-sm">
-                                <a href="/admin/hotel/{{ $book->id_hotel }}/shift/detail/{{ $book->id }}"
-                                    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Lihat Tamu
+                            <td class="px-4 py-3 text-sm flex gap-1">
+
+                                <a href="/admin/hotel/{{ $spending->id_hotel }}/spending/detail/{{ $spending->id }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor"
+                                        class="text-white w-6 h-6 bg-gradient-to-r from-blue-400 to-blue-500 hover:opacity-60 rounded-md">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
                                 </a>
+
+                                <div
+                                    class="rounded-md text-center bg-gradient-to-r from-red-500 to-red-700  h-6 w-6 text-white hover:opacity-60">
+                                    <form action="/hotel/spending/{{ $spending->id }}" method="POST">
+                                        @method('delete')
+                                        @csrf
+                                        <button class=""
+                                            onclick="return confirm('Apakah Kamu Yakin Ingin Menghapus?') ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6 ">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                            </svg>
+
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
+
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-        </div>
-        <div class="p-4">
-            {{ $books->links() }}
         </div>
     </div>
 

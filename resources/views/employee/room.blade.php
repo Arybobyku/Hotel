@@ -32,7 +32,7 @@
                 </div>
                 </div>
                                 <div class="flex-col">
-                    <h1 class="font-bold">Start Date</h1>
+                    <h1 class="font-bold">End Date</h1>
                       <div class="relative">
                     <div  class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                         <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
@@ -67,7 +67,7 @@
                     class="flex flex-col p-3 rounded-md shadow-xl">
                     @if ($room->image)
                         <div class="grid m-6 place-items-center">
-                            <img class="rounded-md" src="{{ asset('images/room-imgaes/' . $isimateri->image) }}">
+                            <img class="rounded-md" src="{{ asset('images/room-images/' . $room->image) }}">
                         </div>
                     @else
                         <div class="grid mt-2 place-items-center">

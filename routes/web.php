@@ -10,6 +10,7 @@ use App\Http\Controllers\PlatformController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SpendingController;
 use App\Models\Platform;
 
 /*
@@ -35,6 +36,7 @@ Route::middleware('auth', 'admin')->group(function () {
 
     Route::view('about', 'about')->name('about');
     Route::get('admin/hotel/{id}/shift/export/', 'App\Http\Controllers\ShiftController@export')->name('export.shift');
+    Route::get('admin/hotel/{id}/spending/export/', 'App\Http\Controllers\ShiftSpendingController@export')->name('export.spending');
 
     // Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
@@ -60,7 +62,9 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('/dashboard/log', [LogController::class,'index'])->name('log');
     // Route::post('dashboard/user/{id}', [AdminController::class,"update"])->name("dashboard.user.edit");
     Route::get('admin/hotel/{id}/shift', [\App\Http\Controllers\ShiftController::class, 'index'])->name('admin.shift');
+    Route::get('admin/hotel/{id}/spending', [\App\Http\Controllers\ShiftSpendingController::class, 'index'])->name('admin.spending');
     Route::get('admin/hotel/{id_hotel}/shift/detail/{id}', [\App\Http\Controllers\ShiftController::class, 'show'])->name('admin.shiftdetail');
+    Route::get('admin/hotel/{id_hotel}/spending/detail/{id}', [\App\Http\Controllers\ShiftSpendingController::class, 'show'])->name('admin.spendingdetail');
     Route::get('admin/hotel/{id}', [\App\Http\Controllers\AdminHotelController::class, 'index'])->name('admin.hotel');
     Route::get('admin/hotel/{id}/create', [\App\Http\Controllers\AdminHotelController::class, 'create'])->name('admin.createroom');
     Route::post('admin/hotel/{id}/create', [\App\Http\Controllers\AdminHotelController::class, 'createroom'])->name('createroom');
@@ -76,6 +80,7 @@ Route::middleware('auth')->group(function () {
     Route::get('hotel/shift/export/', 'App\Http\Controllers\ShiftController@export')->name('export.shiftfinance');
 
     Route::resource('hotel/asset', AssetController::class);
+    Route::resource('hotel/spending', SpendingController::class);
     Route::post('hotel/asset/create', [\App\Http\Controllers\AssetController::class, 'store'])->name("hotel.asset.store");
 
     Route::get('hotel/book/{date}/{id}', [\App\Http\Controllers\BookController::class, 'indexwalkin'])->name('hotel.book');

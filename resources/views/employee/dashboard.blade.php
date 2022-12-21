@@ -46,7 +46,7 @@
 
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    {{ $book->book_date_end->format('d/m/Y') }}
+                                    {{ $book->book_date_end }}
 
                                 </td>
                                 <td class="px-4 py-3 text-sm">
@@ -54,7 +54,7 @@
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     @if ($book->checkin)
-                                        {{ $book->checkin->format('d/m/Y') }}
+                                        {{ $book->checkin}}
                                     @else
                                         Belum Checkin
                                     @endif
@@ -62,7 +62,7 @@
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     @if ($book->checkout)
-                                        {{ $book->checkout->format('d/m/Y') }}
+                                        {{ $book->checkout }}
                                     @else
                                         Belum Checkout
                                     @endif

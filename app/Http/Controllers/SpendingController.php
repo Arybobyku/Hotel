@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Asset;
-use App\Models\Log;
+use App\Models\Spending;
 use Illuminate\Http\Request;
+use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
 
-class AssetController extends Controller
+class SpendingController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class AssetController extends Controller
     public function index()
     {
         $hotelId = Auth::user()->id_hotel;
-        return view('employee.asset.index', [
-            'assets' => Asset::where('id_hotel', $hotelId)->get(),
+        return view('employee.spending.index', [
+            'spendings' => Spending::where('id_hotel', $hotelId)->latest()->paginate(15),
         ]);
     }
 
@@ -29,7 +29,7 @@ class AssetController extends Controller
      */
     public function create()
     {
-        return view('employee.asset.create');
+        return view('employee.spending.create');
     }
 
     /**
@@ -45,54 +45,55 @@ class AssetController extends Controller
         $request->validate([
             'name' => 'required|max:255',
             'jumlah' => 'required|max:11',
-            'satuan' => 'required|max:255',
+            'tanggal' => 'required',
+            'keterangan' => '',
             'image' => 'image|file|max:1024',
         ]);
-
         if ($request->hasfile('image')) {
             $nama = $request->file('image')->store('images/asset-images');
         } else {
             $nama = null;
         }
 
-        Asset::create([
+        Spending::create([
             'name' => $request->name,
             'jumlah' => $request->jumlah,
-            'satuan' => $request->satuan,
+            'keterangan' => $request->keterangan,
+            'tanggal' => $request->tanggal,
             'id_hotel' => $hotelId,
             'image' => $nama,
         ]);
         Log::create([
-            'activity' => "$nameUser Menambah Asset Barang $request->name $request->jumlah $request->satuan",
+            'activity' => "$nameUser Menambah Pengeluaran $request->name $request->jumlah $request->satuan",
             'id_hotel' => $hotelId,
         ]);
 
-        return redirect('/hotel/asset')->with('success', 'Asset Barang Baru Telah Ditambahkan');
+        return redirect('/hotel/spending')->with('success', 'Pengeluaran Baru Telah Ditambahkan');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Asset  $asset
+     * @param  \App\Models\Spending  $spending
      * @return \Illuminate\Http\Response
      */
-    public function show(Asset $asset)
+    public function show(Spending $spending)
     {
-        return view('employee.asset.show', [
-            'asset' => $asset,
+        return view('employee.spending.show', [
+            'spending' => $spending,
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Asset  $asset
+     * @param  \App\Models\Spending  $spending
      * @return \Illuminate\Http\Response
      */
-    public function edit(Asset $asset)
+    public function edit(Spending $spending)
     {
-        return view('employee.asset.edit', [
-            'asset' => $asset,
+        return view('employee.spending.edit', [
+            'spending' => $spending,
         ]);
     }
 
@@ -100,48 +101,46 @@ class AssetController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Asset  $asset
+     * @param  \App\Models\Spending  $spending
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Asset $asset)
+    public function update(Request $request, Spending $spending)
     {
         $hotelId = Auth::user()->id_hotel;
         $nameUser = Auth::user()->name;
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'jumlah' => 'required|max:11',
-            'satuan' => 'required|max:255',
+            'tanggal' => 'required',
+            'keterangan' => '',
             'image' => 'image|file|max:1024',
         ]);
         if ($request->file('image')) {
             $validatedData['image'] = $request->file('image')->store('asset-images');
         }
-        Asset::where('id', $asset->id)->update($validatedData);
+        Spending::where('id', $spending->id)->update($validatedData);
         Log::create([
-            'activity' => "$nameUser Mengubah Asset Barang $request->name $request->jumlah $request->satuan",
+            'activity' => "$nameUser Mengubah Pengeluaran $request->name $request->jumlah $request->satuan",
             'id_hotel' => $hotelId,
-
         ]);
-        return redirect('hotel/asset')->with('status', 'Berhasil Mengedit Asset');
+        return redirect('hotel/spending')->with('status', 'Berhasil Mengedit Pengeluaran');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Asset  $asset
+     * @param  \App\Models\Spending  $spending
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Asset $asset)
+    public function destroy(Spending $spending)
     {
-        $nameUser = Auth::user()->name;
         $hotelId = Auth::user()->id_hotel;
-
-        Asset::destroy($asset->id);
+        $nameUser = Auth::user()->name;
+        Spending::destroy($spending->id);
         Log::create([
-            'activity' => "$nameUser Menghapus Asset Barang $asset->name",
+            'activity' => "$nameUser Menghapus Pengeluaran $spending->name",
             'id_hotel' => $hotelId,
-
         ]);
-        return redirect('hotel/asset')->with('status', 'Berhasil Menghapus Asset');
+        return redirect('hotel/spending')->with('status', 'Berhasil Menghapus');
     }
 }

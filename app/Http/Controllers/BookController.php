@@ -21,16 +21,80 @@ class BookController extends Controller
     {
         $idHotel = Auth::user()->id_hotel;
         $room = Room::where('id', $request->id)->first();
-        return view('employee.book', ['room' => $room, 'date' => $request->date, 
-    ]);
+        return view('employee.book', ['room' => $room, 'date' => $request->date]);
     }
-    
+
     public function indexapp(Request $request)
     {
         $idHotel = Auth::user()->id_hotel;
-        return view('employee.book2', [
-            'platforms' => Platform::all()
+        $startDate = date('Y-m-d');
+        $endDate = null;
 
+        $now = date('Y-m-d');
+        $idHotel = Auth::user()->id_hotel;
+        $rooms = Room::where('id_hotel', $idHotel)->get();
+        $availableRooms = [];
+        // var_dump($request->dateChange);die();
+        if ($request->startDateChange && $request->endDateChange != null) {
+            $startDate = $request->startDateChange;
+            $endDate = $request->endDateChange;
+            $date = 'From ' . $request->startDateChange . ' Until ' . $request->endDateChange;
+
+            $bookings = Book::Where(function ($query) use ($startDate, $endDate) {
+                $query->WhereDate('book_date', '>', $startDate)->orWhereDate('book_date_end', '>=', $startDate);
+            })
+                ->where('id_hotel', $idHotel)
+                ->get();
+
+            foreach ($rooms as $room) {
+                $isAvailable = true;
+                foreach ($bookings as $booking) {
+                    if ($booking->id_room == $room->id) {
+                        $isAvailable = false;
+                        break;
+                    }
+                }
+                if ($isAvailable) {
+                    array_push($availableRooms, $room);
+                }
+            }
+        } elseif ($request->startDateChange) {
+            $startDate = $request->dateChange;
+            $bookings = Book::whereDate('book_date', $startDate)
+                ->where('id_hotel', $idHotel)
+                ->get();
+            foreach ($rooms as $room) {
+                $isAvailable = true;
+                foreach ($bookings as $booking) {
+                    if ($booking->id_room == $room->id) {
+                        $isAvailable = false;
+                        break;
+                    }
+                }
+                if ($isAvailable) {
+                    array_push($availableRooms, $room);
+                }
+            }
+        } else {
+            $bookings = Book::whereDate('book_date', $startDate)
+                ->where('id_hotel', $idHotel)
+                ->get();
+            foreach ($rooms as $room) {
+                $isAvailable = true;
+                foreach ($bookings as $booking) {
+                    if ($booking->id_room == $room->id) {
+                        $isAvailable = false;
+                        break;
+                    }
+                }
+                if ($isAvailable) {
+                    array_push($availableRooms, $room);
+                }
+            }
+        }
+        return view('employee.book2', [
+            'platforms' => Platform::where('id', '!=', 1)->get(),
+            'rooms' => $availableRooms,
         ]);
     }
 
@@ -49,16 +113,25 @@ class BookController extends Controller
         if ($chargers != null) {
             foreach ($chargers as $idCharge) {
                 ChargePivot::create([
-                    "id_charge" => $idCharge,
-                    "id_book" => $request->id_booking
+                    'id_charge' => $idCharge,
+                    'id_book' => $request->id_booking,
                 ]);
             }
         }
+
         $hotelId = Auth::user()->id_hotel;
         $nameUser = Auth::user()->name;
         $date = date('Y-m-d');
+        $charges = ChargePivot::where('id_book', $request->id_booking)
+            ->with('charge')
+            ->get();
+        $totalCharge = 0;
+        foreach ($charges as $charge) {
+            $totalCharge += $charge->charge->charge;
+        }
         Book::where('id', $request->id_booking)->update([
             'checkOut' => $date,
+            'total_charge' => $totalCharge,
         ]);
 
         Log::create([
@@ -73,25 +146,31 @@ class BookController extends Controller
         $userId = Auth::id();
         $hotelId = Auth::user()->id_hotel;
         $nameUser = Auth::user()->name;
+        $roomName = Room::select(['name'])
+            ->where('id', '=', $request->id_room)
+            ->get();
+
         $request->validate([
             'id_room' => ['required', 'integer'],
             'guestname' => ['required', 'string', 'max:255'],
-            'room' => ['required','string', 'max:255'],
             'nik' => ['required', 'string', 'max:255'],
             'nota' => ['required', 'string', 'max:255'],
             'price' => ['required', 'integer'],
         ]);
 
+        $platformFee = Platform::where('id', $request->id_platform)->sum('platform_fee');
+        $potonganFee = ($platformFee * $request->price) / 100;
+
         $date = date_create($request->booking);
-        date_add($date, date_interval_create_from_date_string($request->jumlah_hari . " days"));
-        $dateBookingEnd = date_format($date, "Y-m-d");
+        date_add($date, date_interval_create_from_date_string($request->jumlah_hari . ' days'));
+        $dateBookingEnd = date_format($date, 'Y-m-d');
 
         Book::create([
             'guestname' => $request->guestname,
             'id_room' => $request->id_room,
             'id_hotel' => $hotelId,
             'id_user' => $userId,
-            'room' => $request->room,
+            'room' => $roomName,
             'nik' => $request->nik,
             'nota' => $request->nota,
             'price' => $request->price,
@@ -104,7 +183,7 @@ class BookController extends Controller
             'booking_type' => $request->jenisPesan,
             'payment_type' => $request->jenisPembayaran,
             'id_platform' => $request->id_platform,
-            'platform_fee2' => $request->platform_fee2,
+            'platform_fee2' => $potonganFee,
             'assured_stay' => $request->assured_stay,
             'tipforstaf' => $request->tipforstaf,
             'upgrade_room' => $request->upgrade_room,

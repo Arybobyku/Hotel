@@ -13,7 +13,6 @@
             <div class="block w-full overflow-x-auto p-8">
                 <form method="POST" action="{{ Route('insertcheckin') }}" enctype="multipart/form-data">
                     @csrf
-                    <input name="id_room" value="0" hidden />
                     <div class="mb-6">
                         <label for="nota" class="block mb-2 text-sm font-medium text-gray-900 ">Nomor Transaksi</label>
                         <input type="text" id="nota" name="nota"
@@ -34,9 +33,13 @@
                     </div>
                     <div class="mb-6">
                         <label for="room" class="block mb-2 text-sm font-medium text-gray-900 ">Room</label>
-                        <input type="text" id="room" name="room"
-                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="" required>
+                        <select
+                            class="form-select bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                            name="id_room" id="id_room">
+                            @foreach ($rooms as $room)
+                                <option value="{{ $room->id }}">{{ $room->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="mb-6">
                         <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">Harga</label>
@@ -62,17 +65,7 @@
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="">
                     </div>
-
-                    <div class="mb-6">
-                        <label for="jenisPesan" class="block mb-2 text-sm font-medium text-gray-900 ">Jenis
-                            Pembayaran</label>
-                        <select
-                            class="form-select bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            name="jenisPesan" id="jenisPesan" required>
-                            <option value="cash">Cash</option>
-                            <option value="app">Dari Aplikasi</option>
-                        </select>
-                    </div>
+                    <input type="hidden" name="jenisPesan" value="app">
                     <label for="jenisPembayaran" class="block mb-2 text-sm font-medium text-gray-900 ">Post/Pre Paid</label>
                     <div class="flex items-center mb-6">
                         <input checked id="jenisPembayaran" type="radio" value="post" name="jenisPembayaran"
@@ -94,13 +87,13 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="mb-6">
+                    {{-- <div class="mb-6">
                         <label for="platform_fee2" class="block mb-2 text-sm font-medium text-gray-900 ">Platform
                             Fee</label>
                         <input type="number" id="platform_fee2" value="" name="platform_fee2"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="Jika Tidak Ada Isi : 0 " required>
-                    </div>
+                    </div> --}}
                     <div class="mb-6">
                         <label for="assured_stay" class="block mb-2 text-sm font-medium text-gray-900 ">Assured
                             Stay</label>

@@ -12,7 +12,9 @@ class Platform extends Model
         "platform_name",
         "platform_fee"
     ];
-
+    protected $casts = [
+        'platform_fee' => 'integer',
+    ];
     public function books(){
         return $this->hasMany(Book::class,"id_platform","id");
     }

@@ -41,7 +41,7 @@
                                     {{ $platform->platform_name }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    Rp {{ number_format($platform->platform_fee) }}
+                                    {{ $platform->platform_fee }} %
                                 </td>
                                 <td class="flex flex-auto">
                                     <div>

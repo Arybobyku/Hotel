@@ -55,7 +55,7 @@
 
 
         </form>
-        @if ($isfinance == 1)
+        {{-- @if ($isfinance == 1)
             <form method="get" action="{{ route('export.shiftfinance', $userh) }}">
                 <input type='hidden' name="from" value="{{ Request::old('from') }}">
                 <input type='hidden' name="to" value="{{ Request::old('to') }}">
@@ -70,7 +70,7 @@
                     Export</button>
 
             </form>
-        @endif
+        @endif --}}
     </div>
 
     </div>
@@ -120,14 +120,14 @@
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 @if ($book->checkin)
-                                    {{ $book->checkin->format('d/m/Y') }}
+                                    {{ $book->checkin }}
                                 @else
                                     Belum Checkout
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 @if ($book->checkout)
-                                    {{ $book->checkout->format('d/m/Y') }}
+                                    {{ $book->checkout }}
                                 @else
                                     Belum Checkout
                                 @endif

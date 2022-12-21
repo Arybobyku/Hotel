@@ -5,18 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Asset extends Model
+class Spending extends Model
 {
     use HasFactory;
-        protected $fillable = [
+
+    protected $fillable = [
         'id_hotel',
         'name',
         'image',
         'jumlah',
-        'satuan',
+        'tanggal',
+        'keterangan',
     ];
 
-        public function hotel(){ 
+    public function hotel(){ 
         return $this->hasOne(Hotel::class,'id','id_hotel');
     }
 }

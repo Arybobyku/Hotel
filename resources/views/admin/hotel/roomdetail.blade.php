@@ -41,14 +41,14 @@
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 @if ($book->checkin)
-                                    {{ $book->checkin->format('d/m/Y') }}
+                                    {{ $book->checkin }}
                                 @else
                                     Belum Checkout
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 @if ($book->checkout)
-                                    {{ $book->checkout->format('d/m/Y') }}
+                                    {{ $book->checkout }}
                                 @else
                                     Belum Checkout
                                 @endif

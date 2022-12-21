@@ -17,7 +17,7 @@ class ChargePivot extends Model
         return $this->hasOne(ChargeType::class,'id','id_charge');
     }
 
-    public function book(){
+    public function book(){ 
         return $this->hasOne(Book::class,'id','id_book');
     }
 

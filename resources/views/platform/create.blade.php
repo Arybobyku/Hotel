@@ -18,7 +18,7 @@
                     placeholder="" required>
             </div>
                         <div class="mb-6">
-                <label for="charge" class="block mb-2 text-sm font-medium text-gray-900 ">Fee Platform</label>
+                <label for="charge" class="block mb-2 text-sm font-medium text-gray-900 ">Fee Platform (%)</label>
                 <input type="number" id="platform_fee" name="platform_fee"
                     class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                     placeholder="" required>
