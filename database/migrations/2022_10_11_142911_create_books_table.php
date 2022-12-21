@@ -40,6 +40,8 @@ return new class extends Migration
             $table->bigInteger('member_redclub')->default('0');
             $table->bigInteger('breakfast')->default('0');
             $table->bigInteger('early_checkin')->default('0');
+            $table->bigInteger('total_amount')->default('0');
+            $table->bigInteger('total_charge')->default('0');
             $table->timestamps();
         });
     }

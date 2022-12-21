@@ -87,7 +87,7 @@
                     @if ($room->image)
                         <div class="mb-4 h-40 w-full overflow-hidden">
 
-                            <img alt="CheckDenatio" class="rounded-md" src="{{ asset('images/' . $room->image) }}">
+                            <img alt="CheckDenatio" class="rounded-md" src="{{ asset($room->image) }}">
 
                         </div>
                     @else

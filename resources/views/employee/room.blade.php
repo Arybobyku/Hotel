@@ -67,7 +67,7 @@
                     class="flex flex-col p-3 rounded-md shadow-xl">
                     @if ($room->image)
                         <div class="grid m-6 place-items-center">
-                            <img class="rounded-md" src="{{ asset('images/room-images/' . $room->image) }}">
+                            <img class="rounded-md" src="{{ asset($room->image) }}">
                         </div>
                     @else
                         <div class="grid mt-2 place-items-center">

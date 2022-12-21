@@ -79,7 +79,6 @@
         <div class="flex gap-4">
 
             <div class="flex-col">
-                <h4>Harga Kamar</h4>
                 <h4>Jumlah Hari</h4>
                 @if ($book->id_room != 0)
                     <h4>Total</h4>
@@ -106,26 +105,15 @@
                 <h4>:</h4>
             </div>
             <div class="flex-col">
-                @if ($book->id_room != 0)
-                    <h4>Rp. {{ number_format($book->nameroom->price) }},-</h4>
-                @else
+                    <h4>{{ $book->days }}</h4>
                     <h4>Rp. {{ number_format($book->price) }},-</h4>
-                @endif
-                <h4>{{ $book->days }}</h4>
-                @if ($book->id_room != 0)
-                    <h4>Rp. {{ number_format($book->days * $book->nameroom->price) }},-</h4>
-                @endif
 
                 <h4>--------------</h4>
                 @foreach ($charges as $charge)
                     <h4> Rp. {{ number_format($charge->charge->charge) }},-</h4>
                 @endforeach
                 <br>
-                @if ($book->id_room != 0)
-                    <h4>Rp. {{ number_format($book->days * $book->nameroom->price + $totalCharge) }},-</h4>
-                @else
-                    <h4>Rp. {{ number_format($book->price_app + $totalCharge) }},-</h4>
-                @endif
+                    <h4>Rp. {{ number_format($book->price + $totalCharge) }},-</h4>
 
             </div>
         </div>

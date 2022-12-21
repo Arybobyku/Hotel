@@ -46,7 +46,7 @@ class AdminHotelController extends Controller
         ]);
 
         if ($request->file('image')) {
-            $validatedData['image'] = $request->file('image')->store('room-images');
+            $validatedData['image'] = $request->file('image')->store('images/room-images');
         }
 
         Room::create($validatedData);
@@ -80,12 +80,11 @@ class AdminHotelController extends Controller
             'name' => 'required|max:255',
             'image' => 'image|file|max:1024',
         ]);
-            if ($request->file('image')){
-            $validatedData['image'] = $request->file('image')->store('room-images');
-    }
+        if ($request->file('image')) {
+            $validatedData['image'] = $request->file('image')->store('images/room-images');
+        }
         Room::where('id', $request->id)->update($validatedData);
         return redirect('admin/hotel/' .  $request->id_hotel)->with('status', 'Berhasil Mengedit room');
-
     }
 
     public function deleteroom(Request $request)
@@ -95,8 +94,8 @@ class AdminHotelController extends Controller
         Room::where('id', $request['id'])->delete();
         return redirect('admin/hotel/' . $hotelId)->with('status', 'Berhasil menghapus room');
     }
-    
-        public function detail(Request $request)
+
+    public function detail(Request $request)
     {
         $myId = Auth::user()->id;
         $hotels = Hotel::where('id', $request->id)->first();

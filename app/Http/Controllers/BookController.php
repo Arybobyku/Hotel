@@ -129,9 +129,21 @@ class BookController extends Controller
         foreach ($charges as $charge) {
             $totalCharge += $charge->charge->charge;
         }
+        $price = Book::where('id', $request->id_booking)->sum('price');
+        $platform_fee2 = Book::where('id', $request->id_booking)->sum('platform_fee2');
+        $assured_stay = Book::where('id', $request->id_booking)->sum('assured_stay');
+        $tipforstaf = Book::where('id', $request->id_booking)->sum('tipforstaf');
+        $upgrade_room = Book::where('id', $request->id_booking)->sum('upgrade_room');
+        $travel_protection = Book::where('id', $request->id_booking)->sum('travel_protection');
+        $member_redclub = Book::where('id', $request->id_booking)->sum('member_redclub');
+        $breakfast = Book::where('id', $request->id_booking)->sum('breakfast');
+        $early_checkin = Book::where('id', $request->id_booking)->sum('early_checkin');
+        $totalAmount = $price + $totalCharge + $platform_fee2 + $assured_stay + $tipforstaf + $upgrade_room + $travel_protection
+            + $member_redclub + $breakfast + $early_checkin;
         Book::where('id', $request->id_booking)->update([
             'checkOut' => $date,
             'total_charge' => $totalCharge,
+            'total_amount' => $totalAmount
         ]);
 
         Log::create([

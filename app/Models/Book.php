@@ -34,22 +34,28 @@ class Book extends Model
         'member_redclub',
         'breakfast',
         'early_checkin',
+        'total_amount',
+        'total_charge',
     ];
-    public function nameroom(){
+    public function nameroom()
+    {
         return $this->hasOne(Room::class, 'id', 'id_room');
     }
-    public function hotel(){
-        return $this->hasOne(Hotel::class,'id','id_hotel');
+    public function hotel()
+    {
+        return $this->hasOne(Hotel::class, 'id', 'id_hotel');
     }
-    public function pegawai(){
+    public function pegawai()
+    {
         return $this->hasOne(User::class, 'id', 'id_user');
     }
 
-    public function chargePivot(){
-        return $this->hasMany(ChargePivot::class,'id_book','id');
+    public function chargePivot()
+    {
+        return $this->hasMany(ChargePivot::class, 'id_book', 'id');
     }
-    public function platform(){
-        return $this->belongsTo(Platform::class, 'id_platform','id');
+    public function platform()
+    {
+        return $this->belongsTo(Platform::class, 'id_platform', 'id');
     }
-
 }
