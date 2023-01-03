@@ -42,6 +42,7 @@ class AdminHotelController extends Controller
         $validatedData = $request->validate([
             'id_hotel' => 'required|max:11',
             'name' => 'required|max:255',
+            'price' => 'integer',
             'image' => 'image|file|max:1024',
         ]);
 
