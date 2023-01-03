@@ -16,7 +16,7 @@
                             <th class="px-4 py-3">No</th>
                             <th class="px-4 py-3">Customer</th>
                             <th class="px-4 py-3">Room</th>
-                            <th class="px-4 py-3">Tanggal Masuk</th>
+                            <th class="px-4 py-3">Tanggal Booking</th>
                             <th class="px-4 py-3">Tanggal Keluar</th>
                             <th class="px-4 py-3">Jumlah Hari</th>
                             <th class="px-4 py-3">Checkin</th>
@@ -93,7 +93,11 @@
                         @endforeach
                     </tbody>
                 </table>
+                                    <div class="p-4">
+            {{ $bookings->links() }}
+        </div>
             </div>
+
         </div>
 
         {{-- Show Modal --}}

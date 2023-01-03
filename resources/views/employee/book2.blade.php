@@ -3,6 +3,15 @@
 
 @section('contents')
     <div class="w-full px-4">
+        @if ($errors->any())
+     <div id="alert" class="alert mx-10 alert bg-red-300 rounded-lg py-5 px-6 mb-4 text-base text-red-500" role="alert">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
         <div class="relative flex flex-col min-w-0 break-words w-full mb-2 shadow-lg rounded bg-white">
             <div class="flex  items-center mx-8 mt-10">
                 <h3 class="font-semibold text-xl text-blueGray-700">
@@ -172,19 +181,9 @@
 </script>
 
 <script>
-    // $(document).ready(function() {
-    //     // Get value on button click and show alert
-    //     $("#jenisPesan").change(function() {
-    //         var price = $("#jenisPesan").val();
-    //         if (price == 'walkin') {
-    //             //disable all the radio button 
-    //             document.getElementById("app").disabled = true;
-    //         } else {
-    //             //enable all the radio button
-    //             document.getElementById("app").disabled = false;
-    //         }
-    //         // $('#total').val(hasil);
-
-    //     })
-    // });
+    window.setTimeout(function() {
+        $("#alert").fadeTo(2000, 0).slideUp(1000, function() {
+            $(this).remove();
+        });
+    }, 1000);
 </script>

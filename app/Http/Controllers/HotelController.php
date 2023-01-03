@@ -8,7 +8,7 @@ use App\Models\Book;
 use App\Models\ChargePivot;
 use App\Models\ChargeType;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;    
+use Illuminate\Support\Facades\Auth;
 
 class HotelController extends Controller
 {
@@ -24,9 +24,8 @@ class HotelController extends Controller
         $hotel = Hotel::where('id', $idHotel)->first();
         $charges = ChargeType::all();
         $startDate = date('Y-m-d');
-        $bookings = Book::where('id_hotel', $idHotel)
-            ->where('book_date', '>=', $startDate)
-            ->get();
+        $bookings = Book::where('id_hotel', $idHotel)->latest()
+            ->paginate(10);
         return view('employee.dashboard', [
             'hotel' => $hotel,
             'bookings' => $bookings,
@@ -34,9 +33,9 @@ class HotelController extends Controller
         ]);
     }
 
-    public function typebook(Request $request){
+    public function typebook(Request $request)
+    {
         return view('employee.typebook');
-
     }
 
     public function rooms(Request $request)
@@ -133,12 +132,10 @@ class HotelController extends Controller
             $filter = Book::whereBetween('book_date', [$from, $to])
                 ->where('id_user', $idUser)->where('id_hotel', $idHotel)
                 ->latest()->paginate(15);
-
         } else {
             $filter = Book::whereBetween('book_date', [$from, $to])
                 ->where('id_hotel', $idHotel)
                 ->latest()->paginate(15);
-
         }
         session()->flashInput($request->input());
         return view('employee.shift', [

@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Book;
-use App\Models\ChargePivot;
-use App\Models\ChargeType;
 use App\Models\Log;
-use App\Models\kuesioner;
-use App\Models\Platform;
+use App\Models\Book;
 use App\Models\Room;
-use App\Models\UserAnswere;
-use App\Models\UserResult;
+use App\Models\Platform;
+use App\Models\ChargePivot;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
@@ -155,15 +152,42 @@ class BookController extends Controller
 
     public function booking(Request $request)
     {
+        $startDate = date('Y-m-d');
+        $availableRooms = [];
+
         $userId = Auth::id();
         $hotelId = Auth::user()->id_hotel;
         $nameUser = Auth::user()->name;
         $roomName = Room::select(['name'])
             ->where('id', '=', $request->id_room)
             ->get();
+        $rooms = Room::where('id_hotel', $hotelId)->get();
 
+        $bookings = Book::whereDate('book_date', $startDate)
+            ->where('id_hotel', $hotelId)
+            ->get();
+        foreach ($rooms as $room) {
+            $isAvailable = true;
+            foreach ($bookings as $booking) {
+                if ($booking->id_room == $room->id) {
+                    $isAvailable = false;
+                    break;
+                }
+            }
+            if ($isAvailable) {
+                array_push($availableRooms, $room);
+            }
+        }
         $request->validate([
-            'id_room' => ['required', 'integer'],
+            'id_room' => [
+                'required', 'integer', Rule::unique('books')
+                    ->where(function ($query) use ($request) {
+                        return $query
+                            ->where('id_room', $request->id_room)
+                            ->whereDate('book_date', '=', date('Y-m-d'))
+                            ->where('id_hotel', auth()->user()->id_hotel);
+                    })
+            ],
             'guestname' => ['required', 'string', 'max:255'],
             'nik' => ['required', 'string', 'max:255'],
             'nota' => ['required', 'string', 'max:255'],
@@ -209,6 +233,6 @@ class BookController extends Controller
             'activity' => "$nameUser Membuat Reservation Nomor Transaksi $request->nota",
             'id_hotel' => $hotelId,
         ]);
-        return redirect('hotel/rooms');
+        return redirect('hotel/dashboard');
     }
 }

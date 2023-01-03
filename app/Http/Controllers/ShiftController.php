@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Book;
 use App\Models\Hotel;
 use App\Models\User;
@@ -21,7 +22,6 @@ class ShiftController extends Controller
         if ((empty($request->input('from')) || empty($request->input('to'))) && $request->id_user) {
             $filter = Book::where('id_user', $request->id_user)
                 ->latest()->paginate(15);
-                
         } elseif (!empty($request->input('from')) && !empty($request->input('to')) && $request->id_user) {
             $from = $request->from;
             $to = $request->to;
@@ -76,7 +76,7 @@ class ShiftController extends Controller
     }
     public function export(Request $request)
     {
-                $myId = Auth::user()->id_hotel;
+        $myId = Auth::user()->id_hotel;
         return Excel::download(new ShiftExport($myId, $request->from, $request->to, $request->id_user), 'users.xlsx');
     }
 }
