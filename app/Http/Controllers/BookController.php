@@ -38,7 +38,7 @@ class BookController extends Controller
             $date = 'From ' . $request->startDateChange . ' Until ' . $request->endDateChange;
 
             $bookings = Book::Where(function ($query) use ($startDate, $endDate) {
-                $query->WhereDate('book_date', '>', $startDate)->orWhereDate('book_date_end', '>=', $startDate);
+                $query->WhereDate('checkin', '>', $startDate)->orWhereDate('book_date_end', '>=', $startDate);
             })
                 ->where('id_hotel', $idHotel)
                 ->get();
@@ -57,7 +57,7 @@ class BookController extends Controller
             }
         } elseif ($request->startDateChange) {
             $startDate = $request->dateChange;
-            $bookings = Book::whereDate('book_date', $startDate)
+            $bookings = Book::whereDate('checkin', $startDate)
                 ->where('id_hotel', $idHotel)
                 ->get();
             foreach ($rooms as $room) {
@@ -73,7 +73,7 @@ class BookController extends Controller
                 }
             }
         } else {
-            $bookings = Book::whereDate('book_date', $startDate)
+            $bookings = Book::whereDate('checkin', $startDate)
                 ->where('id_hotel', $idHotel)
                 ->get();
             foreach ($rooms as $room) {
@@ -163,7 +163,7 @@ class BookController extends Controller
             ->get();
         $rooms = Room::where('id_hotel', $hotelId)->get();
 
-        $bookings = Book::whereDate('book_date', $startDate)
+        $bookings = Book::whereDate('checkin', $startDate)
             ->where('id_hotel', $hotelId)
             ->get();
         foreach ($rooms as $room) {
@@ -184,7 +184,7 @@ class BookController extends Controller
                     ->where(function ($query) use ($request) {
                         return $query
                             ->where('id_room', $request->id_room)
-                            ->whereDate('book_date', '=', date('Y-m-d'))
+                            ->whereDate('checkin', '=', date('Y-m-d'))
                             ->where('id_hotel', auth()->user()->id_hotel);
                     })
             ],
@@ -197,7 +197,7 @@ class BookController extends Controller
         $platformFee = Platform::where('id', $request->id_platform)->sum('platform_fee');
         $potonganFee = ($platformFee * $request->price) / 100;
 
-        $date = date_create($request->booking);
+        $date = date_create($request->checkin);
         date_add($date, date_interval_create_from_date_string($request->jumlah_hari . ' days'));
         $dateBookingEnd = date_format($date, 'Y-m-d');
 

@@ -54,7 +54,7 @@ class HotelController extends Controller
             $date = 'From ' . $request->startDateChange . ' Until ' . $request->endDateChange;
 
             $bookings = Book::Where(function ($query) use ($startDate, $endDate) {
-                $query->WhereDate('book_date', '>', $startDate)->orWhereDate('book_date_end', '>=', $startDate);
+                $query->WhereDate('checkin', '>', $startDate)->orWhereDate('book_date_end', '>=', $startDate);
             })
                 ->where('id_hotel', $idHotel)
                 ->get();
@@ -73,7 +73,7 @@ class HotelController extends Controller
             }
         } elseif ($request->startDateChange) {
             $startDate = $request->dateChange;
-            $bookings = Book::whereDate('book_date', $startDate)
+            $bookings = Book::whereDate('checkin', $startDate)
                 ->where('id_hotel', $idHotel)
                 ->get();
             foreach ($rooms as $room) {
@@ -89,7 +89,7 @@ class HotelController extends Controller
                 }
             }
         } else {
-            $bookings = Book::whereDate('book_date', $startDate)
+            $bookings = Book::whereDate('checkin', $startDate)
                 ->where('id_hotel', $idHotel)
                 ->get();
             foreach ($rooms as $room) {
