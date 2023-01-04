@@ -13,6 +13,14 @@
             {{ Auth::user()->hotel->name }}
 
         </a>
+            @php
+        $user = Auth::user();
+        $userh = $user->id_hotel;
+        $isfinance = $user->isfinance;
+        
+        Auth::setUser($user);
+        
+    @endphp
         <ul class="mt-6">
             <li class="relative px-6 py-3">
                 <x-nav-link href="/hotel/dashboard" :active="request()->routeIs('hotel.dashboard')">
