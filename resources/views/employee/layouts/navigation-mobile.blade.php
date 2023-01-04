@@ -1,31 +1,19 @@
-<div
-        x-show="isSideMenuOpen"
-        x-transition:enter="transition ease-in-out duration-150"
-        x-transition:enter-start="opacity-0"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in-out duration-150"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0"
-        class="fixed inset-0 z-10 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"
-></div>
-<aside
-        class="fixed inset-y-0 z-20 flex-shrink-0 w-64 mt-16 overflow-y-auto bg-white md:hidden"
-        x-show="isSideMenuOpen"
-        x-transition:enter="transition ease-in-out duration-150"
-        x-transition:enter-start="opacity-0 transform -translate-x-20"
-        x-transition:enter-end="opacity-100"
-        x-transition:leave="transition ease-in-out duration-150"
-        x-transition:leave-start="opacity-100"
-        x-transition:leave-end="opacity-0 transform -translate-x-20"
-        @click.outside="closeSideMenu"
-        @keydown.escape="closeSideMenu"
->
+<div x-show="isSideMenuOpen" x-transition:enter="transition ease-in-out duration-150" x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in-out duration-150"
+    x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+    class="fixed inset-0 z-10 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"></div>
+<aside class="fixed inset-y-0 z-20 flex-shrink-0 w-64 mt-16 overflow-y-auto bg-white md:hidden" x-show="isSideMenuOpen"
+    x-transition:enter="transition ease-in-out duration-150"
+    x-transition:enter-start="opacity-0 transform -translate-x-20" x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in-out duration-150" x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0 transform -translate-x-20" @click.outside="closeSideMenu"
+    @keydown.escape="closeSideMenu">
     <div class="py-4 text-gray-500 dark:text-gray-400">
         <a class="ml-6 text-lg font-bold text-gray-800" href="{{ route('dashboard') }}">
-                        {{ Auth::user()->hotel->name }}
+            {{ Auth::user()->hotel->name }}
 
         </a>
-  <ul class="mt-6">
+        <ul class="mt-6">
             <li class="relative px-6 py-3">
                 <x-nav-link href="/hotel/dashboard" :active="request()->routeIs('hotel.dashboard')">
                     <x-slot name="icon">
@@ -39,7 +27,7 @@
                 </x-nav-link>
             </li>
             <li class="relative px-6 py-3">
-                <x-nav-link href="/hotel/rooms" :active="request()->routeIs('hotel.rooms')">
+                <x-nav-link href="/hotel/typebook" :active="request()->routeIs('hotel.typebook')">
                     <x-slot name="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6">
@@ -80,6 +68,23 @@
                     {{ __('Asset Barang') }}
                 </x-nav-link>
             </li>
+            @if ($isfinance == 1)
+                <li class="relative px-6 py-3">
+                    <x-nav-link href="/hotel/spending" :active="request()->routeIs('spending.index') ||
+                        request()->routeIs('spending.show') ||
+                        request()->routeIs('spending.edit') ||
+                        request()->routeIs('spending.create')">
+                        <x-slot name="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
+                            </svg>
+                        </x-slot>
+                        {{ __('Pengeluaran Hotel') }}
+                    </x-nav-link>
+                </li>
+            @endif
         </ul>
     </div>
 </aside>
