@@ -3,7 +3,7 @@
 
 @section('contents')
     {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
-    <h1 class="mx-10 text-xl font-bold text-center">Pengeluaran Hotel</h1>
+    <h1 class="mx-10 text-xl font-bold text-center">Paid Out</h1>
 
     <a href="/hotel/spending/create"
         class="flex flex-wrap gap-4 items-end justify-center bg-green-700 text-white w-52 py-2 mb-8 rounded-md hover:bg-green-400">
@@ -11,7 +11,7 @@
             class="w-6 h-6 items-center">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <h4 class="font-bold text-md "> Tambah Pengeluaran</h4>
+        <h4 class="font-bold text-md "> Tambah Paid Out</h4>
 
     </a>
     <div class="overflow-hidden mb-8 w-full rounded-lg border shadow-xs">

@@ -4,17 +4,18 @@
 @section('contents')
     <div class="w-full px-4">
         @if ($errors->any())
-     <div id="alert" class="alert mx-10 alert bg-red-300 rounded-lg py-5 px-6 mb-4 text-base text-red-500" role="alert">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+            <div id="alert" class="alert mx-10 alert bg-red-300 rounded-lg py-5 px-6 mb-4 text-base text-red-500"
+                role="alert">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="relative flex flex-col min-w-0 break-words w-full mb-2 shadow-lg rounded bg-white">
             <div class="flex  items-center mx-8 mt-10">
-                <h3 class="font-semibold text-xl text-blueGray-700">
+                <h3 class="font-semibold text-2xl text-blueGray-700">
                     Reservation
                 </h3>
             </div>
@@ -54,7 +55,7 @@
                         <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">Harga</label>
                         <input type="number" id="price" value="" name="price"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="" required>
+                            placeholder="Contoh : 200000" required>
                     </div>
                     <div class="mb-6">
                         <label for="booking" class="block mb-2 text-sm font-medium text-gray-900 ">Tanggal Booking</label>
@@ -113,14 +114,14 @@
                     <div class="mb-6">
                         <label for="text" class="block mb-2 text-sm font-medium text-gray-900 ">Tip For
                             Staf</label>
-                        <input type="number" id="tipforstaf" value="" name="tipforstaf"
+                        <input type="text" id="tipforstaf" value="" name="tipforstaf"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="Jika Tidak Ada Isi : 0 " required>
                     </div>
                     <div class="mb-6">
                         <label for="text" class="block mb-2 text-sm font-medium text-gray-900 ">Upgrade
                             Room</label>
-                        <input type="number" id="upgrade_room" value="" name="upgrade_room"
+                        <input type="text" id="upgrade_room" value="" name="upgrade_room"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="Jika Tidak Ada Isi : 0 " required>
                     </div>
@@ -139,7 +140,8 @@
                             placeholder="Jika Tidak Ada Isi : 0 " required>
                     </div>
                     <div class="mb-6">
-                        <label for="travel_protection" class="block mb-2 text-sm font-medium text-gray-900 ">Breakfast</label>
+                        <label for="travel_protection"
+                            class="block mb-2 text-sm font-medium text-gray-900 ">Breakfast</label>
                         <input type="text" id="breakfast" value="" name="breakfast"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="Jika Tidak Ada Isi : 0 " required>
@@ -147,6 +149,13 @@
                     <div class="mb-6">
                         <label for="early_checkin" class="block mb-2 text-sm font-medium text-gray-900 ">Early
                             Checkin</label>
+                        <input type="text" id="early_checkin" value="" name="early_checkin"
+                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                            placeholder="Jika Tidak Ada Isi : 0 " required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="early_checkin" class="block mb-2 text-sm font-medium text-gray-900 ">Late
+                            Checkout</label>
                         <input type="text" id="early_checkin" value="" name="early_checkin"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="Jika Tidak Ada Isi : 0 " required>

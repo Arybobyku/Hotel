@@ -6,7 +6,7 @@
         <div class="relative flex flex-col min-w-0 break-words w-full mb-2 shadow-lg rounded bg-white">
             <div class="flex  items-center mx-8 mt-10">
                 <h3 class="font-semibold text-xl text-blueGray-700">
-                    Edit Pengeluaran
+                    Edit Paid Out
                 </h3>
             </div>
 

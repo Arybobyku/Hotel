@@ -7,8 +7,36 @@
     @endphp
     
         <div class="grid grid-cols-1 mb-10 mx-24 w-lg rounded overflow-hidden shadow-lg bg-white">
-            <img class="w-max flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
-                src='https://source.unsplash.com/1200x400?hotel'>
+    @if ($user->id_hotel == 1)
+        <div class="grid grid-cols-1 mb-10 mx-24 w-lg h-96 rounded overflow-hidden shadow-lg bg-white">
+            <img class="align-middle w-full"
+                src='{{ asset("images/binjai.jpg") }}'>
+        </div>
+        @endif
+            @if ($user->id_hotel == 2)
+        <div class="grid grid-cols-1 mb-10 mx-24 w-lg h-96 rounded overflow-hidden shadow-lg bg-white">
+            <img class="align-middle w-full"
+                src='{{ asset("images/durung.jpg") }}'>
+        </div>
+        @endif
+                    @if ($user->id_hotel == 3)
+        <div class="grid grid-cols-1 mb-10 mx-24 w-lg h-96 rounded overflow-hidden shadow-lg bg-white">
+            <img class="align-middle w-full"
+                src='{{ asset("images/gaharu.jpg") }}'>
+        </div>
+        @endif
+                            @if ($user->id_hotel == 4)
+        <div class="grid grid-cols-1 mb-10 mx-24 w-lg h-96 rounded overflow-hidden shadow-lg bg-white">
+            <img class="align-middle w-full"
+                src='{{ asset("images/kertas.jpg") }}'>
+        </div>
+        @endif
+                                    @if ($user->id_hotel == 4)
+        <div class="grid grid-cols-1 mb-10 mx-24 w-lg h-96 rounded overflow-hidden shadow-lg bg-white">
+            <img class="align-middle w-full"
+                src='{{ asset("images/sempurna.jpg") }}'>
+        </div>
+        @endif
             <div class=" lg:border-gray-400 rounded-b m-6 flex flex-col justify-between leading-normal text-center">
                 <div class="mb-8">
                     <a href="{{ Route('hotel.dashboard') }}"
@@ -33,10 +61,7 @@
                     <a href="{{ Route('admin.spending', $user->id_hotel) }}"
                         >Pembukuan Pengeluaran</a>
                 </div>
-                
-
             </div>
-
         </div>
         <div class="mt-20 grid grid-cols-2 justify-end">
             <div class="">
