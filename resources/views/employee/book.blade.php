@@ -41,6 +41,7 @@
                     <input name="breakfast" value="0" hidden />
                     <input name="member_redclub" value="0" hidden />
                     <input name="early_checkin" value="0" hidden />
+                    <input name="late_checkout" value="0" hidden />
                     <div class="mb-6">
                         <label for="nota" class="block mb-2 text-sm font-medium text-gray-900 ">Nomor Transaksi</label>
                         <input type="text" id="nota" name="nota"
