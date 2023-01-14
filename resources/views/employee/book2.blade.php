@@ -156,7 +156,7 @@
                     <div class="mb-6">
                         <label for="early_checkin" class="block mb-2 text-sm font-medium text-gray-900 ">Late
                             Checkout</label>
-                        <input type="text" id="early_checkin" value="" name="early_checkin"
+                        <input type="text" id="late_checkout" value="" name="late_checkout"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="Jika Tidak Ada Isi : 0 " required>
                     </div>

@@ -135,8 +135,9 @@ class BookController extends Controller
         $member_redclub = Book::where('id', $request->id_booking)->sum('member_redclub');
         $breakfast = Book::where('id', $request->id_booking)->sum('breakfast');
         $early_checkin = Book::where('id', $request->id_booking)->sum('early_checkin');
+        $late_checkout = Book::where('id', $request->id_booking)->sum('late_checkout');
         $totalAmount = $price + $totalCharge + $platform_fee2 + $assured_stay + $tipforstaf + $upgrade_room + $travel_protection
-            + $member_redclub + $breakfast + $early_checkin;
+            + $member_redclub + $breakfast + $early_checkin + $late_checkout;
         Book::where('id', $request->id_booking)->update([
             'checkOut' => $date,
             'total_charge' => $totalCharge,
@@ -227,6 +228,7 @@ class BookController extends Controller
             'member_redclub' => $request->member_redclub,
             'breakfast' => $request->breakfast,
             'early_checkin' => $request->early_checkin,
+            'late_checkout' => $request->late_checkout,
         ]);
 
         Log::create([

@@ -34,6 +34,7 @@ class Book extends Model
         'member_redclub',
         'breakfast',
         'early_checkin',
+        'late_checkout',
         'total_amount',
         'total_charge',
     ];
