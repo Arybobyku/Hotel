@@ -105,6 +105,8 @@
                             placeholder="Jika Tidak Ada Isi : 0 " required>
                     </div> --}}
                     <div class="mb-6">
+                        <label for="assured_stay" class="block mb-2 text-sm font-medium text-gray-900 ">Anciliary
+                            Income</label>
                         <label for="assured_stay" class="block mb-2 text-sm font-medium text-gray-900 ">Assured
                             Stay</label>
                         <input type="text" id="assured_stay" value="" name="assured_stay"
