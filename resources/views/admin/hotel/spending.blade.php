@@ -8,7 +8,7 @@
 
     {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
         
-    <h1 class="mx-10 mb-6 text-xl font-bold text-center">Pengeluaran Hotel {{ $hotel->name }}</h1>
+    <h1 class="mx-10 mb-6 text-xl font-bold text-center">Paid Out {{ $hotel->name }}</h1>
  <div class="mx-10 my-8">
         <form method="GET" action="spending">
 

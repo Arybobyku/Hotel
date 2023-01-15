@@ -19,25 +19,58 @@ class ShiftController extends Controller
         $idHotel = Auth::user()->id_hotel;
         $idUser = Auth::id();
 
-        if ((empty($request->input('from')) || empty($request->input('to'))) && $request->id_user) {
+        if ((empty($request->input('from')) || empty($request->input('to'))) && $request->id_user && $request->tipee != NULL) { //USER DAN TIPE 
             $filter = Book::where('id_user', $request->id_user)
-                ->latest()->paginate(15);
-        } elseif (!empty($request->input('from')) && !empty($request->input('to')) && $request->id_user) {
+                ->where('payment_type', $request->tipee)
+                ->where('id_hotel', $request->id)
+                ->latest()
+                ->paginate(15);
+        } elseif ((empty($request->input('from')) || empty($request->input('to'))) && empty($request->input('id_user')) && $request->tipee != NULL) { // TIPE
+            $filter = Book::where('payment_type', $request->tipee)
+                ->where('id_hotel', $request->id)
+                ->latest()
+                ->paginate(15);
+        } elseif ((empty($request->input('from')) || empty($request->input('to'))) && $request->tipee == NULL && $request->id_user) { //USER 
+            $filter = Book::where('id_user', $request->id_user)
+                ->where('id_hotel', $request->id)
+                ->latest()
+                ->paginate(15);
+        } elseif (!empty($request->input('from')) && !empty($request->input('to')) && $request->id_user && $request->tipee != NULL) { //TANGGAL 
             $from = $request->from;
             $to = $request->to;
             $filter = Book::whereBetween('book_date', [$from, $to])
                 ->where('id_hotel', $request->id)
                 ->where('id_user', $request->id_user)
-                ->latest()->paginate(15);
-        } elseif (!empty($request->input('from')) && !empty($request->input('to')) && empty($request->input('id_user'))) {
+                ->where('payment_type', $request->tipee)
+                ->latest()
+                ->paginate(15);
+        } elseif (!empty($request->input('from')) && !empty($request->input('to')) && empty($request->input('id_user')) && $request->tipee == NULL) { //TANGGAL 
             $from = $request->from;
             $to = $request->to;
             $filter = Book::whereBetween('book_date', [$from, $to])
                 ->where('id_hotel', $request->id)
-                ->latest()->paginate(15);
+                ->latest()
+                ->paginate(15);
+        } elseif (!empty($request->input('from')) && !empty($request->input('to')) && empty($request->input('id_user')) && $request->tipee != NULL) {
+            $from = $request->from;
+            $to = $request->to;
+            $filter = Book::whereBetween('book_date', [$from, $to])
+                ->where('payment_type', $request->tipee)
+                ->where('id_hotel', $request->id)
+                ->latest()
+                ->paginate(15);
+        } elseif (!empty($request->input('from')) && !empty($request->input('to')) && $request->tipee == NULL && $request->id_user) {
+            $from = $request->from;
+            $to = $request->to;
+            $filter = Book::whereBetween('book_date', [$from, $to])
+                ->where('id_user', $request->id_user)
+                ->where('id_hotel', $request->id)
+                ->latest()
+                ->paginate(15);
         } else {
             $filter = Book::where('id_hotel', $request->id)
-                ->latest()->paginate(15);
+                ->latest()
+                ->paginate(15);
         }
         session()->flashInput($request->input());
         $hotel = Hotel::where('id', $request->id)->first();
@@ -50,7 +83,6 @@ class ShiftController extends Controller
             'hotel' => $hotel,
         ]);
     }
-
     public function show(Request $request)
     {
         $myId = Auth::user()->id;

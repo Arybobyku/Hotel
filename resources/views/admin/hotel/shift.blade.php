@@ -6,7 +6,7 @@
         Auth::setUser($user);
     @endphp
     {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
-    <h1 class="mx-10 text-xl font-bold">Laporan Pembukuan {{ $hotel->name }}</h1>
+    <h1 class="mx-10 text-xl font-bold">Revenue {{ $hotel->name }}</h1>
 
     <div class="mx-10 my-8">
         <form method="GET" action="shift">
@@ -49,6 +49,14 @@
                             <option value="{{ $pegawai->id }}" @if ($pegawai->id == old('id_user')) selected @endif>
                                 {{ $pegawai->name }}</option>
                         @endforeach
+                    </select>
+                </div>
+                <div class="relative pl-3">
+                    <select name="tipee" class="bg-white border border-gray-300 text-gray-900 w-full rounded-md">
+                        <option value=""> Pilih Payment Type </option>
+                        <option value="post"  @if ("post" == old('tipee')) selected @endif>Post</option>
+                        <option value="pre"@if ("pre" == old('tipee')) selected @endif>Pre</option>
+                        <option value="0"@if ("0" == old('tipee')) selected @endif>Walkin</option>
                     </select>
                 </div>
                 <button type="submit"
@@ -123,7 +131,7 @@
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 @if ($book->checkin)
-                                    {{ $book->checkin}}
+                                    {{ $book->checkin }}
                                 @else
                                     Belum Checkout
                                 @endif
