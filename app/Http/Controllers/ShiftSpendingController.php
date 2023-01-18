@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Book;
 use App\Models\Hotel;
 use App\Models\User;
@@ -21,7 +22,6 @@ class ShiftSpendingController extends Controller
         if ((empty($request->input('from')) || empty($request->input('to'))) && $request->id_user) {
             $filter = Spending::where('id_user', $request->id_user)
                 ->latest()->paginate(15);
-                
         } elseif (!empty($request->input('from')) && !empty($request->input('to')) && $request->id_user) {
             $from = $request->from;
             $to = $request->to;
@@ -55,9 +55,7 @@ class ShiftSpendingController extends Controller
     {
         $myId = Auth::user()->id;
         $hotels = Hotel::where('id', $request->id)->first();
-        User::where('id', $myId)->update([
-            'id_hotel' => $request->id,
-        ]);
+
 
         $hotel = Hotel::where('id', $myId)->first();
         $spending = Spending::where('id', $request->id)->first();

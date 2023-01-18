@@ -87,9 +87,7 @@ class ShiftController extends Controller
     {
         $myId = Auth::user()->id;
         $hotels = Hotel::where('id', $request->id)->first();
-        User::where('id', $myId)->update([
-            'id_hotel' => $request->id,
-        ]);
+
         $charges = ChargePivot::where('id_book', $request->id)
             ->with('charge')
             ->get();
