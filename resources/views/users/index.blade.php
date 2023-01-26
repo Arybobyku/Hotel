@@ -17,7 +17,7 @@
         Tambah Pegawai
     </a>
 
-    <div class="p-4 bg-white bg-opacity-60 rounded-lg shadow-xs">
+    <div class="p-4 bg-white bg-opacity-40 rounded-lg shadow-xs">
 
         {{-- <div class="inline-flex overflow-hidden mb-4 w-full bg-white rounded-lg shadow-md">
             <div class="flex justify-center items-center w-12 bg-blue-500">

@@ -5,7 +5,7 @@
     <div class="grid grid-cols-3 gap-4">
         @foreach ($hotels as $hotel)
           
-        <div class="p-4 bg-white bg-opacity-60 rounded-lg shadow-xl flex flex-col items-center">
+        <div class="p-4 bg-white bg-opacity-40 shadow-md rounded-lg flex flex-col items-center">
             @if ($hotel->id == 1)
             <img  class="h-80 mb-4 overflow-y-auto shadow-md" src='{{ asset('images/binjai.jpg') }}'alt="">
         @endif

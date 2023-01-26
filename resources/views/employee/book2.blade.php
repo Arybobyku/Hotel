@@ -13,7 +13,7 @@
                 </ul>
             </div>
         @endif
-        <div class="relative flex flex-col min-w-0 break-words w-full mb-2 shadow-lg rounded bg-white bg-opacity-60">
+        <div class="relative flex flex-col min-w-0 break-words w-full mb-2 shadow-lg rounded bg-white bg-opacity-40">
             <div class="flex  items-center mx-8 mt-10">
                 <h3 class="font-semibold text-2xl text-blueGray-700">
                     Reservation

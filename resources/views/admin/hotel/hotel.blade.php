@@ -6,7 +6,7 @@
         Auth::setUser($user);
     @endphp
 
-    <div class="grid grid-cols-1 mb-10 mx-24 w-lg rounded overflow-hidden shadow-xl bg-white bg-opacity-60">
+    <div class="grid grid-cols-1 mb-10 mx-24 w-lg rounded overflow-hidden shadow-xl ">
         @if ($user->id_hotel == 1)
             <div class="grid grid-cols-1 mb-10 mx-24 w-lg h-96 rounded overflow-hidden shadow-lg bg-white mt-10">
                 <img class="align-middle w-full" src='{{ asset('images/binjai.jpg') }}'>
@@ -77,7 +77,7 @@
     <div class="grid grid-cols-3 gap-4 mt-5">
 
         @foreach ($hotel->rooms as $room)
-            <div class=" p-4 bg-white bg-opacity-60 rounded-lg shadow-xs flex flex-col">
+            <div class=" p-4 rounded-lg shadow-xl flex flex-col">
                 <div class="relative flex flex-wrap">
                     <div
                         class="absolute m-auto right-0  text-center bg-gradient-to-r from-red-500 to-red-700  h-7 w-7 text-white hover:opacity-60">
