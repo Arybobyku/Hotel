@@ -11,7 +11,7 @@
         
     @endphp
     {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
-    <h1 class="text-center text-3xl font-bold">IN HOUSE</h1>
+    <h1 class="text-center text-3xl font-bold">In House</h1>
 
     <div class="mx-10 my-10">
         <form method="GET" action="shift">

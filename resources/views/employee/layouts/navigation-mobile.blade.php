@@ -57,7 +57,7 @@
                         </svg>
 
                     </x-slot>
-                    {{ __('Shift') }}
+                    {{ __('In House') }}
                 </x-nav-link>
             </li>
             {{-- <li class="relative px-6 py-3">

@@ -17,7 +17,7 @@
         Tambah Charge
     </a>
 
-    <div class="p-4 bg-white rounded-lg shadow-xs">
+    <div class="p-4 bg-white bg-opacity-60 rounded-lg shadow-xs">
 
         <div class="overflow-hidden mb-8 w-full rounded-lg border shadow-xs">
             <div class="overflow-x-auto w-full">

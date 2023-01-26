@@ -1,6 +1,6 @@
-<aside class="z-20 hidden w-64 overflow-y-auto bg-white md:block flex-shrink-0">
-    <div class="py-4 text-gray-500">
-        <a class="ml-6 text-lg font-bold text-gray-800" href="{{ route('dashboard') }}">
+<aside class="z-20 hidden w-64 overflow-y-auto bg-gray-800 md:block flex-shrink-0">
+    <div class="py-4 text-white">
+        <a class="ml-6 text-lg font-bold text-white" href="{{ route('dashboard') }}">
             {{ Auth::user()->hotel->name }}
         </a>
     @php
@@ -48,7 +48,7 @@
                         </svg>
 
                     </x-slot>
-                    {{ __('Shift') }}
+                    {{ __('In House') }}
                 </x-nav-link>
             </li>
 
