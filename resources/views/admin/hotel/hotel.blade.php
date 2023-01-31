@@ -8,28 +8,28 @@
 
     <div class="grid grid-cols-1 mb-10 mx-24 w-lg rounded overflow-hidden shadow-xl ">
         @if ($user->id_hotel == 1)
-            <div class="grid grid-cols-1 mb-10 mx-24 w-lg h-96 rounded overflow-hidden shadow-lg bg-white mt-10">
-                <img class="align-middle w-full" src='{{ asset('images/binjai.jpg') }}'>
+            <div class="grid grid-cols-1 mb-10 mx-24 w-lg rounded overflow-hidden shadow-lg bg-white mt-10">
+                <img class="align-middle w-full" src='{{ asset('images/binjai.png') }}'>
             </div>
         @endif
         @if ($user->id_hotel == 2)
-            <div class="grid grid-cols-1 mb-10 mx-24 w-lg h-96 rounded overflow-hidden shadow-lg bg-white mt-10">
-                <img class="align-middle w-full" src='{{ asset('images/durung.jpg') }}'>
+            <div class="grid grid-cols-1 mb-10 mx-24 w-lg  rounded overflow-hidden shadow-lg bg-white mt-10">
+                <img class="align-middle w-full" src='{{ asset('images/durung.png') }}'>
             </div>
         @endif
         @if ($user->id_hotel == 3)
-            <div class="grid grid-cols-1 mb-10 mx-24 w-lg h-96 rounded overflow-hidden shadow-lg bg-white mt-10"">
-                <img class="align-middle w-full" src='{{ asset('images/gaharu.jpg') }}'>
+            <div class="grid grid-cols-1 mb-10 mx-24 w-lg  rounded overflow-hidden shadow-lg bg-white mt-10"">
+                <img class="align-middle w-full" src='{{ asset('images/gaharu.png') }}'>
             </div>
         @endif
         @if ($user->id_hotel == 4)
-            <div class="grid grid-cols-1 mb-10 mx-24 w-lg h-96 rounded overflow-hidden shadow-lg bg-white mt-10"">
-                <img class="align-middle w-full" src='{{ asset('images/kertas.jpeg') }}'>
+            <div class="grid grid-cols-1 mb-10 mx-24 w-lg  rounded overflow-hidden shadow-lg bg-white mt-10"">
+                <img class="align-middle w-full" src='{{ asset('images/kertas.png') }}'>
             </div>
         @endif
         @if ($user->id_hotel == 5)
-            <div class="grid grid-cols-1 mb-10 mx-24 w-lg h-96 rounded overflow-hidden shadow-lg bg-white mt-10"">
-                <img class="align-middle w-full" src='{{ asset('images/sempurna.jpg') }}'>
+            <div class="grid grid-cols-1 mb-10 mx-24 w-lg rounded overflow-hidden shadow-lg bg-white mt-10"">
+                <img class="align-middle w-full" src='{{ asset('images/sempurna.png') }}'>
             </div>
         @endif
         <div class=" lg:border-gray-400 rounded-b m-6 flex flex-col justify-between leading-normal text-center">
