@@ -10,15 +10,28 @@ use App\Models\ChargePivot;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
     public function indexwalkin(Request $request)
     {
+        $today =  Carbon::today();
+        $today_files = Book::whereDate('created_at', $today)->count();
+        $counter =  $today_files;
+
+        if ($today_files != 0) {
+            $counter++;
+        } else {
+            $counter = 1;
+        }
         $idHotel = Auth::user()->id_hotel;
         $room = Room::where('id', $request->id)->first();
-        return view('employee.book', ['room' => $room, 'date' => $request->date]);
+        return view('employee.book', [
+            'room' => $room, 'date' => $request->date,
+            'counter' => $counter
+        ]);
     }
 
     public function indexapp(Request $request)
