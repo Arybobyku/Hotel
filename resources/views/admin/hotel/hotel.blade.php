@@ -7,27 +7,27 @@
     @endphp
 
     <div class="grid grid-cols-1 mb-10 mx-24 w-lg rounded overflow-hidden shadow-xl ">
-        @if ($user->id_hotel == 1)
+        @if ($user->id_hotel == 4)
             <div class="grid grid-cols-1 mb-10 mx-24 w-lg rounded overflow-hidden shadow-lg bg-white mt-10">
                 <img class="align-middle w-full" src='{{ asset('images/binjai.png') }}'>
             </div>
         @endif
-        @if ($user->id_hotel == 2)
+        @if ($user->id_hotel == 3)
             <div class="grid grid-cols-1 mb-10 mx-24 w-lg  rounded overflow-hidden shadow-lg bg-white mt-10">
                 <img class="align-middle w-full" src='{{ asset('images/durung.png') }}'>
             </div>
         @endif
-        @if ($user->id_hotel == 3)
+        @if ($user->id_hotel == 2)
             <div class="grid grid-cols-1 mb-10 mx-24 w-lg  rounded overflow-hidden shadow-lg bg-white mt-10"">
                 <img class="align-middle w-full" src='{{ asset('images/gaharu.png') }}'>
             </div>
         @endif
-        @if ($user->id_hotel == 4)
+        @if ($user->id_hotel == 5)
             <div class="grid grid-cols-1 mb-10 mx-24 w-lg  rounded overflow-hidden shadow-lg bg-white mt-10"">
                 <img class="align-middle w-full" src='{{ asset('images/kertas.png') }}'>
             </div>
         @endif
-        @if ($user->id_hotel == 5)
+        @if ($user->id_hotel == 1)
             <div class="grid grid-cols-1 mb-10 mx-24 w-lg rounded overflow-hidden shadow-lg bg-white mt-10"">
                 <img class="align-middle w-full" src='{{ asset('images/sempurna.png') }}'>
             </div>

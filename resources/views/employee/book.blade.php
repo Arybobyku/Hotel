@@ -46,7 +46,7 @@
                     <div class="mb-6">
                         <label for="nota" class="block mb-2 text-sm font-medium text-gray-900 ">Nomor Transaksi</label>
                         <input type="text" id="nota" name="nota"
-                            value="{{ date('d/m/y-') }}{{ str_pad($counter,4,'0', STR_PAD_LEFT)}}"
+                            value="{{ date('dmy') }}{{ $room->id_hotel }}{{ str_pad($counter,4,'0', STR_PAD_LEFT)}}"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="" required readonly>
                     </div>
