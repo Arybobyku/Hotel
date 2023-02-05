@@ -18,7 +18,9 @@ class BookController extends Controller
     public function indexwalkin(Request $request)
     {
         $today =  Carbon::today();
-        $today_files = Book::whereDate('created_at', $today)->count();
+        $idHotel = Auth::user()->id_hotel;
+
+        $today_files = Book::whereDate('created_at', $today)->Where('id_hotel', $idHotel)->count();
         $counter =  $today_files;
 
         if ($today_files != 0) {
@@ -26,7 +28,6 @@ class BookController extends Controller
         } else {
             $counter = 1;
         }
-        $idHotel = Auth::user()->id_hotel;
         $room = Room::where('id', $request->id)->first();
         return view('employee.book', [
             'room' => $room, 'date' => $request->date,
