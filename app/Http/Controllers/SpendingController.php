@@ -47,7 +47,7 @@ class SpendingController extends Controller
             'jumlah' => 'required|max:11',
             'tanggal' => 'required',
             'keterangan' => '',
-            'image' => 'image|file|max:1024',
+            'image' => 'image|file',
         ]);
         if ($request->hasfile('image')) {
             $nama = $request->file('image')->store('images/asset-images');
@@ -113,7 +113,7 @@ class SpendingController extends Controller
             'jumlah' => 'required|max:11',
             'tanggal' => 'required',
             'keterangan' => '',
-            'image' => 'image|file|max:1024',
+            'image' => 'image|file',
         ]);
         if ($request->file('image')) {
             $validatedData['image'] = $request->file('image')->store('asset-images');

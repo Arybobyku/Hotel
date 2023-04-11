@@ -43,7 +43,7 @@ class AdminHotelController extends Controller
             'id_hotel' => 'required|max:11',
             'name' => 'required|max:255',
             'price' => 'integer',
-            'image' => 'image|file|max:1024',
+            'image' => 'image|file',
         ]);
 
         if ($request->file('image')) {
@@ -80,7 +80,7 @@ class AdminHotelController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'price' => 'integer',
-            'image' => 'image|file|max:1024',
+            'image' => 'image|file',
         ]);
         if ($request->file('image')) {
             $validatedData['image'] = $request->file('image')->store('images/room-images');
