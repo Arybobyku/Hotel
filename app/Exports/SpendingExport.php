@@ -37,7 +37,7 @@ class SpendingExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoS
                 ->join('users', 'books.id_user', '=', 'users.id')
                 ->join('platforms', 'books.id_platform', '=', 'platforms.id');
 
-                // ->join('rooms', 'books.id_room', '=', 'rooms.id');
+            // ->join('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (empty($this->from) && empty($this->to) && !empty($this->id_user)) {
             $data = Spending::where('books.id_hotel', $this->myId)
                 ->where('spendings.id_user', $this->id_user)
@@ -45,15 +45,15 @@ class SpendingExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoS
                 ->join('users', 'books.id_user', '=', 'users.id')
                 ->join('platforms', 'books.id_platform', '=', 'platforms.id');
 
-                // ->join('rooms', 'books.id_room', '=', 'rooms.id');
+            // ->join('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (!empty($this->from) && !empty($this->to) && empty($this->id_user)) {
             $data = Spending::whereBetween('spendings.tanggal', [$this->from, $this->to])
                 ->where('spendings.id_hotel', $this->myId)
                 ->selectRaw('spendings.name, spendings.tanggal, spendings.jumlah, spendings.keterangan');
-                // ->join('users', 'spendings.id_user', '=', 'users.id')
-                // ->join('platforms', 'books.id_platform', '=', 'platforms.id');
+            // ->join('users', 'spendings.id_user', '=', 'users.id')
+            // ->join('platforms', 'books.id_platform', '=', 'platforms.id');
 
-                // ->join('rooms', 'books.id_room', '=', 'rooms.id');
+            // ->join('rooms', 'books.id_room', '=', 'rooms.id');
         } else {
             $data = Spending::where('spendings.id_hotel', $this->myId)
                 ->selectRaw('spendings.name, spendings.tanggal, spendings.jumlah, spendings.keterangan');
@@ -63,15 +63,15 @@ class SpendingExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoS
     public function headings(): array
     {
         if ($this->myId == 1) {
-            $data = 'Hotel Denatio Binjai';
-        } elseif ($this->myId == 2) {
-            $data = 'Hotel Denatio Durung';
-        } elseif ($this->myId == 3) {
-            $data = 'Hotel Denatio Gaharu';
-        } elseif ($this->myId == 4) {
-            $data = 'Hotel Denatio Kertas';
-        } elseif ($this->myId == 5) {
             $data = 'Hotel Denatio Sempurna';
+        } elseif ($this->myId == 2) {
+            $data = 'Hotel Denatio Gaharu';
+        } elseif ($this->myId == 3) {
+            $data = 'Hotel Denatio Durung';
+        } elseif ($this->myId == 4) {
+            $data = 'Hotel Denatio Binjai';
+        } elseif ($this->myId == 5) {
+            $data = 'Hotel Denatio Kertas';
         }
         return [[$data], ['Nama Pengeluaran', 'Tanggal', 'Jumlah Harga', 'Keterangan']];
     }

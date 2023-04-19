@@ -68,15 +68,15 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
     public function headings(): array
     {
         if ($this->myId == 1) {
-            $data = 'Hotel Denatio Binjai';
-        } elseif ($this->myId == 2) {
-            $data = 'Hotel Denatio Durung';
-        } elseif ($this->myId == 3) {
-            $data = 'Hotel Denatio Gaharu';
-        } elseif ($this->myId == 4) {
-            $data = 'Hotel Denatio Kertas';
-        } elseif ($this->myId == 5) {
             $data = 'Hotel Denatio Sempurna';
+        } elseif ($this->myId == 2) {
+            $data = 'Hotel Denatio Gaharu';
+        } elseif ($this->myId == 3) {
+            $data = 'Hotel Denatio Durung';
+        } elseif ($this->myId == 4) {
+            $data = 'Hotel Denatio Binjai';
+        } elseif ($this->myId == 5) {
+            $data = 'Hotel Denatio Kertas';
         }
         return [[$data], ['Guest Name', 'Booking Date', 'Checkin Date', 'Checkout Date', 'Booking ID', 'Day', 'Room', 'Room Night', 'POST/PRE', 'Total Charge', 'Platform Fee', ' Assured Stay', 'Tip For Staff', ' Upgrade Room', ' Travel Protection', ' Member Redclub', ' Breakfast', ' Early Checkin', ' Late Checkout', 'Total Amount', ' Type Pemesanan', 'Potongan TA OTA (%)']];
     }
