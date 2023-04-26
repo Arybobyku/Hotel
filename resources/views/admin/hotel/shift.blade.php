@@ -74,6 +74,7 @@
             <input type='hidden' name="from" value="{{ Request::old('from') }}">
             <input type='hidden' name="to" value="{{ Request::old('to') }}">
             <input type='hidden' name="id_user" value="{{ Request::old('id_user') }}">
+            <input type='hidden' name="tipee" value="{{ Request::old('tipee') }}">
             <button type="submit"
                 class="bg-green-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
