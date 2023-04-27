@@ -54,6 +54,22 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
                 ->join('users', 'books.id_user', '=', 'users.id')
                 ->join('platforms', 'books.id_platform', '=', 'platforms.id')
                 ->join('rooms', 'books.id_room', '=', 'rooms.id');
+        } elseif (!empty($this->from) && !empty($this->to) && empty($this->id_user) && $this->tipee != NULL) {
+            $data = Book::whereBetween('books.book_date', [$this->from, $this->to])
+                ->where('books.id_hotel', $this->myId)
+                ->where('books.payment_type', $this->tipee)
+                ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee2,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,null as column_1,books.total_amount, platforms.platform_name, platforms.platform_fee')
+                ->join('users', 'books.id_user', '=', 'users.id')
+                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+        } elseif (!empty($this->from) && !empty($this->to) && !empty($this->id_user) && $this->tipee == NULL) {
+            $data = Book::whereBetween('books.book_date', [$this->from, $this->to])
+                ->where('books.id_hotel', $this->myId)
+                ->where('books.id_user', $this->id_user)
+                ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee2,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,null as column_1,books.total_amount, platforms.platform_name, platforms.platform_fee')
+                ->join('users', 'books.id_user', '=', 'users.id')
+                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->join('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (empty($this->from) && empty($this->to) && empty($this->id_user) && $this->tipee != NULL) {
             $data = Book::where('books.id_hotel', $this->myId)
                 ->where('books.payment_type', $this->tipee)
