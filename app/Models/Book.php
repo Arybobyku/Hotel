@@ -27,6 +27,7 @@ class Book extends Model
         'payment_type',
         'id_platform',
         'platform_fee2',
+        'platform_fee3',
         'assured_stay',
         'tipforstaf',
         'upgrade_room',

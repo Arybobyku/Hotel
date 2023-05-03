@@ -35,6 +35,7 @@
                     {{-- <input name="room" value="-" hidden /> --}}
                     {{-- <input name="price_app" value="0" hidden /> --}}
                     <input name="platform_fee2" value="0" hidden />
+                    <input name="platform_fee3" value="0" hidden />
                     <input name="assured_stay" value="0" hidden />
                     <input name="tipforstaf" value="0" hidden />
                     <input name="upgrade_room" value="0" hidden />

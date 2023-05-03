@@ -104,6 +104,12 @@
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="Jika Tidak Ada Isi : 0 " required>
                     </div> --}}
+                                        <div class="mb-6">
+                        <label for="text" class="block mb-2 text-sm font-medium text-gray-900 ">Platform Fee</label>
+                        <input type="text" id="platform_fee3" value="" name="platform_fee3"
+                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                            placeholder="Jika Tidak Ada Isi : 0 " required>
+                    </div>
                     <div class="mb-6">
                         <label for="assured_stay" class="block mb-2 text-sm font-medium text-gray-900 ">Anciliary
                             Income</label>

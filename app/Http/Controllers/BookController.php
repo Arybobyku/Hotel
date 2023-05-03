@@ -243,6 +243,7 @@ class BookController extends Controller
             'breakfast' => $request->breakfast,
             'early_checkin' => $request->early_checkin,
             'late_checkout' => $request->late_checkout,
+            'platform_fee3' => $request->platform_fee3,
         ]);
 
         Log::create([
