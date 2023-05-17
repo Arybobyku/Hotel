@@ -104,7 +104,7 @@
                 </div>
                 <div class="mb-6">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">Platform Fee</label>
-                    <input type="text" value="Rp {{ number_format($books->platform_fee2) }}" id="name"
+                    <input type="text" value="Rp {{ number_format($books->platform_fee3) }}" id="name"
                         name="name"
                         class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                         placeholder="" disabled>
