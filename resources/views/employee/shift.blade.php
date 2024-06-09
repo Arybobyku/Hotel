@@ -6,9 +6,9 @@
         $user = Auth::user();
         $userh = $user->id_hotel;
         $isfinance = $user->isfinance;
-        
+
         Auth::setUser($user);
-        
+
     @endphp
     {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
     <h1 class="text-center text-3xl font-bold">In House</h1>
@@ -72,6 +72,17 @@
             </form>
         @endif --}}
     </div>
+    <div class="text-right">
+        <p class="text-right font-sans font-semibold text-green-700">Grand Uang Masuk :
+            Rp{{ number_format($grandUangMasuk) }}</p>
+
+        <h1 class="text-right font-sans font-semibold text-green-700">Grand Total Amount :
+            Rp{{ number_format($grandTotalAmount) }}
+        </h1>
+        <h1 class="text-right font-sans font-semibold text-green-700">Grand Total Uang Masuk :
+            Rp{{ number_format($grandTotalUangMasuk) }}
+        </h1>
+    </div>
 
     </div>
 
@@ -88,8 +99,10 @@
                         <th class="px-4 py-3">Booking</th>
                         <th class="px-4 py-3">Checkin</th>
                         <th class="px-4 py-3">Checkout</th>
-                        <th class="px-4 py-3">Uang Masuk</th>
                         <th class="px-4 py-3">Charge</th>
+                        <th class="px-4 py-3">Uang Masuk</th>
+                        <th class="px-4 py-3">Total Amount</th>
+                        <th class="px-4 py-3">Total Uang Masuk</th>
                         @if ($isfinance == 1)
                             <th class="px-4 py-3">Aksi</th>
                         @endif
@@ -132,9 +145,7 @@
                                     Belum Checkout
                                 @endif
                             </td>
-                            <td class="px-4 py-3 text-sm">
-                                Rp {{ number_format($book->price) }}
-                            </td>
+
                             <td class="px-4 py-3 text-sm">
                                 <?php
                                 $total = 0; ?>
@@ -144,6 +155,15 @@
                                     {{-- $total=+$charge->charge->charge --}}
                                 @endforeach
                                 Rp {{ $total }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                Rp {{ number_format($book->price) }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                Rp {{ number_format($book->total_amount - $book->total_charge) }}
+                            </td>
+                            <td class="px-4 py-3 text-sm">
+                                Rp {{ number_format($book->total_amount) }}
                             </td>
                             @if ($isfinance == 1)
                                 <td class="px-4 py-3 text-sm">

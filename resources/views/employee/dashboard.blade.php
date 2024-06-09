@@ -35,13 +35,13 @@
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     @if ($book->id_room != 0)
-                                    {{ $book->nameroom->name }}
-                                    @else  
-                                    {{ $book->room }}
+                                        {{ $book->nameroom->name }}
+                                    @else
+                                        {{ $book->room }}
                                     @endif
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    
+
                                     {{ $book->book_date }}
 
                                 </td>
@@ -54,7 +54,7 @@
                                 </td>
                                 <td class="px-4 py-3 text-sm">
                                     @if ($book->checkin)
-                                        {{ $book->checkin}}
+                                        {{ $book->checkin }}
                                     @else
                                         Belum Checkin
                                     @endif
@@ -93,9 +93,9 @@
                         @endforeach
                     </tbody>
                 </table>
-                                    <div class="p-4">
-            {{ $bookings->links() }}
-        </div>
+                <div class="p-4">
+                    {{ $bookings->links() }}
+                </div>
             </div>
 
         </div>

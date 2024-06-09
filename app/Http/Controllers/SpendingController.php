@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Spending;
 use Illuminate\Http\Request;
-use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
 
 class SpendingController extends Controller
@@ -14,11 +14,25 @@ class SpendingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->from == null && $request->to == null) {
+            $from = date('2010-10-01');
+            $to = date('2040-10-31');
+        } else {
+            $from = $request->from;
+            $to = $request->to;
+        }
         $hotelId = Auth::user()->id_hotel;
+
+        $uangMKeluar = Spending::whereBetween('tanggal', [$from, $to])
+                    ->where('id_hotel', $hotelId)
+                    ->sum('jumlah');
+        session()->flashInput($request->input());
+
         return view('employee.spending.index', [
-            'spendings' => Spending::where('id_hotel', $hotelId)->latest()->paginate(15),
+            'spendings' => Spending::whereBetween('tanggal', [$from, $to])->where('id_hotel', $hotelId)->latest()->paginate(15),
+            'grandUangKeluar' => $uangMKeluar,
         ]);
     }
 
@@ -35,7 +49,6 @@ class SpendingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -74,7 +87,6 @@ class SpendingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Spending  $spending
      * @return \Illuminate\Http\Response
      */
     public function show(Spending $spending)
@@ -87,7 +99,6 @@ class SpendingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Spending  $spending
      * @return \Illuminate\Http\Response
      */
     public function edit(Spending $spending)
@@ -100,8 +111,6 @@ class SpendingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Spending  $spending
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Spending $spending)
@@ -123,13 +132,13 @@ class SpendingController extends Controller
             'activity' => "$nameUser Mengubah Pengeluaran $request->name $request->jumlah $request->satuan",
             'id_hotel' => $hotelId,
         ]);
+
         return redirect('hotel/spending')->with('status', 'Berhasil Mengedit Pengeluaran');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Spending  $spending
      * @return \Illuminate\Http\Response
      */
     public function destroy(Spending $spending)
@@ -141,6 +150,7 @@ class SpendingController extends Controller
             'activity' => "$nameUser Menghapus Pengeluaran $spending->name",
             'id_hotel' => $hotelId,
         ]);
+
         return redirect('hotel/spending')->with('status', 'Berhasil Menghapus');
     }
 }

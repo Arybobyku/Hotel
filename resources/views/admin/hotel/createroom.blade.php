@@ -13,7 +13,7 @@
             </div>
 
             <div class="block w-full overflow-x-auto p-8">
-                <form method="POST" action="{{ Route('createroom', $user->id_hotel),  }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ Route('createroom', $user->id_hotel)  }}" enctype="multipart/form-data">
                     @csrf
                     <input name="id_hotel" value="{{ $hotel->id }}" hidden />
                     <div class="mb-6">

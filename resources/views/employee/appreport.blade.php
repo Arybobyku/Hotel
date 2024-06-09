@@ -1,17 +1,22 @@
-<x-app-layout>
+@extends('employee/layouts/app')
 
+
+@section('contents')
     @php
         $user = Auth::user();
-        $user->id_hotel = $hotel->id;
+        $userh = $user->id_hotel;
+        $isfinance = $user->isfinance;
+
         Auth::setUser($user);
+
     @endphp
     {{-- <div class="grid grid-rows-1 gap-2 grid-flow-col"> --}}
-    <h1 class="mx-10 text-xl font-bold">Revenue {{ $hotel->name }}</h1>
+    <h1 class="text-center text-3xl font-bold">Platform Report</h1>
 
-    <div class="mx-10 my-8">
-        <form method="GET" action="shift">
+    <div class="mx-10 my-10">
+        <form method="GET" action="appreport">
 
-            <div date-rangepicker class="flex items-center">
+            <div class="flex items-center">
                 <div class="relative">
                     <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                         <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
@@ -22,7 +27,7 @@
                         </svg>
                     </div>
                     <input name="from" type="date"
-                        class="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5    dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:border-gray-600  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Select date start" value="{{ Request::old('from') }}">
                 </div>
                 <span class="mx-4 text-gray-500">to</span>
@@ -37,33 +42,15 @@
                         </svg>
                     </div>
                     <input name="to" type="date"
-                        class="bg-white border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:border-gray-600  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Select date end" name="to" value="{{ Request::old('to') }}">
                 </div>
 
                 <div class="relative pl-3">
-                    <select name="id_user" class="bg-white border border-gray-300 text-gray-900 w-full rounded-md">
-                        <option value=""> Pilih Pegawai </option>
-
-                        @foreach ($pegawais as $pegawai)
-                            <option value="{{ $pegawai->id }}" @if ($pegawai->id == old('id_user')) selected @endif>
-                                {{ $pegawai->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="relative pl-3">
-                    <select name="booktipe" class="bg-white border border-gray-300 text-gray-900 w-full rounded-md">
-                        <option value=""> Pilih Booking Type </option>
-                        <option value="0" @if ('0' == old('booktipe')) selected @endif>Walkin</option>
-                        <option value="app"@if ('app' == old('booktipe')) selected @endif>App</option>
-                    </select>
-                </div>
-                <div class="relative pl-3">
-                    <select name="tipee" class="bg-white border border-gray-300 text-gray-900 w-full rounded-md">
-                        <option value=""> Pilih Payment Type </option>
-                        <option value="post" @if ('post' == old('tipee')) selected @endif>Post</option>
-                        <option value="pre"@if ('pre' == old('tipee')) selected @endif>Pre</option>
-                        <option value="0"@if ('0' == old('tipee')) selected @endif>Walkin</option>
+                    <select name="pay_type" class="bg-white border border-gray-300 text-gray-900 w-full rounded-md">
+                        <option value=""> Pilih Payment </option>
+                        <option value="pre"@if ('pre' == old('pay_type')) selected @endif>Pre</option>
+                        <option value="post"@if ('post' == old('pay_type')) selected @endif>Post</option>
                     </select>
                 </div>
                 <div class="relative pl-3">
@@ -84,26 +71,26 @@
                     </svg>Filter</button>
 
 
-
         </form>
-        <form method="get" action="{{ route('export.shift', $user->id_hotel) }}">
-            <input type='hidden' name="from" value="{{ Request::old('from') }}">
-            <input type='hidden' name="to" value="{{ Request::old('to') }}">
-            <input type='hidden' name="id_user" value="{{ Request::old('id_user') }}">
-            <input type='hidden' name="tipee" value="{{ Request::old('tipee') }}">
-            <input type='hidden' name="booktipe" value="{{ Request::old('booktipe') }}">
-            <input type='hidden' name="id_platform" value="{{ Request::old('id_platform') }}">
-            <button type="submit"
-                class="bg-green-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                </svg>
-                Export</button>
 
-        </form>
-    </div>
+        {{-- @if ($isfinance == 1)
+            <form method="get" action="{{ route('export.shiftfinance', $userh) }}">
+                <input type='hidden' name="from" value="{{ Request::old('from') }}">
+                <input type='hidden' name="to" value="{{ Request::old('to') }}">
+                <input type='hidden' name="id_user" value="{{ Request::old('id_user') }}">
+                <button type="submit"
+                    class="bg-green-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                    </svg>
+                    Export</button>
+
+            </form>
+        @endif --}}
+        {{-- males ngoding nya --}}
+
 
     </div>
 
@@ -118,14 +105,14 @@
             Rp{{ number_format($grandTotalUangMasuk) }}
         </h1>
     </div>
-
+    </div>
     <div class="overflow-hidden mb-8 w-full rounded-lg border shadow-xs">
+
 
         <div class="overflow-x-auto w-full">
             <table class="w-full whitespace-no-wrap">
                 <thead>
-                    <tr
-                        class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-50 border-b">
+                    <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase bg-gray-50 border-b">
                         <th class="px-4 py-3">No</th>
                         <th class="px-4 py-3">Nama Tamu</th>
                         <th class="px-4 py-3">Nomor Transaksi</th>
@@ -134,14 +121,15 @@
                         <th class="px-4 py-3">Checkin</th>
                         <th class="px-4 py-3">Checkout</th>
                         <th class="px-4 py-3">Charge</th>
-                        <th class="px-4 py-3">Booking Type</th>
-                        <th class="px-4 py-3">Payment Type</th>
                         <th class="px-4 py-3">Platform</th>
+                        <th class="px-4 py-3">Pembayaran</th>
                         <th class="px-4 py-3">Uang Masuk</th>
                         <th class="px-4 py-3">Total Amount</th>
                         <th class="px-4 py-3">Total Uang Masuk</th>
-                        <th class="px-4 py-3">Nama Pegawai</th>
-                        <th class="px-4 py-3">Aksi</th>
+                        {{-- @if ($isfinance == 1)
+                            <th class="px-4 py-3">Aksi</th>
+                        @endif --}}
+
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y">
@@ -180,7 +168,6 @@
                                     Belum Checkout
                                 @endif
                             </td>
-
                             <td class="px-4 py-3 text-sm">
                                 <?php
                                 $total = 0; ?>
@@ -192,22 +179,12 @@
                                 Rp {{ $total }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                @if ($book->booking_type == 0)
-                                    {{ 'Walkin' }}
-                                @else
-                                    {{ $book->booking_type }}
-                                @endif
-                            </td>
-                            <td class="px-4 py-3 text-sm">
-                                @if ($book->payment_type == 0)
-                                    {{ 'Walkin' }}
-                                @else
-                                    {{ $book->payment_type }}
-                                @endif
-                            </td>
-                            <td class="px-4 py-3 text-sm">
                                 {{ $book->platform->platform_name }}
                             </td>
+                            <td class="px-4 py-3 text-sm">
+                                {{ $book->payment_type }}
+                            </td>
+
                             <td class="px-4 py-3 text-sm">
                                 Rp {{ number_format($book->price) }}
                             </td>
@@ -217,15 +194,15 @@
                             <td class="px-4 py-3 text-sm">
                                 Rp {{ number_format($book->total_amount) }}
                             </td>
-                            <td class="px-4 py-3 text-sm">
-                                {{ $book->pegawai->name }}
-                            </td>
-                            <td class="px-4 py-3 text-sm">
-                                <a href="/admin/hotel/{{ $book->id_hotel }}/shift/detail/{{ $book->id }}"
-                                    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    Lihat
-                                </a>
-                            </td>
+                            {{-- @if ($isfinance == 1)
+                                <td class="px-4 py-3 text-sm">
+                                    <a href="/hotel/shift/detail/{{ $book->id }}"
+                                        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        Detail
+                                    </a>
+                                </td>
+                            @endif --}}
+
                         </tr>
                     @endforeach
                 </tbody>
@@ -235,6 +212,4 @@
             {{ $books->links() }}
         </div>
     </div>
-
-
-</x-app-layout>
+@endsection

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class() extends Migration {
     /**
      * Run the migrations.
      *
@@ -43,6 +42,7 @@ return new class extends Migration
             $table->bigInteger('late_checkout')->default('0');
             $table->bigInteger('total_amount')->default('0');
             $table->bigInteger('total_charge')->default('0');
+            $table->bigInteger('platform_fee3')->default('0');
             $table->timestamps();
         });
     }
