@@ -104,7 +104,7 @@ class ShiftController extends Controller
                 ->where('id_hotel', $request->id)
                 ->where('booking_type', $request->booktipe)
                 ->sum('total_charge');
-        } elseif (empty($request->id_user) && $request->tipee != null && $request->booktipe != null && $request->id_platform != null) { // id_platform
+        } elseif (empty($request->id_user) && $request->tipee == null && $request->booktipe == null && $request->id_platform != null) { // id_platform
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
                 ->where('id_platform', $request->id_platform)
@@ -531,7 +531,7 @@ class ShiftController extends Controller
         session()->flashInput($request->input());
         $hotel = Hotel::where('id', $request->id)->first();
 
-        // ddd($request);
+        // ddd($filter);
 
         return view('admin.hotel.shift', [
             'books' => $filter,

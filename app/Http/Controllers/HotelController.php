@@ -202,7 +202,7 @@ class HotelController extends Controller
             $to = $request->to;
         }
         if ($isFinance == 0) {
-            if ($request->pay_type == null && $request->from == '' && $request->id_platform == null) {
+            if ($request->pay_type == null && $request->id_platform == null) {
                 $filter = Book::whereBetween('checkin', [$from, $to])
                     ->where('id_user', $idUser)
                     ->where('id_hotel', $idHotel)
@@ -312,7 +312,7 @@ class HotelController extends Controller
                     ->sum('total_charge');
             }
         } else {
-            if ($request->pay_type == null && $request->from == '' && $request->id_platform == null) {
+            if ($request->pay_type == null && $request->id_platform == null) {
                 $filter = Book::whereBetween('checkin', [$from, $to])
                     ->where('id_hotel', $idHotel)
                     ->where('booking_type', 'app')

@@ -28,7 +28,7 @@
                     </div>
                     <input name="startDateChange" type="date"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:border-gray-600  dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Select date start" id="startDateChange" min="{{ date('Y-m-d') }}">
+                        placeholder="Select date start" id="startDateChange" min="{{ date('Y-m-01') }}">
                 </div>
                 </div>
                                 <div class="flex-col">
@@ -44,7 +44,7 @@
                     </div>
                     <input name="endDateChange" type="date"
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:border-gray-600  dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Select date start" id="endDateChange" min="{{ date('Y-m-d') }}">
+                        placeholder="Select date start" id="endDateChange" min="{{ date('Y-m-01') }}">
                 </div>
                 </div>
                 <button type="submit"
