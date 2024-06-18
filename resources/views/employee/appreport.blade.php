@@ -179,7 +179,7 @@
                                 Rp {{ $total }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->platform->platform_name }}
+                                {{ $book->platform->platform_name ?? 'Platform dihapus' }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->payment_type }}

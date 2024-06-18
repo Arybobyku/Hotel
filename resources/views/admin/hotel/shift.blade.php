@@ -206,7 +206,7 @@
                                 @endif
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->platform->platform_name }}
+                                {{ $book->platform->platform_name ?? 'Platform dihapus' }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 Rp {{ number_format($book->price) }}
@@ -218,7 +218,7 @@
                                 Rp {{ number_format($book->total_amount) }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                {{ $book->pegawai->name }}
+                                {{ $book->pegawai->name ?? 'Pegawai dihapus' }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 <a href="/admin/hotel/{{ $book->id_hotel }}/shift/detail/{{ $book->id }}"
