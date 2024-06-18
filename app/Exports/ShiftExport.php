@@ -253,7 +253,7 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
                 $sheet->setCellValue('R'.$lastRow, '=SUM(R3:R'.($lastRow - 1).')');
                 $sheet->setCellValue('S'.$lastRow, '=SUM(S3:S'.($lastRow - 1).')');
                 $sheet->setCellValue('T'.$lastRow, '=SUM(T3:T'.($lastRow - 1).')');
-                $sheet->setCellValue('V'.$lastRow, '=SUM(V3:V'.($lastRow - 1).')');
+                $sheet->setCellValue('U'.$lastRow, '=SUM(U3:U'.($lastRow - 1).')');
             },
         ];
     }
