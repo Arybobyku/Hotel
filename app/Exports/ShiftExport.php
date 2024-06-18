@@ -54,36 +54,36 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
                 ->where('books.id_hotel', $this->myId)
                 ->where('books.id_user', $this->id_user)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (empty($this->id_user) && $this->tipee != null && $this->booktipe == null && $this->id_platform == null) {
             // payment type
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
                 ->where('books.id_hotel', $this->myId)
                 ->where('books.payment_type', $this->tipee)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (empty($this->id_user) && $this->tipee == null && $this->booktipe != null && $this->id_platform == null) {
             // booking type
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
                 ->where('books.id_hotel', $this->myId)
                 ->where('books.booking_type', $this->booktipe)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (empty($this->id_user) && $this->tipee == null && $this->booktipe == null && $this->id_platform != null) {
             // platform
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
                 ->where('books.id_hotel', $this->myId)
                 ->where('books.id_platform', $this->id_platform)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (!empty($this->id_user) && $this->tipee != null && $this->booktipe == null && $this->id_platform == null) {
             // user, payment type
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
@@ -91,9 +91,9 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
                 ->where('books.id_user', $this->id_user)
                 ->where('books.payment_type', $this->tipee)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (!empty($this->id_user) && $this->tipee == null && $this->booktipe != null && $this->id_platform == null) {
             // user, booking type
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
@@ -101,19 +101,19 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
                 ->where('books.id_user', $this->id_user)
                 ->where('books.booking_type', $this->booktipe)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (empty($this->id_user) && $this->tipee != null && $this->booktipe != null && $this->id_platform == null) {
             // payment, booking type
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
                 ->where('books.id_hotel', $this->myId)
-                ->where('books.id_user', $this->id_user)
+                ->where('books.payment_type', $this->tipee)
                 ->where('books.booking_type', $this->booktipe)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (!empty($this->id_user) && $this->tipee == null && $this->booktipe == null && $this->id_platform != null) {
             // user, platform
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
@@ -121,9 +121,9 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
                 ->where('books.id_user', $this->id_user)
                 ->where('books.id_platform', $this->id_platform)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (empty($this->id_user) && $this->tipee != null && $this->booktipe == null && $this->id_platform != null) {
             // payment type, platform
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
@@ -131,9 +131,9 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
                 ->where('books.payment_type', $this->tipee)
                 ->where('books.id_platform', $this->id_platform)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (empty($this->id_user) && $this->tipee != null && $this->booktipe != null && $this->id_platform != null) {
             // booking type, platform
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
@@ -141,9 +141,9 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
                 ->where('books.booking_type', $this->booktipe)
                 ->where('books.id_platform', $this->id_platform)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (!empty($this->id_user) && $this->tipee != null && $this->booktipe != null && $this->id_platform == null) {
             // user, payment, booking type
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
@@ -152,9 +152,9 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
                 ->where('books.payment_type', $this->tipee)
                 ->where('books.booking_type', $this->booktipe)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (empty($this->id_user) && $this->tipee != null && $this->booktipe != null && $this->id_platform != null) {
             //  payment, booking type, platform
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
@@ -163,9 +163,9 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
                 ->where('books.booking_type', $this->booktipe)
                 ->where('books.id_platform', $this->id_platform)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (!empty($this->id_user) && $this->tipee == null && $this->booktipe != null && $this->id_platform != null) {
             //  booking, user, platform
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
@@ -174,9 +174,9 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
                 ->where('books.booking_type', $this->booktipe)
                 ->where('books.id_platform', $this->id_platform)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (!empty($this->id_user) && $this->tipee != null && $this->booktipe == null && $this->id_platform != null) {
             //  payment, user, platform
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
@@ -185,9 +185,9 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
                 ->where('books.payment_type', $this->tipee)
                 ->where('books.id_platform', $this->id_platform)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } elseif (!empty($this->id_user) && $this->tipee != null && $this->booktipe != null && $this->id_platform != null) {
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
                 ->where('books.id_hotel', $this->myId)
@@ -196,16 +196,16 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
                 ->where('books.booking_type', $this->booktipe)
                 ->where('books.id_platform', $this->id_platform)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         } else {
             $data = Book::whereBetween('books.checkin', [$this->from, $this->to])
                 ->where('books.id_hotel', $this->myId)
                 ->selectRaw('books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, rooms.name, books.price,books.payment_type,books.total_charge, books.platform_fee3,books.assured_stay,books.tipforstaf,books.upgrade_room,books.travel_protection,books.member_redclub,books.breakfast,books.early_checkin,books.late_checkout,books.total_amount - books.total_charge as total_amount1, books.total_amount,  platforms.platform_name, books.platform_fee2')
-                ->join('users', 'books.id_user', '=', 'users.id')
-                ->join('platforms', 'books.id_platform', '=', 'platforms.id')
-                ->join('rooms', 'books.id_room', '=', 'rooms.id');
+                ->leftJoin('users', 'books.id_user', '=', 'users.id')
+                ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+                ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id');
         }
 
         return $data;
