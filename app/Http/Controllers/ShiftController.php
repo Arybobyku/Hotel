@@ -8,6 +8,7 @@ use App\Models\ChargePivot;
 use App\Models\Hotel;
 use App\Models\Platform;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -572,7 +573,38 @@ class ShiftController extends Controller
     public function export(Request $request)
     {
         $myId = Auth::user()->id_hotel;
+        $hotelName = Hotel::where('id', $myId)->value('name');
+        if ($request->id_platform != null) {
+            $platformName = Platform::where('id', $myId)->value('platform_name');
+        } else {
+            $platformName = '';
+        }
 
-        return Excel::download(new ShiftExport($myId, $request->from, $request->to, $request->id_user, $request->tipee, $request->booktipe, $request->id_platform), 'Laporan'.$request->from.'-'.$request->to.'.xlsx');
+        if ($request->from != null) {
+            $dateFrom = Carbon::parse($request->from);
+            $formattedDate1 = $dateFrom->format('d M Y');
+        } else {
+            $formattedDate1 = '';
+        }
+        if ($request->to != null) {
+            $dateTo = Carbon::parse($request->to);
+            $formattedDate2 = $dateTo->format('d M Y');
+        } else {
+            $formattedDate2 = '';
+        }
+        if ($request->tipee === '0') {
+            $paymentType = 'Walkin';
+        } elseif ($request->tipee == null) {
+            $paymentType = '';
+        } else {
+            $paymentType = $request->tipee;
+        }
+        if ($request->booktipe === '0') {
+            $bookType = 'Walkin';
+        } else {
+            $bookType = $request->booktipe;
+        }
+
+        return Excel::download(new ShiftExport($myId, $request->from, $request->to, $request->id_user, $request->tipee, $request->booktipe, $request->id_platform), $hotelName.' '.$paymentType.' '.$bookType.' '.$platformName.''.$formattedDate1.' - '.$formattedDate2.'.xlsx');
     }
 }
