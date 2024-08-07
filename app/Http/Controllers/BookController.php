@@ -2,36 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Log;
 use App\Models\Book;
-use App\Models\Room;
-use App\Models\Platform;
 use App\Models\ChargePivot;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
+use App\Models\Log;
+use App\Models\Platform;
+use App\Models\Room;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
     public function indexwalkin(Request $request)
     {
-        $today =  Carbon::today();
+        $today = Carbon::today();
         $idHotel = Auth::user()->id_hotel;
 
         $today_files = Book::whereDate('created_at', $today)->Where('id_hotel', $idHotel)->count();
-        $counter =  $today_files;
+        $counter = $today_files;
 
         if ($today_files != 0) {
-            $counter++;
+            ++$counter;
         } else {
             $counter = 1;
         }
         $room = Room::where('id', $request->id)->first();
+
         return view('employee.book', [
             'room' => $room, 'date' => $request->date,
-            'counter' => $counter
+            'counter' => $counter,
         ]);
     }
 
@@ -49,7 +49,7 @@ class BookController extends Controller
         if ($request->startDateChange && $request->endDateChange != null) {
             $startDate = $request->startDateChange;
             $endDate = $request->endDateChange;
-            $date = 'From ' . $request->startDateChange . ' Until ' . $request->endDateChange;
+            $date = 'From '.$request->startDateChange.' Until '.$request->endDateChange;
 
             $bookings = Book::Where(function ($query) use ($startDate, $endDate) {
                 $query->WhereDate('checkin', '>', $startDate)->orWhereDate('book_date_end', '>=', $endDate);
@@ -103,6 +103,7 @@ class BookController extends Controller
                 }
             }
         }
+
         return view('employee.book2', [
             'platforms' => Platform::where('id', '!=', 1)->get(),
             'rooms' => $availableRooms,
@@ -115,6 +116,7 @@ class BookController extends Controller
         Book::where('id', $request->id_booking)->update([
             'checkIn' => $date,
         ]);
+
         return redirect('hotel/dashboard');
     }
 
@@ -142,6 +144,7 @@ class BookController extends Controller
         }
         $price = Book::where('id', $request->id_booking)->sum('price');
         $platform_fee2 = Book::where('id', $request->id_booking)->sum('platform_fee2');
+        $platform_fee3 = Book::where('id', $request->id_booking)->sum('platform_fee3');
         $assured_stay = Book::where('id', $request->id_booking)->sum('assured_stay');
         $tipforstaf = Book::where('id', $request->id_booking)->sum('tipforstaf');
         $upgrade_room = Book::where('id', $request->id_booking)->sum('upgrade_room');
@@ -150,18 +153,19 @@ class BookController extends Controller
         $breakfast = Book::where('id', $request->id_booking)->sum('breakfast');
         $early_checkin = Book::where('id', $request->id_booking)->sum('early_checkin');
         $late_checkout = Book::where('id', $request->id_booking)->sum('late_checkout');
-        $totalAmount = $price + $totalCharge + $platform_fee2 + $assured_stay + $tipforstaf + $upgrade_room + $travel_protection
+        $totalAmount = $price + $totalCharge + $platform_fee3 + $assured_stay + $tipforstaf + $upgrade_room + $travel_protection
             + $member_redclub + $breakfast + $early_checkin + $late_checkout;
         Book::where('id', $request->id_booking)->update([
             'checkOut' => $date,
             'total_charge' => $totalCharge,
-            'total_amount' => $totalAmount
+            'total_amount' => $totalAmount,
         ]);
 
         Log::create([
             'activity' => "$nameUser Melakukan Checkout Nomor Transaksi $request->nota",
             'id_hotel' => $hotelId,
         ]);
+
         return redirect('hotel/dashboard');
     }
 
@@ -201,7 +205,7 @@ class BookController extends Controller
                             ->where('id_room', $request->id_room)
                             ->whereDate('checkin', '=', date('Y-m-d'))
                             ->where('id_hotel', auth()->user()->id_hotel);
-                    })
+                    }),
             ],
             'guestname' => ['required', 'string', 'max:255'],
             'nik' => ['required', 'string', 'max:255'],
@@ -213,7 +217,7 @@ class BookController extends Controller
         $potonganFee = ($platformFee * $request->price) / 100;
 
         $date = date_create($request->checkin);
-        date_add($date, date_interval_create_from_date_string($request->jumlah_hari . ' days'));
+        date_add($date, date_interval_create_from_date_string($request->jumlah_hari.' days'));
         $dateBookingEnd = date_format($date, 'Y-m-d');
 
         Book::create([
@@ -250,6 +254,7 @@ class BookController extends Controller
             'activity' => "$nameUser Membuat Reservation Nomor Transaksi $request->nota",
             'id_hotel' => $hotelId,
         ]);
+
         return redirect('hotel/dashboard');
     }
 }

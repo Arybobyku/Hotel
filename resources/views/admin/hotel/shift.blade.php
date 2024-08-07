@@ -212,10 +212,10 @@
                                 Rp {{ number_format($book->price) }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                Rp {{ number_format($book->total_amount - $book->total_charge) }}
+                                Rp {{ number_format($book->total_amount) }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                Rp {{ number_format($book->total_amount) }}
+                                Rp {{ number_format($book->total_amount - $book->platform_fee2) }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->pegawai->name ?? 'Pegawai dihapus' }}

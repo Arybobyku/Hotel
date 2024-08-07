@@ -51,7 +51,7 @@ class ShiftController extends Controller
             $totalCharge = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
                 ->where('id_user', $request->id_user)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (empty($request->id_user) && $request->tipee != null && $request->booktipe == null && $request->id_platform == null) { // payment type
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -77,7 +77,7 @@ class ShiftController extends Controller
             $totalCharge = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
                 ->where('payment_type', $request->tipee)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (empty($request->id_user) && $request->tipee == null && $request->booktipe != null && $request->id_platform == null) { // booking type
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -104,7 +104,7 @@ class ShiftController extends Controller
             $totalCharge = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
                 ->where('booking_type', $request->booktipe)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (empty($request->id_user) && $request->tipee == null && $request->booktipe == null && $request->id_platform != null) { // id_platform
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -130,7 +130,7 @@ class ShiftController extends Controller
             $totalCharge = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
                 ->where('id_platform', $request->id_platform)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (!empty($request->id_user) && $request->tipee != null && $request->booktipe == null && $request->id_platform == null) { // payment type, user
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -162,7 +162,7 @@ class ShiftController extends Controller
                 ->where('id_hotel', $request->id)
                 ->where('id_user', $request->id_user)
                 ->where('payment_type', $request->tipee)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (!empty($request->id_user) && $request->tipee == null && $request->booktipe != null && $request->id_platform == null) { // booking type, user
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -194,7 +194,7 @@ class ShiftController extends Controller
                 ->where('id_hotel', $request->id)
                 ->where('id_user', $request->id_user)
                 ->where('booking_type', $request->booktipe)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (empty($request->id_user) && $request->tipee != null && $request->booktipe != null && $request->id_platform == null) { // booking type, payment type
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -226,7 +226,7 @@ class ShiftController extends Controller
                 ->where('id_hotel', $request->id)
                 ->where('payment_type', $request->tipee)
                 ->where('booking_type', $request->booktipe)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (!empty($request->id_user) && $request->tipee == null && $request->booktipe == null && $request->id_platform != null) { // user, platform
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -257,7 +257,7 @@ class ShiftController extends Controller
                 ->where('id_hotel', $request->id)
                 ->where('id_user', $request->id_user)
                 ->where('id_platform', $request->id_platform)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (empty($request->id_user) && $request->tipee != null && $request->booktipe == null && $request->id_platform != null) { // payment type, platform
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -288,7 +288,7 @@ class ShiftController extends Controller
                 ->where('id_hotel', $request->id)
                 ->where('payment_type', $request->tipee)
                 ->where('id_platform', $request->id_platform)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (empty($request->id_user) && $request->tipee == null && $request->booktipe != null && $request->id_platform != null) { // booktipe, platform
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -319,7 +319,7 @@ class ShiftController extends Controller
                 ->where('id_hotel', $request->id)
                 ->where('id_platform', $request->id_platform)
                 ->where('booking_type', $request->booktipe)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (!empty($request->id_user) && $request->tipee != null && $request->booktipe != null && $request->id_platform == null) { // booking type, payment type, user
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -355,7 +355,7 @@ class ShiftController extends Controller
                 ->where('id_user', $request->id_user)
                 ->where('payment_type', $request->tipee)
                 ->where('booking_type', $request->booktipe)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (empty($request->id_user) && $request->tipee != null && $request->booktipe != null && $request->id_platform != null) { // booking type, payment type, platform
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -391,7 +391,7 @@ class ShiftController extends Controller
                 ->where('id_platform', $request->id_platform)
                 ->where('payment_type', $request->tipee)
                 ->where('booking_type', $request->booktipe)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (!empty($request->id_user) && $request->tipee == null && $request->booktipe != null && $request->id_platform != null) { // booking type, puser, platform
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -427,7 +427,7 @@ class ShiftController extends Controller
                 ->where('id_user', $request->id_user)
                 ->where('id_platform', $request->id_platform)
                 ->where('booking_type', $request->booktipe)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (!empty($request->id_user) && $request->tipee != null && $request->booktipe == null && $request->id_platform != null) { // payment type, puser, platform
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -463,7 +463,7 @@ class ShiftController extends Controller
                 ->where('id_user', $request->id_user)
                 ->where('payment_type', $request->tipee)
                 ->where('id_platform', $request->id_platform)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } elseif (!empty($request->id_user) && $request->tipee != null && $request->booktipe != null && $request->id_platform != null) { // booking type, payment type, user, platform
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -504,7 +504,7 @@ class ShiftController extends Controller
                 ->where('payment_type', $request->tipee)
                 ->where('booking_type', $request->booktipe)
                 ->where('id_platform', $request->id_platform)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
         } else {
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
@@ -525,7 +525,7 @@ class ShiftController extends Controller
 
             $totalCharge = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $request->id)
-                ->sum('total_charge');
+                ->sum('platform_fee2');
             // ddd($filter);
         }
 
@@ -540,9 +540,9 @@ class ShiftController extends Controller
                 ->where('role', 0)
                 ->get(),
             'hotel' => $hotel,
-            'grandTotalUangMasuk' => $totalUangMasuk,
+            'grandTotalUangMasuk' => $totalUangMasuk - $totalCharge,
             'grandUangMasuk' => $uangMasuk,
-            'grandTotalAmount' => $totalAmount - $totalCharge,
+            'grandTotalAmount' => $totalAmount,
             'platforms' => Platform::where('platform_name', '!=', 'Walkin')->get(),
         ]);
     }

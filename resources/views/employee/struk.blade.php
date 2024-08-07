@@ -80,10 +80,37 @@
 
             <div class="flex-col">
                 <h4>Jumlah Hari</h4>
-                @if ($book->id_room != 0)
-                    <h4>Total</h4>
+                @if ($book->id_room > 0)
+                    <h4>Harga Kamar</h4>
                 @endif
-                <h4>Charges</h4>
+                @if   ($book->platform_fee3 > 0)
+                <h4>Platfrom Fee</h4>
+                @endif
+                @if   ($book->assured_stay > 0)
+                <h4>Assured Stay</h4>
+                @endif
+                @if   ($book->tipforstaff > 0)
+                <h4>Tip For Staff</h4>
+                @endif
+                @if   ($book->upgraderoom > 0)
+                <h4>Upgrade Room</h4>
+                @endif
+                @if   ($book->travel_protection > 0)
+                <h4>Travel Protection</h4>
+                @endif
+                @if  ($book->member_redclub > 0)
+                <h4>Member Redclub</h4>
+                @endif
+                @if  ($book->breakfast > 0)
+                <h4>Breakfast</h4>
+                @endif
+                @if  ($book->early_checkin > 0)
+                <h4>Early Checkin</h4>
+                @endif
+                @if  ($book->late_checkout > 0)
+                <h4>Late Checkout</h4>
+                @endif
+                <h4>Other Charge</h4>
                 @foreach ($charges as $charge)
                     <h4>{{ $charge->charge->name }}</h4>
                 @endforeach
@@ -92,28 +119,82 @@
             </div>
             <div>
                 <h4>:</h4>
-                <h4>:</h4>
                 @if ($book->id_room != 0)
                     <h4>:</h4>
                 @endif
+                @if   ($book->platform_fee3 > 0)
+                <h4>:</h4>
+                @endif
+                @if   ($book->assured_stay > 0)
+               <h4>:</h4>
+                @endif
+                @if   ($book->tipforstaff > 0)
+                <h4>:</h4>
+                @endif
+                @if   ($book->upgraderoom > 0)
+                <h4>:</h4>
+                @endif
+                @if   ($book->travel_protection > 0)
+                <h4>:</h4>
+                @endif
+                @if  ($book->member_redclub > 0)
+                 <h4>:</h4>
+                @endif
+                @if  ($book->breakfast > 0)
+                 <h4>:</h4>
+                @endif
+                @if  ($book->early_checkin > 0)
+                 <h4>:</h4>
+                @endif
+                @if  ($book->late_checkout > 0)
+                 <h4>:</h4>
+                @endif
+                <h4>:</h4>
 
-                <h4> -</h4>
+                    <h4>:</h4>
+
                 @foreach ($charges as $charge)
                     <h4>:</h4>
                 @endforeach
                 <br>
-                <h4>:</h4>
             </div>
             <div class="flex-col">
                     <h4>{{ $book->days }}</h4>
-                    <h4>Rp. {{ number_format($book->price) }},-</h4>
-
+<h4>Rp. {{ number_format($book->price) }},-</h4>
+                @if   ($book->platform_fee3 > 0)
+                <h4>Rp. {{ number_format($book->platform_fee3) }},-</h4>
+                @endif
+                @if   ($book->assured_stay > 0)
+               <h4>Rp. {{ number_format($book->assured_stay) }},-</h4>
+                @endif
+                @if   ($book->tipforstaff > 0)
+                 <h4>Rp. {{ number_format($book->tipforstaff) }},-</h4>
+                @endif
+                @if   ($book->upgraderoom > 0)
+                <h4>Rp. {{ number_format($book->upgraderoom) }},-</h4>
+                @endif
+                @if   ($book->travel_protection > 0)
+                <h4>Rp. {{ number_format($book->travel_protection) }},-</h4>
+                @endif
+                @if  ($book->member_redclub > 0)
+                <h4>Rp. {{ number_format($book->member_redclub) }},-</h4>
+                @endif
+                @if  ($book->breakfast > 0)
+                <h4>Rp. {{ number_format($book->breakfast) }},-</h4>
+                @endif
+                @if  ($book->early_checkin > 0)
+                 <h4>Rp. {{ number_format($book->early_checkin) }},-</h4>
+                @endif
+                @if  ($book->late_checkout > 0)
+                 <h4>Rp. {{ number_format($book->late_checkout) }},-</h4>
+                @endif
                 <h4>--------------</h4>
                 @foreach ($charges as $charge)
                     <h4> Rp. {{ number_format($charge->charge->charge) }},-</h4>
                 @endforeach
                 <br>
-                    <h4>Rp. {{ number_format($book->price + $totalCharge) }},-</h4>
+                    <h4>Rp. {{ number_format($book->price + $totalCharge + $book->platform_fee3 + $book->assured_stay + $book->tipforstaff + $book->upgraderoom + $book->travel_protection + $book->member_redclub
+                    +$book->breakfast + $book->early_checkin + $book->late_checkout) }},-</h4>
 
             </div>
         </div>
