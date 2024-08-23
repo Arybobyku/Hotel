@@ -89,7 +89,7 @@
                 @if   ($book->assured_stay > 0)
                 <h4>Assured Stay</h4>
                 @endif
-                @if   ($book->tipforstaff > 0)
+                @if   ($book->tipforstaf > 0)
                 <h4>Tip For Staff</h4>
                 @endif
                 @if   ($book->upgraderoom > 0)
@@ -128,7 +128,7 @@
                 @if   ($book->assured_stay > 0)
                <h4>:</h4>
                 @endif
-                @if   ($book->tipforstaff > 0)
+                @if   ($book->tipforstaf > 0)
                 <h4>:</h4>
                 @endif
                 @if   ($book->upgraderoom > 0)
@@ -167,8 +167,8 @@
                 @if   ($book->assured_stay > 0)
                <h4>Rp. {{ number_format($book->assured_stay) }},-</h4>
                 @endif
-                @if   ($book->tipforstaff > 0)
-                 <h4>Rp. {{ number_format($book->tipforstaff) }},-</h4>
+                @if   ($book->tipforstaf > 0)
+                 <h4>Rp. {{ number_format($book->tipforstaf) }},-</h4>
                 @endif
                 @if   ($book->upgraderoom > 0)
                 <h4>Rp. {{ number_format($book->upgraderoom) }},-</h4>
@@ -193,7 +193,7 @@
                     <h4> Rp. {{ number_format($charge->charge->charge) }},-</h4>
                 @endforeach
                 <br>
-                    <h4>Rp. {{ number_format($book->price + $totalCharge + $book->platform_fee3 + $book->assured_stay + $book->tipforstaff + $book->upgraderoom + $book->travel_protection + $book->member_redclub
+                    <h4>Rp. {{ number_format($book->price + $totalCharge + $book->platform_fee3 + $book->assured_stay + $book->tipforstaf + $book->upgraderoom + $book->travel_protection + $book->member_redclub
                     +$book->breakfast + $book->early_checkin + $book->late_checkout) }},-</h4>
 
             </div>
