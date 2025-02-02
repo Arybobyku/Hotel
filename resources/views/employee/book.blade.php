@@ -173,7 +173,7 @@
         // Get value on button click and show alert
         $("#jenisPesan").change(function() {
             var price = $("#jenisPesan").val();
-            if (price == 'walkin') {
+            if (price == 'Walkin') {
                 //disable all the radio button 
                 document.getElementById("app").disabled = true;
             } else {
