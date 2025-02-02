@@ -75,6 +75,20 @@
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="" required>
                     </div>
+                <div class="mb-1">
+                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">QRIS</label>
+                </div>
+                <div class="mb-6 flex">
+                    <div class="mr-6">
+                        <input type="radio" id="html" name="is_qris" value="ya">
+                        <label class="block text-sm font-medium text-gray-900" for="html">Ya</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="css" name="is_qris" value="tidak">
+                        <label class="block text-sm font-medium text-gray-900" for="css">Tidak</label>
+                    </div>
+                </div>
+
 
                     <input type="text" id="price" value="{{ $room->price }}" name="price"
                         class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5 hidden"
@@ -120,8 +134,8 @@
                             class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
                         <label for="default-radio-2" class="ml-2 text-sm font-medium text-gray-900">Dari Aplikasi </label>
                     </div> --}}
-                    <input name="jenisPembayaran" value="0" hidden />
-                    <input name="jenisPesan" value="0" hidden />
+                    <input name="jenisPembayaran" value="Walkin" hidden />
+                    <input name="jenisPesan" value="Walkin" hidden />
                     <input name="id_platform" value="1" hidden />
 
 

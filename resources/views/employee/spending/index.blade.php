@@ -75,7 +75,7 @@
         @endif --}}
     </div>
     <div class="text-right">
-        <p class="text-right font-sans font-semibold text-red-700">Grand Uang Keluar :
+        <p class="text-right font-sans font-semibold text-red-700">Total Paidout :
             Rp{{ number_format($grandUangKeluar) }}</p>
     </div>
     </div>

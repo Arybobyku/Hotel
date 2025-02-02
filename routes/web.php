@@ -55,8 +55,17 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('/dashboard/log', [LogController::class, 'index'])->name('log');
     // Route::post('dashboard/user/{id}', [AdminController::class,"update"])->name("dashboard.user.edit");
     Route::get('admin/hotel/{id}/shift', [\App\Http\Controllers\ShiftController::class, 'index'])->name('admin.shift');
-    Route::get('admin/hotel/{id}/spending', [\App\Http\Controllers\ShiftSpendingController::class, 'index'])->name('admin.spending');
+    Route::get('admin/hotel/shift', [\App\Http\Controllers\ShiftController::class, 'index'])->name('admin.shift');
+    Route::delete('admin/hotel/{hotel}/shift/{shift}', [\App\Http\Controllers\ShiftController::class, 'destroy'])->name('book.destroy');
     Route::get('admin/hotel/{id_hotel}/shift/detail/{id}', [\App\Http\Controllers\ShiftController::class, 'show'])->name('admin.shiftdetail');
+    Route::get('admin/hotel/{id_hotel}/shift/edit/{id}', [\App\Http\Controllers\ShiftController::class, 'edit'])->name('admin.shiftedit');
+    Route::put('admin/hotel/{id_hotel}/shift/edit/{id}', [\App\Http\Controllers\ShiftController::class, 'update'])->name('admin.shiftupdate');
+
+    Route::get('admin/hotel/{id}/shift/data', [\App\Http\Controllers\ShiftController::class, 'getData'])->name('admin.shift.data');
+
+    Route::get('admin/hotel/{id}/spending', [\App\Http\Controllers\ShiftSpendingController::class, 'index'])->name('admin.spending');
+    // Route::get('admin/hotel/{hotel_id}/shift/detail/{shift_id}', [ShiftController::class, 'detail'])->name('admin.hotel.shift.detail');
+
     Route::get('admin/hotel/{id_hotel}/spending/detail/{id}', [\App\Http\Controllers\ShiftSpendingController::class, 'show'])->name('admin.spendingdetail');
     Route::get('admin/hotel/{id}', [\App\Http\Controllers\AdminHotelController::class, 'index'])->name('admin.hotel');
     Route::get('admin/hotel/{id}/create', [\App\Http\Controllers\AdminHotelController::class, 'create'])->name('admin.createroom');
@@ -66,6 +75,9 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::get('admin/hotel/{id_hotel}/detail/{id}', [App\Http\Controllers\AdminHotelController::class, 'detail'])->name('admin.roomdetail');
     Route::put('admin/hotel/{id_hotel}/edit/{id}', [App\Http\Controllers\AdminHotelController::class, 'editroom'])->name('editroom');
     Route::get('dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('admin/setting/{id}', [\App\Http\Controllers\SettingController::class, 'edit'])->name('admin.setting.edit');
+    Route::put('admin/setting/{id}', [\App\Http\Controllers\SettingController::class, 'update'])->name('admin.setting.update');
 });
 
 // pegawai
@@ -92,4 +104,11 @@ Route::middleware('auth')->group(function () {
     Route::get('hotel/struk/{id}', [\App\Http\Controllers\HotelController::class, 'struk'])->name('hotel.struk');
 
     Route::get('hotel/appreport', [\App\Http\Controllers\HotelController::class, 'platformreport'])->name('hotel.appreport');
+
+    Route::get('hotel/setting/{id}', [\App\Http\Controllers\SettingController::class, 'edit'])->name('setting.edit');
+    // Route::post('hotel/setting/{id}', [\App\Http\Controllers\SettingController::class, 'update'])->name('setting.update');
+    Route::put('hotel/setting/{id}', [\App\Http\Controllers\SettingController::class, 'update'])->name('setting.update');
+
+
+
 });

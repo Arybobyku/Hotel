@@ -1,4 +1,4 @@
-<header class="z-10 py-4 bg-blue-900 shadow-md">
+<header class="z-10 py-4 {{$headerBgColor}} shadow-md">
     <div class="container flex justify-between items-center px-6 mx-auto h-full text-white md:justify-end">
         <!-- Mobile hamburger -->
         <button
@@ -29,7 +29,7 @@
                     aria-label="Account"
                     aria-haspopup="true"
                 >
-                    {{ Auth::user()->name }}
+                 <p class="{{$textColor}}">{{ Auth::user()->name }} </p>
                 </button>
             </x-slot>
 

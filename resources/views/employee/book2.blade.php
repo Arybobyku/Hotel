@@ -53,10 +53,22 @@
                     </div>
                     <div class="mb-6">
                         <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">Harga</label>
-                        <input type="text"
- id="price" value="" name="price"
+                        <input type="text" id="price" value="" name="price"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="Contoh : 200000" required onkeyup="checkInput(this)">
+                    </div>
+                    <div class="mb-1">
+                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">QRIS</label>
+                    </div>
+                    <div class="mb-6 flex">
+                        <div class="mr-6">
+                            <input type="radio" id="html" name="is_qris" value="ya">
+                            <label class="block text-sm font-medium text-gray-900" for="html">Ya</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="css" name="is_qris" value="tidak">
+                            <label class="block text-sm font-medium text-gray-900" for="css">Tidak</label>
+                        </div>
                     </div>
                     <div class="mb-6">
                         <label for="booking" class="block mb-2 text-sm font-medium text-gray-900 ">Tanggal Booking</label>
@@ -105,69 +117,69 @@
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="Jika Tidak Ada Isi : 0 " required>
                     </div> --}}
-                                        <div class="mb-6">
+                    <div class="mb-6">
                         <label for="text" class="block mb-2 text-sm font-medium text-gray-900 ">Platform Fee</label>
                         <input type="text" id="platform_fee3" value="" name="platform_fee3"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="Jika Tidak Ada Isi : 0 "  onkeyup="checkInput(this)"    required>
+                            placeholder="Jika Tidak Ada Isi : 0 " onkeyup="checkInput(this)" required>
                     </div>
                     <div class="mb-6">
-                        <label for="assured_stay" class="block mb-2 text-sm font-medium text-gray-900 ">Anciliary
+                        <label for="assured_stay" class="block mb-2 text-xl  text-gray-900 ">Anciliary
                             Income</label>
                         <label for="assured_stay" class="block mb-2 text-sm font-medium text-gray-900 ">Assured
                             Stay</label>
                         <input type="text" id="assured_stay" value="" name="assured_stay"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="Jika Tidak Ada Isi : 0 "  onkeyup="checkInput(this)" required>
+                            placeholder="Jika Tidak Ada Isi : 0 " onkeyup="checkInput(this)" required>
                     </div>
                     <div class="mb-6">
                         <label for="text" class="block mb-2 text-sm font-medium text-gray-900 ">Tip For
                             Staf</label>
                         <input type="text" id="tipforstaf" value="" name="tipforstaf"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="Jika Tidak Ada Isi : 0 "  onkeyup="checkInput(this)" required>
+                            placeholder="Jika Tidak Ada Isi : 0 " onkeyup="checkInput(this)" required>
                     </div>
                     <div class="mb-6">
                         <label for="text" class="block mb-2 text-sm font-medium text-gray-900 ">Upgrade
                             Room</label>
                         <input type="text" id="upgrade_room" value="" name="upgrade_room"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="Jika Tidak Ada Isi : 0 "  onkeyup="checkInput(this)" required>
+                            placeholder="Jika Tidak Ada Isi : 0 " onkeyup="checkInput(this)" required>
                     </div>
                     <div class="mb-6">
                         <label for="travel_protection" class="block mb-2 text-sm font-medium text-gray-900 ">Travel
                             Protection</label>
                         <input type="text" id="travel_protection" value="" name="travel_protection"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="Jika Tidak Ada Isi : 0 "  onkeyup="checkInput(this)"  required>
+                            placeholder="Jika Tidak Ada Isi : 0 " onkeyup="checkInput(this)" required>
                     </div>
                     <div class="mb-6">
                         <label for="travel_protection" class="block mb-2 text-sm font-medium text-gray-900 ">Member
                             Redclub</label>
                         <input type="text" id="member_redclub" value="" name="member_redclub"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="Jika Tidak Ada Isi : 0 "  onkeyup="checkInput(this)"  required>
+                            placeholder="Jika Tidak Ada Isi : 0 " onkeyup="checkInput(this)" required>
                     </div>
                     <div class="mb-6">
                         <label for="travel_protection"
                             class="block mb-2 text-sm font-medium text-gray-900 ">Breakfast</label>
                         <input type="text" id="breakfast" value="" name="breakfast"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="Jika Tidak Ada Isi : 0 "  onkeyup="checkInput(this)" required>
+                            placeholder="Jika Tidak Ada Isi : 0 " onkeyup="checkInput(this)" required>
                     </div>
                     <div class="mb-6">
                         <label for="early_checkin" class="block mb-2 text-sm font-medium text-gray-900 ">Early
                             Checkin</label>
                         <input type="text" id="early_checkin" value="" name="early_checkin"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="Jika Tidak Ada Isi : 0 "  onkeyup="checkInput(this)" required>
+                            placeholder="Jika Tidak Ada Isi : 0 " onkeyup="checkInput(this)" required>
                     </div>
                     <div class="mb-6">
                         <label for="early_checkin" class="block mb-2 text-sm font-medium text-gray-900 ">Late
                             Checkout</label>
                         <input type="text" id="late_checkout" value="" name="late_checkout"
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="Jika Tidak Ada Isi : 0 "  onkeyup="checkInput(this)" required>
+                            placeholder="Jika Tidak Ada Isi : 0 " onkeyup="checkInput(this)" required>
                     </div>
                     <button type="submit"
                         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
@@ -197,9 +209,9 @@
     //     })
     // })
     function checkInput(input) {
-    // Hapus karakter non-numeric dari input
-    input.value = input.value.replace(/\D/g, '');
-}
+        // Hapus karakter non-numeric dari input
+        input.value = input.value.replace(/\D/g, '');
+    }
 </script>
 
 <script>

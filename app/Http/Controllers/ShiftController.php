@@ -4,545 +4,185 @@ namespace App\Http\Controllers;
 
 use App\Exports\ShiftExport;
 use App\Models\Book;
+use App\Models\Spending;
 use App\Models\ChargePivot;
 use App\Models\Hotel;
 use App\Models\Platform;
 use App\Models\User;
+use App\Models\Log;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class ShiftController extends Controller
 {
-    public function index(Request $request)
+    public function getData(Request $request)
     {
         $idHotel = Auth::user()->id_hotel;
         $idUser = Auth::id();
+        // ddd($request->from);
         if ($request->from == null && $request->to == null) {
-            $from = date('2010-10-01');
-            $to = date('2040-10-31');
+            $from = date('Y-m-01'); // First day of the current month
+            $to = date('Y-m-t'); // Last day of the current month
         } else {
             $from = $request->from;
             $to = $request->to;
         }
 
-        if (!empty($request->id_user) && $request->tipee == null && $request->booktipe == null && $request->id_platform == null) { // user
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->latest()
-                ->paginate(15);
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->sum('total_amount');
+        $filter = Book::select(['books.*', 'rooms.name as room_name', 'users.name as pegawai', 'platforms.platform_name'])
+            ->leftjoin('rooms', 'books.id_room', '=', 'rooms.id')
+            ->leftjoin('users', 'books.id_user', '=', 'users.id')
+            ->leftjoin('platforms', 'books.id_platform', '=', 'platforms.id')
+            ->whereBetween('books.checkin', [$from, $to])
+            ->filterByHotel($idHotel)
+            ->when($request->id_user, function ($query) use ($request) {
+                $query->filterByUser($request->id_user);
+            })
+            ->when($request->tipee, function ($query) use ($request) {
+                $query->filterByPaymentType($request->tipee);
+            })
+            ->when($request->booktipe, function ($query) use ($request) {
+                $query->filterByBookingType($request->booktipe);
+            })
+            ->when($request->id_platform, function ($query) use ($request) {
+                $query->filterByPlatform($request->id_platform);
+            })
+            ->get();
+        return DataTables::of($filter)
+            ->addColumn('action', function ($book) {
+                return '<div class="flex space-x-1">
+                <a href="/admin/hotel/' .
+                    $book->id_hotel .
+                    '/shift/detail/' .
+                    $book->id .
+                    '"
+                    class="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-0 m-1 inline-flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 12s3-7 9-7 9 7 9 7-3 7-9 7-9-7-9-7z" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg>
+                </a>
+                <a href="/admin/hotel/' .
+                    $book->id_hotel .
+                    '/shift/edit/' .
+                    $book->id .
+                    '"
+                    class="text-white bg-yellow-400 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-2 py-0 m-1 inline-flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
+                    </svg>
+                </a>
+                <form action="' .
+                    route('book.destroy', ['hotel' => $book->id_hotel, 'shift' => $book->id]) .
+                    '" method="POST" style="display:inline;">
+                    '.
+                    csrf_field() .
+                    method_field('DELETE') .
+                    '
+                    <button type="submit"  
+                    class="text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:ring-red-400 font-medium rounded-lg text-sm px-2 py-0 m-1 inline-flex items-center" onclick="return confirm(\'Are you sure?\')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        </svg>
+                        </button>
+                        </form>
+            </div>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
 
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->sum('platform_fee2');
-        } elseif (empty($request->id_user) && $request->tipee != null && $request->booktipe == null && $request->id_platform == null) { // payment type
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->sum('platform_fee2');
-        } elseif (empty($request->id_user) && $request->tipee == null && $request->booktipe != null && $request->id_platform == null) { // booking type
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('booking_type', $request->booktipe)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('booking_type', $request->booktipe)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('booking_type', $request->booktipe)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('booking_type', $request->booktipe)
-
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('booking_type', $request->booktipe)
-                ->sum('platform_fee2');
-        } elseif (empty($request->id_user) && $request->tipee == null && $request->booktipe == null && $request->id_platform != null) { // id_platform
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->sum('platform_fee2');
-        } elseif (!empty($request->id_user) && $request->tipee != null && $request->booktipe == null && $request->id_platform == null) { // payment type, user
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->sum('platform_fee2');
-        } elseif (!empty($request->id_user) && $request->tipee == null && $request->booktipe != null && $request->id_platform == null) { // booking type, user
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('booking_type', $request->booktipe)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('booking_type', $request->booktipe)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('booking_type', $request->booktipe)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('booking_type', $request->booktipe)
-
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('booking_type', $request->booktipe)
-                ->sum('platform_fee2');
-        } elseif (empty($request->id_user) && $request->tipee != null && $request->booktipe != null && $request->id_platform == null) { // booking type, payment type
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->sum('platform_fee2');
-        } elseif (!empty($request->id_user) && $request->tipee == null && $request->booktipe == null && $request->id_platform != null) { // user, platform
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('id_platform', $request->id_platform)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('id_platform', $request->id_platform)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('id_platform', $request->id_platform)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('id_platform', $request->id_platform)
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('id_platform', $request->id_platform)
-                ->sum('platform_fee2');
-        } elseif (empty($request->id_user) && $request->tipee != null && $request->booktipe == null && $request->id_platform != null) { // payment type, platform
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->where('id_platform', $request->id_platform)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->where('id_platform', $request->id_platform)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->where('id_platform', $request->id_platform)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->where('id_platform', $request->id_platform)
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->where('id_platform', $request->id_platform)
-                ->sum('platform_fee2');
-        } elseif (empty($request->id_user) && $request->tipee == null && $request->booktipe != null && $request->id_platform != null) { // booktipe, platform
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->where('booking_type', $request->booktipe)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->where('booking_type', $request->booktipe)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->where('booking_type', $request->booktipe)
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->where('booking_type', $request->booktipe)
-                ->sum('platform_fee2');
-        } elseif (!empty($request->id_user) && $request->tipee != null && $request->booktipe != null && $request->id_platform == null) { // booking type, payment type, user
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->sum('platform_fee2');
-        } elseif (empty($request->id_user) && $request->tipee != null && $request->booktipe != null && $request->id_platform != null) { // booking type, payment type, platform
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_platform', $request->id_platform)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->sum('platform_fee2');
-        } elseif (!empty($request->id_user) && $request->tipee == null && $request->booktipe != null && $request->id_platform != null) { // booking type, puser, platform
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('id_platform', $request->id_platform)
-                ->where('booking_type', $request->booktipe)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('id_platform', $request->id_platform)
-                ->where('booking_type', $request->booktipe)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('id_platform', $request->id_platform)
-                ->where('booking_type', $request->booktipe)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('id_platform', $request->id_platform)
-                ->where('booking_type', $request->booktipe)
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('id_platform', $request->id_platform)
-                ->where('booking_type', $request->booktipe)
-                ->sum('platform_fee2');
-        } elseif (!empty($request->id_user) && $request->tipee != null && $request->booktipe == null && $request->id_platform != null) { // payment type, puser, platform
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('id_platform', $request->id_platform)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('id_platform', $request->id_platform)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('id_platform', $request->id_platform)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('id_platform', $request->id_platform)
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('id_platform', $request->id_platform)
-                ->sum('platform_fee2');
-        } elseif (!empty($request->id_user) && $request->tipee != null && $request->booktipe != null && $request->id_platform != null) { // booking type, payment type, user, platform
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->where('id_platform', $request->id_platform)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->where('id_platform', $request->id_platform)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->where('id_platform', $request->id_platform)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->where('id_platform', $request->id_platform)
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->where('id_user', $request->id_user)
-                ->where('payment_type', $request->tipee)
-                ->where('booking_type', $request->booktipe)
-                ->where('id_platform', $request->id_platform)
-                ->sum('platform_fee2');
+        // session()->flashInput($request->input());
+        $hotel = Hotel::where('id', $request->id)->first();
+    }
+    public function index(Request $request)
+    {
+        $idHotel = Auth::user()->id_hotel;
+        $idUser = Auth::id();
+        if ($request->from == null && $request->to == null) {
+            $from = date('Y-m-01'); // First day of the current month
+            $to = date('Y-m-t'); // Last day of the current month
         } else {
-            $filter = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->latest()
-                ->paginate(15);
-
-            $totalUangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->sum('total_amount');
-
-            $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->sum('price');
-
-            $totalAmount = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->sum('total_amount');
-
-            $totalCharge = Book::whereBetween('checkin', [$from, $to])
-                ->where('id_hotel', $request->id)
-                ->sum('platform_fee2');
-            // ddd($filter);
+            $from = $request->from;
+            $to = $request->to;
         }
 
-        session()->flashInput($request->input());
-        $hotel = Hotel::where('id', $request->id)->first();
+        // if (!empty($request->id_user) && $request->tipee == null && $request->booktipe == null && $request->id_platform == null) { // user
+        // $filter = Book::filterByDate($from, $to)
+        //     ->filterByHotel($request->id)
+        //     ->when($request->id_user, function($query) use ($request) {
+        //         $query->filterByUser($request->id_user);
+        //     })
+        //     ->when($request->tipee, function($query) use ($request) {
+        //         $query->filterByPaymentType($request->tipee);
+        //     })
+        //     ->when($request->booktipe, function($query) use ($request) {
+        //         $query->filterByBookingType($request->booktipe);
+        //     })
+        //     ->latest()
+        //     ->paginate(15);
+        // Uang Masuk
+        //     $uangMasuk = Book::whereBetween('checkin', [$from, $to])
+        //     ->filterByHotel($request->id)
+        //     ->when($request->id_user, function($query) use ($request) {
+        //         $query->filterByUser($request->id_user);
+        //     })
+        //     ->when($request->tipee, function($query) use ($request) {
+        //         $query->filterByPaymentType($request->tipee);
+        //     })
+        //     ->when($request->booktipe, function($query) use ($request) {
+        //         $query->filterByBookingType($request->booktipe);
+        //     })
+        //         ->sum('price');
+
+        //     // Total Amount (Total Amount)
+        $totalAmount = Book::whereBetween('checkin', [$from, $to])
+            ->filterByHotel($idHotel)
+            ->when($request->id_user, function ($query) use ($request) {
+                $query->filterByUser($request->id_user);
+            })
+            ->when($request->tipee, function ($query) use ($request) {
+                $query->filterByPaymentType($request->tipee);
+            })
+            ->when($request->booktipe, function ($query) use ($request) {
+                $query->filterByBookingType($request->booktipe);
+            })
+            ->sum('total_amount');
+
+        //     // Total Charge
+        //     $totalCharge = Book::whereBetween('checkin', [$from, $to])
+        //     ->filterByHotel($request->id)
+        //     ->when($request->id_user, function($query) use ($request) {
+        //         $query->filterByUser($request->id_user);
+        //     })
+        //     ->when($request->booktipe, function($query) use ($request) {
+        //         $query->filterByBookingType($request->booktipe);
+        //     })
+        //     ->when($request->tipee, function($query) use ($request) {
+        //         $query->filterByPaymentType($request->tipee);
+        //     })
+        //         ->sum('platform_fee2');
+        $totalPaidout = Spending::whereBetween('tanggal', [$from, $to])
+            ->where('id_hotel', $idHotel)
+            ->sum('jumlah');
+
+        $hotel = Hotel::where('id', $idHotel)->first();
 
         // ddd($filter);
 
         return view('admin.hotel.shift', [
-            'books' => $filter,
-            'pegawais' => User::where('id_hotel', $request->id)
+            // 'books' => $filter,
+            'pegawais' => User::where('id_hotel', $idHotel)
                 ->where('role', 0)
                 ->get(),
             'hotel' => $hotel,
-            'grandTotalUangMasuk' => $totalUangMasuk - $totalCharge,
-            'grandUangMasuk' => $uangMasuk,
+            // 'grandTotalUangMasuk' => $totalUangMasuk - $totalCharge,
+            'grandUangMasuk' => 0,
             'grandTotalAmount' => $totalAmount,
+            'totalPaidout' => $totalPaidout,
+            'netAmount' => $totalAmount - $totalPaidout,
+
             'platforms' => Platform::where('platform_name', '!=', 'Walkin')->get(),
         ]);
     }
@@ -556,9 +196,9 @@ class ShiftController extends Controller
             ->with('charge')
             ->get();
         $totalCharge = 0;
-        foreach ($charges as $charge) {
-            $totalCharge += $charge->charge->charge;
-        }
+        // foreach ($charges as $charge) {
+        //     $totalCharge += $charge->charge->charge;
+        // }
         $hotel = Hotel::where('id', $myId)->first();
         $book = Book::where('id', $request->id)->first();
 
@@ -568,6 +208,121 @@ class ShiftController extends Controller
             'charges' => $charges,
             'totalCharge' => $totalCharge,
         ]);
+    }
+
+    public function edit(Request $request)
+    {
+        $myId = Auth::user()->id;
+        $hotels = Hotel::where('id', $request->id)->first();
+
+        $charges = ChargePivot::where('id_book', $request->id)
+            ->with('charge')
+            ->get();
+        $totalCharge = 0;
+        // foreach ($charges as $charge) {
+        //     $totalCharge += $charge->charge->charge;
+        // }
+        $hotel = Hotel::where('id', $myId)->first();
+        $book = Book::where('id', $request->id)->first();
+
+        return view('admin.hotel.shiftedit', [
+            'books' => $book,
+            'platforms' => Platform::where('id', '!=', 1)->get(),   
+            'hotel' => $hotel,
+            'charges' => $charges,
+            'totalCharge' => $totalCharge,
+        ]);
+    }
+
+    public function update(Request $request, Book $book)
+    {
+        $chargers = $request->charge;
+        if ($chargers != null) {
+            foreach ($chargers as $idCharge) {
+                ChargePivot::create([
+                    'id_charge' => $idCharge,
+                    'id_book' => $request->id_booking,
+                ]);
+            }
+        }
+
+        $hotelId = Auth::user()->id_hotel;
+        $nameUser = Auth::user()->name;
+        $idUser = Auth::user()->id;
+        $date = date('Y-m-d');
+        $charges = ChargePivot::where('id_book', $request->id_booking)
+            ->with('charge')
+            ->get();
+        $totalCharge = 0;
+        foreach ($charges as $charge) {
+            $totalCharge += $charge->charge->charge;
+        }
+        $price = Book::where('id', $request->id_booking)->sum('price');
+        $platform_fee2 = Book::where('id', $request->id_booking)->sum('platform_fee2');
+        $platform_fee3 = Book::where('id', $request->id_booking)->sum('platform_fee3');
+        $assured_stay = Book::where('id', $request->id_booking)->sum('assured_stay');
+        $tipforstaf = Book::where('id', $request->id_booking)->sum('tipforstaf');
+        $upgrade_room = Book::where('id', $request->id_booking)->sum('upgrade_room');
+        $travel_protection = Book::where('id', $request->id_booking)->sum('travel_protection');
+        $member_redclub = Book::where('id', $request->id_booking)->sum('member_redclub');
+        $breakfast = Book::where('id', $request->id_booking)->sum('breakfast');
+        $early_checkin = Book::where('id', $request->id_booking)->sum('early_checkin');
+        $late_checkout = Book::where('id', $request->id_booking)->sum('late_checkout');
+        // $totalAmount = $price + $totalCharge + $platform_fee3 + $assured_stay + $tipforstaf + $upgrade_room + $travel_protection
+        $totalAmount = $price + $platform_fee3 + $assured_stay + $tipforstaf + $upgrade_room + $travel_protection
+            + $member_redclub + $breakfast + $early_checkin + $late_checkout;
+        $platformFee = Platform::where('id', $request->id_platform)->sum('platform_fee');
+        if ($platformFee){
+        $potonganFee = ($platformFee * $request->price) / 100;
+        } else{
+           $potonganFee = 0; 
+        }
+        if ($request->jenisPembayaran == null){
+            $jenisPembayaran = 'Walkin';
+        } else {
+           $jenisPembayaran = $request->jenisPembayaran ; 
+        }
+        Book::where('id', $request->id)->update([
+            'guestname' => $request->guestname,
+            'id_user' => $idUser,
+            'nik' => $request->nik,
+            'nota' => $request->nota,
+            'price' => $request->price,
+            // 'price_app' => $request->price_app,
+            'book_date' => $request->book_date,
+            'days' => $request->days,
+            'checkin' => $request->checkin,
+            'checkout' => $request->checkout,
+            'payment_type' => $jenisPembayaran,
+            'id_platform' => $request->id_platform,
+            'platform_fee2' => $potonganFee,
+            'assured_stay' => $request->assured_stay,
+            'tipforstaf' => $request->tipforstaf,
+            'upgrade_room' => $request->upgrade_room,
+            'travel_protection' => $request->travel_protection,
+            'member_redclub' => $request->member_redclub,
+            'breakfast' => $request->breakfast,
+            'early_checkin' => $request->early_checkin,
+            'late_checkout' => $request->late_checkout,
+            'platform_fee3' => $request->platform_fee3,
+        ]);
+
+        Log::create([
+            'activity' => "$nameUser Melakukan Update Nomor Transaksi $request->nota",
+            'id_hotel' => $hotelId,
+        ]);
+
+        return redirect('/admin/hotel/' . $hotelId . '/shift')->with('success', 'Room Telah Dihapus');
+
+    }
+
+
+    public function destroy($hotel ,$shift)
+    {
+        $book = Book::findOrFail($shift);
+        $book->delete();
+
+        return redirect('/admin/hotel/' . $book->id_hotel . '/shift')->with('success', 'Room Telah Dihapus');
     }
 
     public function export(Request $request)
@@ -605,6 +360,6 @@ class ShiftController extends Controller
             $bookType = $request->booktipe;
         }
 
-        return Excel::download(new ShiftExport($myId, $request->from, $request->to, $request->id_user, $request->tipee, $request->booktipe, $request->id_platform), $hotelName.' '.$paymentType.' '.$bookType.' '.$platformName.''.$formattedDate1.' - '.$formattedDate2.'.xlsx');
+        return Excel::download(new ShiftExport($myId, $request->from, $request->to, $request->id_user, $request->tipee, $request->booktipe, $request->id_platform), $hotelName . ' ' . $paymentType . ' ' . $bookType . ' ' . $platformName . '' . $formattedDate1 . ' - ' . $formattedDate2 . '.xlsx');
     }
 }

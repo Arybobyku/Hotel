@@ -1,6 +1,9 @@
-<header class="z-10 py-4 bg-blue-900 shadow-md">
+<header class="z-10 py-4 {{$headerBgColor}} shadow-md">
+    @php
+    @endphp
     <div class="container flex justify-between items-center px-6 mx-auto h-full text-white md:justify-end">
         <!-- Mobile hamburger -->
+
         <button
             class="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-purple"
             @click="toggleSideMenu"
@@ -21,7 +24,7 @@
         </button>
 
         <x-dropdown>
-            <x-slot name="trigger">
+            <x-slot  name="trigger">
                 <button
                     class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
                     @click="toggleProfileMenu"
@@ -29,7 +32,7 @@
                     aria-label="Account"
                     aria-haspopup="true"
                 >
-                    {{ Auth::user()->name }}
+                    <p class="{{$textColor}}">{{ Auth::user()->name }} </p>
                 </button>
             </x-slot>
 

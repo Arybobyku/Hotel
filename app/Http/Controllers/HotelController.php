@@ -8,6 +8,7 @@ use App\Models\ChargeType;
 use App\Models\Hotel;
 use App\Models\Platform;
 use App\Models\Room;
+use App\Models\Spending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -151,6 +152,10 @@ class HotelController extends Controller
                 ->where('id_hotel', $idHotel)
                 ->where('id_user', $idUser)
                 ->sum('platform_fee2');
+
+            $totalPaidout = Spending::whereBetween('tanggal', [$from, $to])
+                ->where('id_hotel', $idHotel)
+                ->sum('jumlah');
         } else {
             $filter = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $idHotel)
@@ -172,6 +177,9 @@ class HotelController extends Controller
             $totalCharge = Book::whereBetween('checkin', [$from, $to])
                 ->where('id_hotel', $idHotel)
                 ->sum('platform_fee2');
+            $totalPaidout = Spending::whereBetween('tanggal', [$from, $to])
+                ->where('id_hotel', $idHotel)
+                ->sum('jumlah');
         }
 
         session()->flashInput($request->input());
@@ -182,6 +190,9 @@ class HotelController extends Controller
             'grandTotalUangMasuk' => $totalUangMasuk - $totalCharge,
             'grandUangMasuk' => $uangMasuk,
             'grandTotalAmount' => $totalAmount,
+            'totalPaidout' => $totalPaidout,
+            'netAmount' => $totalAmount - $totalPaidout,
+
         ]);
     }
 
@@ -233,6 +244,9 @@ class HotelController extends Controller
                     ->where('id_user', $idUser)
                     ->where('booking_type', 'app')
                     ->sum('platform_fee2');
+                $totalPaidout = Spending::whereBetween('tanggal', [$from, $to])
+                    ->where('id_hotel', $idHotel)
+                    ->sum('jumlah');
             } elseif ($request->id_platform == null) {
                 $filter = Book::whereBetween('checkin', [$from, $to])
                     ->where('id_user', $idUser)
@@ -269,6 +283,9 @@ class HotelController extends Controller
                     ->where('payment_type', $request->pay_type)
                     ->where('booking_type', 'app')
                     ->sum('platform_fee2');
+                $totalPaidout = Spending::whereBetween('tanggal', [$from, $to])
+                    ->where('id_hotel', $idHotel)
+                    ->sum('jumlah');
             } else {
                 $filter = Book::whereBetween('checkin', [$from, $to])
                     ->where('id_user', $idUser)
@@ -310,6 +327,9 @@ class HotelController extends Controller
                     ->where('id_platform', $request->id_platform)
                     ->where('booking_type', 'app')
                     ->sum('platform_fee2');
+                $totalPaidout = Spending::whereBetween('tanggal', [$from, $to])
+                    ->where('id_hotel', $idHotel)
+                    ->sum('jumlah');
             }
         } else {
             if ($request->pay_type == null && $request->id_platform == null) {
@@ -338,6 +358,9 @@ class HotelController extends Controller
                     ->where('id_hotel', $idHotel)
                     ->where('booking_type', 'app')
                     ->sum('platform_fee2');
+                $totalPaidout = Spending::whereBetween('tanggal', [$from, $to])
+                    ->where('id_hotel', $idHotel)
+                    ->sum('jumlah');
             } elseif ($request->id_platform == null) {
                 $filter = Book::whereBetween('checkin', [$from, $to])
                     ->where('id_hotel', $idHotel)
@@ -369,6 +392,9 @@ class HotelController extends Controller
                     ->where('payment_type', $request->pay_type)
                     ->where('booking_type', 'app')
                     ->sum('platform_fee2');
+                $totalPaidout = Spending::whereBetween('tanggal', [$from, $to])
+                    ->where('id_hotel', $idHotel)
+                    ->sum('jumlah');
             } else {
                 $filter = Book::whereBetween('checkin', [$from, $to])
                     ->where('id_hotel', $idHotel)
@@ -405,6 +431,9 @@ class HotelController extends Controller
                     ->where('booking_type', 'app')
                     ->where('id_platform', $request->id_platform)
                     ->sum('platform_fee2');
+                $totalPaidout = Spending::whereBetween('tanggal', [$from, $to])
+                ->where('id_hotel', $idHotel)
+                ->sum('jumlah');
             }
         }
 
@@ -412,9 +441,13 @@ class HotelController extends Controller
 
         return view('employee.appreport', [
             'books' => $filter,
+            'hotel' => $idHotel,
             'grandTotalUangMasuk' => $totalUangMasuk,
             'grandUangMasuk' => $uangMasuk,
             'grandTotalAmount' => $totalAmount - $totalCharge,
+            'totalPaidout' => $totalPaidout,
+            'netAmount' => $totalAmount - $totalPaidout,
+
             'platforms' => Platform::where('platform_name', '!=', 'Walkin')->get(),
             // 'charges' => $totalCharge,
         ]);
