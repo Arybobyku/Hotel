@@ -83,8 +83,8 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::put('admin/hotel/{id_hotel}/edit/{id}', [App\Http\Controllers\AdminHotelController::class, 'editroom'])->name('editroom');
     Route::get('dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
 
-    Route::get('admin/setting/{id}', [\App\Http\Controllers\SettingController::class, 'edit'])->name('admin.setting.edit');
-    Route::put('admin/setting/{id}', [\App\Http\Controllers\SettingController::class, 'update'])->name('admin.setting.update');
+    Route::get('admin/setting/{id}', [\App\Http\Controllers\SettingController::class, 'adminedit'])->name('admin.setting.edit');
+    Route::put('admin/setting/{id}', [\App\Http\Controllers\SettingController::class, 'adminupdate'])->name('admin.setting.update');
 });
 
 // pegawai

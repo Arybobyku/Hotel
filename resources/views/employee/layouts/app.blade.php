@@ -24,8 +24,10 @@
         @include('employee.layouts.navigation-mobile')
         <div class="flex flex-col flex-1 w-full" >
             @include('employee.layouts.top-menu')
-            <main class="h-full overflow-y-auto"  style="background-image: url('{{ asset('images/bg3.jpg') }}');
-  background-size:100% auto;">
+<main class="h-full overflow-y-auto"  
+      style="background-image: url('{{ asset($backgroundImage) }}');
+             background-size: 100% auto;">
+
                 <div class="container p-6 mx-auto grid">
                     <div class="pt-4">
                         @yield('contents')
