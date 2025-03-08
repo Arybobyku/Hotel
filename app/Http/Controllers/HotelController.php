@@ -11,6 +11,7 @@ use App\Models\Room;
 use App\Models\Spending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HotelController extends Controller
 {
@@ -44,54 +45,36 @@ class HotelController extends Controller
     $idHotel = Auth::user()->id_hotel;
     $startDate = date('Y-m-d');
     $endDate = null;
-    $rooms = Room::where('id_hotel', $idHotel)->get();
-    $availableRooms = [];
-
-    if ($request->startDateChange && $request->endDateChange != null) {
+    
+    $isWeekend = $request->input('is_weekend', 0); // Default 0 kalau tidak dikirim
+    
+    if ($request->startDateChange && $request->endDateChange) {
         $startDate = $request->startDateChange;
         $endDate = $request->endDateChange;
-
-        // Ambil booking yang sudah digunakan dalam range tanggal
-        $bookings = Book::where('id_hotel', $idHotel)
-            ->where(function ($query) use ($startDate, $endDate) {
-                $query->whereDate('checkin', '<=', $endDate)
-                      ->whereDate('book_date_end', '>=', $startDate);
-            })
-            ->with('rooms') // Load kamar yang sudah dibooking
-            ->get();
-
-        // Cari kamar yang tidak ada di dalam booking pada tanggal tersebut
-        foreach ($rooms as $room) {
-            $isAvailable = true;
-            foreach ($bookings as $booking) {
-                if ($booking->rooms->contains($room->id)) {
-                    $isAvailable = false;
-                    break;
-                }
-            }
-            if ($isAvailable) {
-                $availableRooms[] = $room;
-            }
-        }
-    } else {
-        $bookings = Book::where('id_hotel', $idHotel)
-            ->whereDate('checkin', $startDate)
-            ->with('rooms')
-            ->get();
-
-        foreach ($rooms as $room) {
-            $isAvailable = true;
-            foreach ($bookings as $booking) {
-                if ($booking->rooms->contains($room->id)) {
-                    $isAvailable = false;
-                    break;
-                }
-            }
-            if ($isAvailable) {
-                $availableRooms[] = $room;
-            }
-        }
     }
+
+    // Ambil room_id yang sudah dibooking dalam rentang tanggal tertentu
+    $bookedRoomIds = DB::table('book_room_pivots')
+        ->join('books', 'book_room_pivots.id_book', '=', 'books.id')
+        ->where('books.id_hotel', $idHotel)
+        ->where(function ($query) use ($startDate, $endDate) {
+            if ($endDate) {
+                $query->whereDate('books.book_date', '<=', $endDate)
+                      ->whereDate('books.book_date_end', '>=', $startDate);
+            } else {
+                $query->whereDate('books.checkin', '=', $startDate);
+            }
+        })
+        ->pluck('book_room_pivots.id_room')
+        ->toArray();
+
+    // Ambil kamar yang tersedia + filter berdasarkan is_weekend
+    $availableRooms = Room::where('id_hotel', $idHotel)
+        ->whereNotIn('id', $bookedRoomIds)
+        ->when($isWeekend, function ($query) use ($isWeekend) {
+            return $query->where('is_weekend', $isWeekend);
+        })
+        ->get();
 
     session()->flashInput($request->input());
 

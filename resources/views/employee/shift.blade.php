@@ -73,14 +73,14 @@
         @endif --}}
     </div>
     <div class="text-right">
-        <p class="text-right font-sans font-semibold text-green-700">Grand Uang Masuk :
-            Rp{{ number_format($grandUangMasuk) }}</p>
+        <p class="text-right font-sans font-semibold text-green-700">Total Amount :
+            Rp{{ number_format($grandTotalAmount) }}</p>
 
-        <h1 class="text-right font-sans font-semibold text-green-700">Grand Total Amount :
-            Rp{{ number_format($grandTotalAmount) }}
+        <h1 class="text-right font-sans font-semibold text-red-700">Paidout :
+            Rp{{ number_format($totalPaidout) }}
         </h1>
-        <h1 class="text-right font-sans font-semibold text-green-700">Grand Total Uang Masuk :
-            Rp{{ number_format($grandTotalUangMasuk) }}
+        <h1 class="text-right font-sans font-semibold text-blue-700">Net Total Amount :
+            Rp{{ number_format($netAmount) }}
         </h1>
     </div>
 

@@ -10,6 +10,14 @@
         // 12 digits
 
     @endphp --}}
+        @php
+        $user = Auth::user();
+        $userh = $user->id_hotel;
+        $isfinance = $user->isfinance;
+
+        Auth::setUser($user);
+
+    @endphp
     {{-- <input id="room_price" type="text" hidden value="{{ $room->price }}"> --}}
     <div class="w-full px-4">
                 @if ($errors->any())
@@ -46,7 +54,7 @@
             <div class="mb-6">
             <label class="block mb-2 text-sm font-medium text-gray-900">Nomor Transaksi</label>
             <input type="text" name="nota" 
-                value="inv{{ date('dmy') }}{{ str_pad($counter,4,'0', STR_PAD_LEFT)}}" 
+                value="inv{{ date('dmy') }}{{ str_pad($counter,4,'0', STR_PAD_LEFT)}}{{$userh}}" 
                 class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5" 
                 readonly>
         </div>

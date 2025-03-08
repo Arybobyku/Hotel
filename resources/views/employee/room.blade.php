@@ -31,7 +31,7 @@
                         placeholder="Select date start" id="startDateChange" min="{{ date('Y-m-01') }}">
                 </div>
                 </div>
-                                <div class="flex-col">
+                <div class="flex-col">
                     <h1 class="font-bold">End Date</h1>
                       <div class="relative">
                     <div  class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
@@ -46,6 +46,13 @@
                         class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:border-gray-600  dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Select date start" id="endDateChange" min="{{ date('Y-m-01') }}">
                 </div>
+                </div>
+                <div class="relative pl-3">
+                    <select name="is_weekend" class="bg-white border border-gray-300 text-gray-900 w-full rounded-md">
+                        <option value=""> Pilih Room Type </option>
+                        <option value="0" @if ('0' == request()->get('is_weekend')) selected @endif>Weekday</option>
+                        <option value="1"@if ('1' == request()->get('is_weekend')) selected @endif>Weekend</option>
+                    </select>
                 </div>
                 <button type="submit"
                     class="bg-blue-900 text-white py-2 px-6 mx-4 hover:opacity-75 rounded-lg flex gap-2 place-items-center">

@@ -16,6 +16,7 @@ class Room extends Model
         'name',
         'price',
         'image',
+        'is_weekend',
     ];
 protected $dates = ['deleted_at'];
 
