@@ -25,7 +25,7 @@
     @include('layouts.navigation-mobile')
     <div class="flex flex-col flex-1 w-full">
         @include('layouts.top-menu')
-        <main class="h-full overflow-y-auto bg-white" style="background-image: url('{{ asset('images/bg3.jpg') }}');
+        <main class="h-full overflow-y-auto bg-white" style="background-image: url('{{ asset($backgroundImage) }}');
   background-size:100% auto;">
             <div class="container px-6 mx-auto grid">
                 <h2 class="my-6 text-2xl font-semibold text-gray-700">
