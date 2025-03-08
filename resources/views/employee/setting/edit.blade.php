@@ -56,7 +56,7 @@
                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50">
                         @if(Auth::user()->background_image)
                             <p class="mt-2 text-sm text-gray-600">Current background: 
-                                <img src="{{ asset('storage/' . Auth::user()->background_image) }}" alt="Current Background" class="mt-2 w-32 h-auto rounded-lg">
+                                <img src="{{ asset(Auth::user()->background_image) }}" alt="Current Background" class="mt-2 w-32 h-auto rounded-lg">
                             </p>
                         @endif
                     </div>

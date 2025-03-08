@@ -9,7 +9,7 @@
             </div>
 
             <div class="block w-full overflow-x-auto p-8">
-                <form method="POST" action="{{ route('setting.update', ['id' => Auth::user()->id]) }}" >
+                <form method="POST" action="{{ route('admin.setting.update', ['id' => Auth::user()->id]) }}" >
                     @method('put')
                     @csrf
                     <div class="mb-6">
@@ -48,6 +48,18 @@
                                 {{ $item->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+                    
+                    <!-- Upload Background Image -->
+                    <div class="mb-6">
+                        <label for="background_image" class="block mb-2 text-sm font-medium text-gray-900">Background Image</label>
+                        <input type="file" name="background_image" id="background_image"
+                               class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50">
+                        @if(Auth::user()->background_image)
+                            <p class="mt-2 text-sm text-gray-600">Current background: 
+                                <img src="{{ asset(Auth::user()->background_image) }}" alt="Current Background" class="mt-2 w-32 h-auto rounded-lg">
+                            </p>
+                        @endif
                     </div>
 
 
