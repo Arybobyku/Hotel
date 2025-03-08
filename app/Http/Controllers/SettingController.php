@@ -57,7 +57,7 @@ public function adminedit(User $user)
     {
         $textColor = TextColor::all();
         $bgColor = BackgroundColor::all();
-        return view('employee.setting.edit', [
+        return view('admin.setting.edit', [
             'textColors' => TextColor::get(),
             'user' => $user,
             'bgColors' => BackgroundColor::get(),
