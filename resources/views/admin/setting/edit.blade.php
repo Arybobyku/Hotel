@@ -9,7 +9,7 @@
             </div>
 
             <div class="block w-full overflow-x-auto p-8">
-                <form method="POST" action="{{ route('admin.setting.update', ['id' => Auth::user()->id]) }}" >
+                <form method="POST" action="{{ route('admin.setting.update', ['id' => Auth::user()->id]) }}"  enctype="multipart/form-data">
                     @method('put')
                     @csrf
                     <div class="mb-6">
