@@ -15,178 +15,149 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\DB;
 
 class ShiftController extends Controller
 {
     public function getData(Request $request)
-    {
-        $idHotel = Auth::user()->id_hotel;
-        $idUser = Auth::id();
-        // ddd($request->from);
-        if ($request->from == null && $request->to == null) {
-            $from = date('Y-m-01'); // First day of the current month
-            $to = date('Y-m-t'); // Last day of the current month
-        } else {
-            $from = $request->from;
-            $to = $request->to;
-        }
+{
+    $idHotel = Auth::user()->id_hotel;
+    $idUser = Auth::id();
 
-        $filter = Book::select(['books.*', 'rooms.name as room_name', 'users.name as pegawai', 'platforms.platform_name'])
-            ->leftjoin('rooms', 'books.id_room', '=', 'rooms.id')
-            ->leftjoin('users', 'books.id_user', '=', 'users.id')
-            ->leftjoin('platforms', 'books.id_platform', '=', 'platforms.id')
-            ->whereBetween('books.checkin', [$from, $to])
-            ->filterByHotel($idHotel)
-            ->when($request->id_user, function ($query) use ($request) {
-                $query->filterByUser($request->id_user);
-            })
-            ->when($request->tipee, function ($query) use ($request) {
-                $query->filterByPaymentType($request->tipee);
-            })
-            ->when($request->booktipe, function ($query) use ($request) {
-                $query->filterByBookingType($request->booktipe);
-            })
-            ->when($request->id_platform, function ($query) use ($request) {
-                $query->filterByPlatform($request->id_platform);
-            })
-            ->get();
-        return DataTables::of($filter)
-            ->addColumn('action', function ($book) {
-                return '<div class="flex space-x-1">
-                <a href="/admin/hotel/' .
-                    $book->id_hotel .
-                    '/shift/detail/' .
-                    $book->id .
-                    '"
+    // Set date range
+    if ($request->from == null && $request->to == null) {
+        $from = date('Y-m-01'); // First day of the current month
+        $to = date('Y-m-t'); // Last day of the current month
+    } else {
+        $from = $request->from;
+        $to = $request->to;
+    }
+
+    // Fetch data without concatenation
+    $filter = Book::select([
+            'books.*', 
+            'rooms.name as room_name', // Fetch room names individually
+            'users.name as pegawai', 
+            'platforms.platform_name'
+        ])
+        ->leftJoin('book_room_pivots', 'book_room_pivots.id_book', '=', 'books.id')
+        ->leftJoin('rooms', 'book_room_pivots.id_room', '=', 'rooms.id')
+        ->leftJoin('users', 'books.id_user', '=', 'users.id')
+        ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+        ->whereBetween('books.checkin', [$from, $to])
+        ->filterByHotel($idHotel)
+        ->when($request->id_user, function ($query) use ($request) {
+            $query->filterByUser($request->id_user);
+        })
+        ->when($request->tipee, function ($query) use ($request) {
+            $query->filterByPaymentType($request->tipee);
+        })
+        ->when($request->booktipe, function ($query) use ($request) {
+            $query->filterByBookingType($request->booktipe);
+        })
+        ->when($request->id_platform, function ($query) use ($request) {
+            $query->filterByPlatform($request->id_platform);
+        })
+        ->get();
+
+    // Group the results by book ID and concatenate room names
+    $groupedResults = $filter->groupBy('id');
+
+    // Process each group to concatenate room names
+    $processedResults = $groupedResults->map(function ($books) {
+        // Get the first book in the group (all books in the group share the same details except room_name)
+        $firstBook = $books->first();
+
+        // Concatenate room names
+        $roomNames = $books->pluck('room_name')->filter()->unique()->implode(', ');
+
+        // Add the concatenated room names to the first book
+        $firstBook->room_name = $roomNames;
+
+        return $firstBook;
+    });
+
+    // Convert the processed results back to a collection
+    $processedResults = $processedResults->values();
+
+    // Return DataTables response
+    return DataTables::of($processedResults)
+        ->addColumn('action', function ($book) {
+            return '<div class="flex space-x-1">
+                <a href="/admin/hotel/' . $book->id_hotel . '/shift/detail/' . $book->id . '"
                     class="text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-0 m-1 inline-flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 12s3-7 9-7 9 7 9 7-3 7-9 7-9-7-9-7z" />
                         <circle cx="12" cy="12" r="3" />
                     </svg>
                 </a>
-                <a href="/admin/hotel/' .
-                    $book->id_hotel .
-                    '/shift/edit/' .
-                    $book->id .
-                    '"
+                <a href="/admin/hotel/' . $book->id_hotel . '/shift/edit/' . $book->id . '"
                     class="text-white bg-yellow-400 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-2 py-0 m-1 inline-flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
                     </svg>
                 </a>
-                <form action="' .
-                    route('book.destroy', ['hotel' => $book->id_hotel, 'shift' => $book->id]) .
-                    '" method="POST" style="display:inline;">
-                    '.
-                    csrf_field() .
-                    method_field('DELETE') .
-                    '
+                <form action="' . route('book.destroy', ['hotel' => $book->id_hotel, 'shift' => $book->id]) . '" method="POST" style="display:inline;">
+                    ' . csrf_field() . method_field('DELETE') . '
                     <button type="submit"  
-                    class="text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:ring-red-400 font-medium rounded-lg text-sm px-2 py-0 m-1 inline-flex items-center" onclick="return confirm(\'Are you sure?\')">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                        class="text-white bg-red-500 hover:bg-red-700 focus:ring-4 focus:ring-red-400 font-medium rounded-lg text-sm px-2 py-0 m-1 inline-flex items-center" onclick="return confirm(\'Are you sure?\')">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                         </svg>
-                        </button>
-                        </form>
+                    </button>
+                </form>
             </div>';
-            })
-            ->rawColumns(['action'])
-            ->make(true);
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+}
 
-        // session()->flashInput($request->input());
-        $hotel = Hotel::where('id', $request->id)->first();
-    }
-    public function index(Request $request)
-    {
-        $idHotel = Auth::user()->id_hotel;
-        $idUser = Auth::id();
-        if ($request->from == null && $request->to == null) {
-            $from = date('Y-m-01'); // First day of the current month
-            $to = date('Y-m-t'); // Last day of the current month
-        } else {
-            $from = $request->from;
-            $to = $request->to;
-        }
+public function index(Request $request)
+{
+    $idHotel = Auth::user()->id_hotel;
+    $idUser = Auth::id();
 
-        // if (!empty($request->id_user) && $request->tipee == null && $request->booktipe == null && $request->id_platform == null) { // user
-        // $filter = Book::filterByDate($from, $to)
-        //     ->filterByHotel($request->id)
-        //     ->when($request->id_user, function($query) use ($request) {
-        //         $query->filterByUser($request->id_user);
-        //     })
-        //     ->when($request->tipee, function($query) use ($request) {
-        //         $query->filterByPaymentType($request->tipee);
-        //     })
-        //     ->when($request->booktipe, function($query) use ($request) {
-        //         $query->filterByBookingType($request->booktipe);
-        //     })
-        //     ->latest()
-        //     ->paginate(15);
-        // Uang Masuk
-        //     $uangMasuk = Book::whereBetween('checkin', [$from, $to])
-        //     ->filterByHotel($request->id)
-        //     ->when($request->id_user, function($query) use ($request) {
-        //         $query->filterByUser($request->id_user);
-        //     })
-        //     ->when($request->tipee, function($query) use ($request) {
-        //         $query->filterByPaymentType($request->tipee);
-        //     })
-        //     ->when($request->booktipe, function($query) use ($request) {
-        //         $query->filterByBookingType($request->booktipe);
-        //     })
-        //         ->sum('price');
-
-        //     // Total Amount (Total Amount)
-        $totalAmount = Book::whereBetween('checkin', [$from, $to])
-            ->filterByHotel($idHotel)
-            ->when($request->id_user, function ($query) use ($request) {
-                $query->filterByUser($request->id_user);
-            })
-            ->when($request->tipee, function ($query) use ($request) {
-                $query->filterByPaymentType($request->tipee);
-            })
-            ->when($request->booktipe, function ($query) use ($request) {
-                $query->filterByBookingType($request->booktipe);
-            })
-            ->sum('total_amount');
-
-        //     // Total Charge
-        //     $totalCharge = Book::whereBetween('checkin', [$from, $to])
-        //     ->filterByHotel($request->id)
-        //     ->when($request->id_user, function($query) use ($request) {
-        //         $query->filterByUser($request->id_user);
-        //     })
-        //     ->when($request->booktipe, function($query) use ($request) {
-        //         $query->filterByBookingType($request->booktipe);
-        //     })
-        //     ->when($request->tipee, function($query) use ($request) {
-        //         $query->filterByPaymentType($request->tipee);
-        //     })
-        //         ->sum('platform_fee2');
-        $totalPaidout = Spending::whereBetween('tanggal', [$from, $to])
-            ->where('id_hotel', $idHotel)
-            ->sum('jumlah');
-
-        $hotel = Hotel::where('id', $idHotel)->first();
-
-        // ddd($filter);
-
-        return view('admin.hotel.shift', [
-            // 'books' => $filter,
-            'pegawais' => User::where('id_hotel', $idHotel)
-                ->where('role', 0)
-                ->get(),
-            'hotel' => $hotel,
-            // 'grandTotalUangMasuk' => $totalUangMasuk - $totalCharge,
-            'grandUangMasuk' => 0,
-            'grandTotalAmount' => $totalAmount,
-            'totalPaidout' => $totalPaidout,
-            'netAmount' => $totalAmount - $totalPaidout,
-
-            'platforms' => Platform::where('platform_name', '!=', 'Walkin')->get(),
-        ]);
+    // Set date range
+    if ($request->from == null && $request->to == null) {
+        $from = date('Y-m-01'); // First day of the current month
+        $to = date('Y-m-t'); // Last day of the current month
+    } else {
+        $from = $request->from;
+        $to = $request->to;
     }
 
+    // Calculate total amount and paidout
+    $totalAmount = Book::whereBetween('checkin', [$from, $to])
+        ->filterByHotel($idHotel)
+        ->when($request->id_user, function ($query) use ($request) {
+            $query->filterByUser($request->id_user);
+        })
+        ->when($request->tipee, function ($query) use ($request) {
+            $query->filterByPaymentType($request->tipee);
+        })
+        ->when($request->booktipe, function ($query) use ($request) {
+            $query->filterByBookingType($request->booktipe);
+        })
+        ->sum('total_amount');
+
+    $totalPaidout = Spending::whereBetween('tanggal', [$from, $to])
+        ->where('id_hotel', $idHotel)
+        ->sum('jumlah');
+
+    // Fetch hotel details
+    $hotel = Hotel::where('id', $idHotel)->first();
+
+    return view('admin.hotel.shift', [
+        'pegawais' => User::where('id_hotel', $idHotel)
+            ->where('role', 0)
+            ->get(),
+        'hotel' => $hotel,
+        'grandTotalAmount' => $totalAmount,
+        'totalPaidout' => $totalPaidout,
+        'netAmount' => $totalAmount - $totalPaidout,
+        'platforms' => Platform::where('platform_name', '!=', 'Walkin')->get(),
+    ]);
+}
     public function show(Request $request)
     {
         $myId = Auth::user()->id;

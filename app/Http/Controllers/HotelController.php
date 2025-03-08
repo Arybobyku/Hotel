@@ -40,76 +40,68 @@ class HotelController extends Controller
     }
 
     public function rooms(Request $request)
-    {
-        $idHotel = Auth::user()->id_hotel;
-        $startDate = date('Y-m-d');
-        $endDate = null;
+{
+    $idHotel = Auth::user()->id_hotel;
+    $startDate = date('Y-m-d');
+    $endDate = null;
+    $rooms = Room::where('id_hotel', $idHotel)->get();
+    $availableRooms = [];
 
-        $now = date('Y-m-d');
-        $rooms = Room::where('id_hotel', $idHotel)->get();
-        $availableRooms = [];
-        // var_dump($request->dateChange);die();
-        if ($request->startDateChange && $request->endDateChange != null) {
-            $startDate = $request->startDateChange;
-            $endDate = $request->endDateChange;
-            $date = 'From '.$request->startDateChange.' Until '.$request->endDateChange;
+    if ($request->startDateChange && $request->endDateChange != null) {
+        $startDate = $request->startDateChange;
+        $endDate = $request->endDateChange;
 
-            $bookings = Book::Where(function ($query) use ($startDate, $endDate) {
-                $query->WhereDate('checkin', '>', $startDate)->orWhereDate('book_date_end', '>=', $endDate);
+        // Ambil booking yang sudah digunakan dalam range tanggal
+        $bookings = Book::where('id_hotel', $idHotel)
+            ->where(function ($query) use ($startDate, $endDate) {
+                $query->whereDate('checkin', '<=', $endDate)
+                      ->whereDate('book_date_end', '>=', $startDate);
             })
-                ->where('id_hotel', $idHotel)
-                ->get();
+            ->with('rooms') // Load kamar yang sudah dibooking
+            ->get();
 
-            foreach ($rooms as $room) {
-                $isAvailable = true;
-                foreach ($bookings as $booking) {
-                    if ($booking->id_room == $room->id) {
-                        $isAvailable = false;
-                        break;
-                    }
-                }
-                if ($isAvailable) {
-                    array_push($availableRooms, $room);
+        // Cari kamar yang tidak ada di dalam booking pada tanggal tersebut
+        foreach ($rooms as $room) {
+            $isAvailable = true;
+            foreach ($bookings as $booking) {
+                if ($booking->rooms->contains($room->id)) {
+                    $isAvailable = false;
+                    break;
                 }
             }
-        } elseif ($request->startDateChange) {
-            $startDate = $request->dateChange;
-            $bookings = Book::whereDate('checkin', $startDate)->where('id_hotel', $idHotel)->get();
-            foreach ($rooms as $room) {
-                $isAvailable = true;
-                foreach ($bookings as $booking) {
-                    if ($booking->id_room == $room->id) {
-                        $isAvailable = false;
-                        break;
-                    }
-                }
-                if ($isAvailable) {
-                    array_push($availableRooms, $room);
-                }
-            }
-        } else {
-            $bookings = Book::whereDate('checkin', $startDate)->where('id_hotel', $idHotel)->get();
-            foreach ($rooms as $room) {
-                $isAvailable = true;
-                foreach ($bookings as $booking) {
-                    if ($booking->id_room == $room->id) {
-                        $isAvailable = false;
-                        break;
-                    }
-                }
-                if ($isAvailable) {
-                    array_push($availableRooms, $room);
-                }
+            if ($isAvailable) {
+                $availableRooms[] = $room;
             }
         }
-        session()->flashInput($request->input());
+    } else {
+        $bookings = Book::where('id_hotel', $idHotel)
+            ->whereDate('checkin', $startDate)
+            ->with('rooms')
+            ->get();
 
-        return view('employee.room', [
-            'rooms' => $availableRooms,
-            'startDate' => $startDate,
-            'endDate' => $endDate,
-        ]);
+        foreach ($rooms as $room) {
+            $isAvailable = true;
+            foreach ($bookings as $booking) {
+                if ($booking->rooms->contains($room->id)) {
+                    $isAvailable = false;
+                    break;
+                }
+            }
+            if ($isAvailable) {
+                $availableRooms[] = $room;
+            }
+        }
     }
+
+    session()->flashInput($request->input());
+
+    return view('employee.room', [
+        'rooms' => $availableRooms,
+        'startDate' => $startDate,
+        'endDate' => $endDate,
+    ]);
+}
+
 
     public function shift(Request $request)
     {
@@ -483,7 +475,7 @@ class HotelController extends Controller
 
         $totalCharge = 0;
         foreach ($charges as $charge) {
-            $totalCharge += $charge->charge->charge;
+            $totalCharge += $charge->charge->charge * $charge->qty;
         }
 
         return view('employee.struk', [

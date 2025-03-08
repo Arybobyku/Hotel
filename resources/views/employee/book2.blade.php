@@ -21,7 +21,7 @@
             </div>
 
             <div class="block w-full overflow-x-auto p-8">
-                <form method="POST" action="{{ Route('insertcheckin') }}" enctype="multipart/form-data">
+                <form method="POST" action="/hotel/book1/multi/post" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-6">
                         <label for="nota" class="block mb-2 text-sm font-medium text-gray-900 ">Nomor Transaksi</label>
@@ -41,22 +41,24 @@
                             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="" required>
                     </div>
-                    <div class="mb-6">
-                        <label for="room" class="block mb-2 text-sm font-medium text-gray-900 ">Room</label>
-                        <select
-                            class="form-select bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            name="id_room" id="id_room">
-                            @foreach ($rooms as $room)
-                                <option value="{{ $room->id }}">{{ $room->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-6">
-                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">Harga</label>
-                        <input type="text" id="price" value="" name="price"
-                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="Contoh : 200000" required onkeyup="checkInput(this)">
-                    </div>
+<div id="room-container">
+    <div class="room-group border border-gray-300 p-4 rounded-lg mb-4">
+        <div class="mb-6">
+            <label class="block mb-2 text-sm font-medium text-gray-900">Room</label>
+            <select name="id_room[]" class="room-select form-select bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5">
+                @foreach ($rooms as $room)
+                    <option value="{{ $room->id }}" data-price="{{ $room->price }}">{{ $room->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mb-6">
+            <label class="block mb-2 text-sm font-medium text-gray-900">Harga</label>
+            <input type="text" class="price-input form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5" name="price[]" readonly>
+        </div>
+    </div>
+</div>
+<button type="button" id="add-room" class="bg-blue-500 text-white px-4 py-2 rounded">Tambah Kamar</button>
+
                     <div class="mb-1">
                         <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">QRIS</label>
                     </div>
@@ -220,4 +222,32 @@
             $(this).remove();
         });
     }, 1000);
+</script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+    function updatePrice(select) {
+        let priceInput = select.closest(".room-group").querySelector(".price-input");
+        let selectedOption = select.options[select.selectedIndex];
+        priceInput.value = selectedOption.dataset.price || "";
+    }
+
+    document.getElementById("room-container").addEventListener("change", function(event) {
+        if (event.target.classList.contains("room-select")) {
+            updatePrice(event.target);
+        }
+    });
+
+    document.getElementById("add-room").addEventListener("click", function() {
+        let roomContainer = document.getElementById("room-container");
+        let newRoom = roomContainer.firstElementChild.cloneNode(true);
+
+        newRoom.querySelector(".room-select").value = "";
+        newRoom.querySelector(".price-input").value = "";
+
+        roomContainer.appendChild(newRoom);
+    });
+
+    document.querySelector(".room-select").dispatchEvent(new Event("change"));
+});
 </script>

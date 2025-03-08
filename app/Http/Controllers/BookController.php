@@ -6,6 +6,7 @@ use App\Models\Book;
 use App\Models\ChargePivot;
 use App\Models\Log;
 use App\Models\Platform;
+use App\Models\BookRoomPivot;
 use App\Models\Room;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,26 +15,30 @@ use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
-    public function indexwalkin(Request $request)
-    {
-        $today = Carbon::today();
-        $idHotel = Auth::user()->id_hotel;
+public function indexwalkin(Request $request)
+{
+    $today = Carbon::today();
+    $idHotel = Auth::user()->id_hotel;
 
-        $today_files = Book::whereDate('created_at', $today)->Where('id_hotel', $idHotel)->count();
-        $counter = $today_files;
+    $today_files = Book::whereDate('created_at', $today)
+        ->where('id_hotel', $idHotel)
+        ->count();
+    $counter = $today_files > 0 ? $today_files + 1 : 1;
 
-        if ($today_files != 0) {
-            ++$counter;
-        } else {
-            $counter = 1;
-        }
-        $room = Room::where('id', $request->id)->first();
+    // Ambil semua kamar yang dipilih
+    $selectedRooms = Room::whereIn('id', $request->rooms)->get();
 
-        return view('employee.book', [
-            'room' => $room, 'date' => $request->date,
-            'counter' => $counter,
-        ]);
+    if ($selectedRooms->isEmpty()) {
+        return redirect()->back()->with('error', 'Pilih setidaknya satu kamar.');
     }
+
+    return view('employee.book', [
+        'selectedRooms' => $selectedRooms,
+        'startDate' => $request->startDate,
+        'endDate' => $request->endDate,
+        'counter' => $counter,
+    ]);
+}
 
     public function indexapp(Request $request)
     {
@@ -110,6 +115,18 @@ class BookController extends Controller
         ]);
     }
 
+    public function multiBook(Request $request) {
+        $selectedRooms = $request->input('rooms', []);
+    $startDate = $request->input('startDate');
+    $endDate = $request->input('endDate');
+
+    if (empty($selectedRooms)) {
+        return redirect()->back()->with('error', 'Pilih setidaknya satu kamar.');
+    }
+
+     return view('hotel.book', compact('selectedRooms'));
+    }
+
     public function checkIn(Request $request)
     {
         $date = date('Y-m-d');
@@ -123,15 +140,17 @@ class BookController extends Controller
     public function checkOut(Request $request, Book $book)
     {
         $chargers = $request->charge;
-        if ($chargers != null) {
-            foreach ($chargers as $idCharge) {
+        $qtys = $request->qty ?? []; // Pastikan qty selalu berupa array
+
+        if (!empty($chargers)) {
+            foreach ($chargers as $index => $idCharge) {
                 ChargePivot::create([
                     'id_charge' => $idCharge,
                     'id_book' => $request->id_booking,
+                    'qty' => $qtys[$index] ?? 1, // Ambil qty sesuai index atau default ke 1
                 ]);
             }
         }
-
         $hotelId = Auth::user()->id_hotel;
         $nameUser = Auth::user()->name;
         $date = date('Y-m-d');
@@ -140,9 +159,10 @@ class BookController extends Controller
             ->get();
         $totalCharge = 0;
         foreach ($charges as $charge) {
-            $totalCharge += $charge->charge->charge;
+            $totalCharge += $charge->charge->charge * $charge->qty;
         }
-        $price = Book::where('id', $request->id_booking)->sum('price');
+        $price = BookRoomPivot::where('id_book', $request->id_booking)->sum('price');
+
         $platform_fee2 = Book::where('id', $request->id_booking)->sum('platform_fee2');
         $platform_fee3 = Book::where('id', $request->id_booking)->sum('platform_fee3');
         $assured_stay = Book::where('id', $request->id_booking)->sum('assured_stay');
@@ -170,92 +190,165 @@ class BookController extends Controller
         return redirect('hotel/dashboard');
     }
 
-    public function booking(Request $request)
-    {
-        $startDate = date('Y-m-d');
-        $availableRooms = [];
+    // public function booking(Request $request)
+    // {
+    //     $startDate = date('Y-m-d');
+    //     $availableRooms = [];
 
-        $userId = Auth::id();
-        $hotelId = Auth::user()->id_hotel;
-        $nameUser = Auth::user()->name;
-        $roomName = Room::select(['name'])
-            ->where('id', '=', $request->id_room)
-            ->get();
-        $rooms = Room::where('id_hotel', $hotelId)->get();
+    //     $userId = Auth::id();
+    //     $hotelId = Auth::user()->id_hotel;
+    //     $nameUser = Auth::user()->name;
+    //     $roomName = Room::select(['name'])
+    //         ->where('id', '=', $request->id_room)
+    //         ->get();
+    //     $rooms = Room::where('id_hotel', $hotelId)->get();
 
-        $bookings = Book::whereDate('checkin', $startDate)
-            ->where('id_hotel', $hotelId)
-            ->get();
-        foreach ($rooms as $room) {
-            $isAvailable = true;
-            foreach ($bookings as $booking) {
-                if ($booking->id_room == $room->id) {
-                    $isAvailable = false;
-                    break;
-                }
-            }
-            if ($isAvailable) {
-                array_push($availableRooms, $room);
-            }
-        }
-        $request->validate([
-            'id_room' => [
-                'required', 'integer', Rule::unique('books')
-                    ->where(function ($query) use ($request) {
-                        return $query
-                            ->where('id_room', $request->id_room)
-                            ->whereDate('checkin', '=', date('Y-m-d'))
-                            ->where('id_hotel', auth()->user()->id_hotel);
-                    }),
-            ],
-            'guestname' => ['required', 'string', 'max:255'],
-            'nik' => ['required', 'string', 'max:255'],
-            'nota' => ['required', 'string', 'max:255'],
-            'price' => ['required', 'integer'],
-        ]);
+    //     $bookings = Book::whereDate('checkin', $startDate)
+    //         ->where('id_hotel', $hotelId)
+    //         ->get();
+    //     foreach ($rooms as $room) {
+    //         $isAvailable = true;
+    //         foreach ($bookings as $booking) {
+    //             if ($booking->id_room == $room->id) {
+    //                 $isAvailable = false;
+    //                 break;
+    //             }
+    //         }
+    //         if ($isAvailable) {
+    //             array_push($availableRooms, $room);
+    //         }
+    //     }
+    //     $request->validate([
+    //         'id_room' => [
+    //             'required', 'integer', Rule::unique('books')
+    //                 ->where(function ($query) use ($request) {
+    //                     return $query
+    //                         ->where('id_room', $request->id_room)
+    //                         ->whereDate('checkin', '=', date('Y-m-d'))
+    //                         ->where('id_hotel', auth()->user()->id_hotel);
+    //                 }),
+    //         ],
+    //         'guestname' => ['required', 'string', 'max:255'],
+    //         'nik' => ['required', 'string', 'max:255'],
+    //         'nota' => ['required', 'string', 'max:255'],
+    //         'price' => ['required', 'integer'],
+    //     ]);
 
-        $platformFee = Platform::where('id', $request->id_platform)->sum('platform_fee');
-        $potonganFee = ($platformFee * $request->price) / 100;
+    //     $platformFee = Platform::where('id', $request->id_platform)->sum('platform_fee');
+    //     $potonganFee = ($platformFee * $request->price) / 100;
 
-        $date = date_create($request->checkin);
-        date_add($date, date_interval_create_from_date_string($request->jumlah_hari.' days'));
-        $dateBookingEnd = date_format($date, 'Y-m-d');
+    //     $date = date_create($request->checkin);
+    //     date_add($date, date_interval_create_from_date_string($request->jumlah_hari.' days'));
+    //     $dateBookingEnd = date_format($date, 'Y-m-d');
 
-        Book::create([
-            'guestname' => $request->guestname,
-            'id_room' => $request->id_room,
+    //     Book::create([
+    //         'guestname' => $request->guestname,
+    //         'id_room' => $request->id_room,
+    //         'id_hotel' => $hotelId,
+    //         'id_user' => $userId,
+    //         'room' => $roomName,
+    //         'nik' => $request->nik,
+    //         'nota' => $request->nota,
+    //         'price' => $request->price,
+    //         // 'price_app' => $request->price_app,
+    //         'book_date' => $request->booking,
+    //         'book_date_end' => $dateBookingEnd,
+    //         'days' => $request->jumlah_hari,
+    //         'checkin' => $request->checkin,
+    //         'checkout' => $request->checkout,
+    //         'booking_type' => $request->jenisPesan,
+    //         'payment_type' => $request->jenisPembayaran,
+    //         'id_platform' => $request->id_platform,
+    //         'platform_fee2' => $potonganFee,
+    //         'assured_stay' => $request->assured_stay,
+    //         'tipforstaf' => $request->tipforstaf,
+    //         'upgrade_room' => $request->upgrade_room,
+    //         'travel_protection' => $request->travel_protection,
+    //         'member_redclub' => $request->member_redclub,
+    //         'breakfast' => $request->breakfast,
+    //         'early_checkin' => $request->early_checkin,
+    //         'late_checkout' => $request->late_checkout,
+    //         'platform_fee3' => $request->platform_fee3,
+    //     ]);
+
+    //     Log::create([
+    //         'activity' => "$nameUser Membuat Reservation Nomor Transaksi $request->nota",
+    //         'id_hotel' => $hotelId,
+    //     ]);
+
+    //     return redirect('hotel/dashboard');
+    // }
+
+public function booking(Request $request)
+{
+    // dd($request);
+
+    $startDate = date('Y-m-d');
+    $userId = Auth::id();
+    $hotelId = Auth::user()->id_hotel;
+    $nameUser = Auth::user()->name;
+
+    $request->validate([
+        'id_room' => 'required|array', // Memastikan id_room adalah array
+        'id_room.*' => 'integer|exists:rooms,id', // Validasi tiap id_room
+        'guestname' => 'required|string|max:255',
+        'nik' => 'required|string|max:255',
+        'nota' => 'required|string|max:255',
+        'price' => 'required|array', // Memastikan price juga array
+        'price.*' => 'integer',
+    ]);
+
+    $platformFee = Platform::where('id', $request->id_platform)->sum('platform_fee');
+    $potonganFee = ($platformFee * array_sum($request->price)) / 100;
+
+    $date = date_create($request->checkin);
+    date_add($date, date_interval_create_from_date_string($request->jumlah_hari . ' days'));
+    $dateBookingEnd = date_format($date, 'Y-m-d');
+
+    // Simpan data booking utama
+    $book = Book::create([
+        'guestname' => $request->guestname,
+        'id_hotel' => $hotelId,
+        'id_user' => $userId,
+        'nik' => $request->nik,
+        'nota' => $request->nota,
+        'book_date' => $request->booking,
+        'book_date_end' => $dateBookingEnd,
+        'days' => $request->jumlah_hari,
+        'checkin' => $request->checkin,
+        'checkout' => $request->checkout,
+        'booking_type' => $request->jenisPesan,
+        'payment_type' => $request->jenisPembayaran,
+        'id_platform' => $request->id_platform,
+        'platform_fee2' => $potonganFee,
+        'assured_stay' => $request->assured_stay,
+        'tipforstaf' => $request->tipforstaf,
+        'upgrade_room' => $request->upgrade_room,
+        'travel_protection' => $request->travel_protection,
+        'member_redclub' => $request->member_redclub,
+        'breakfast' => $request->breakfast,
+        'early_checkin' => $request->early_checkin,
+        'late_checkout' => $request->late_checkout,
+        'platform_fee3' => $request->platform_fee3,
+    ]);
+
+    // Simpan detail kamar ke pivot table
+    foreach ($request->id_room as $index => $roomId) {
+        BookRoomPivot::create([
+            'id_book' => $book->id,
+            'id_room' => $roomId,
             'id_hotel' => $hotelId,
-            'id_user' => $userId,
-            'room' => $roomName,
-            'nik' => $request->nik,
-            'nota' => $request->nota,
-            'price' => $request->price,
-            // 'price_app' => $request->price_app,
-            'book_date' => $request->booking,
-            'book_date_end' => $dateBookingEnd,
-            'days' => $request->jumlah_hari,
-            'checkin' => $request->checkin,
-            'checkout' => $request->checkout,
-            'booking_type' => $request->jenisPesan,
-            'payment_type' => $request->jenisPembayaran,
-            'id_platform' => $request->id_platform,
-            'platform_fee2' => $potonganFee,
-            'assured_stay' => $request->assured_stay,
-            'tipforstaf' => $request->tipforstaf,
-            'upgrade_room' => $request->upgrade_room,
-            'travel_protection' => $request->travel_protection,
-            'member_redclub' => $request->member_redclub,
-            'breakfast' => $request->breakfast,
-            'early_checkin' => $request->early_checkin,
-            'late_checkout' => $request->late_checkout,
-            'platform_fee3' => $request->platform_fee3,
+            'price' => $request->price[$index],
         ]);
-
-        Log::create([
-            'activity' => "$nameUser Membuat Reservation Nomor Transaksi $request->nota",
-            'id_hotel' => $hotelId,
-        ]);
-
-        return redirect('hotel/dashboard');
     }
+
+    Log::create([
+        'activity' => "$nameUser Membuat Reservation Nomor Transaksi $request->nota",
+        'id_hotel' => $hotelId,
+    ]);
+
+    return redirect('hotel/dashboard');
+}
+
+
 }

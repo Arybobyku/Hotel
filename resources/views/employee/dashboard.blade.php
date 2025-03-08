@@ -34,11 +34,13 @@
                                     {{ $book->guestname }}
                                 </td>
                                 <td class="px-4 py-3 text-sm">
-                                    @if ($book->id_room != 0)
+                                    {{-- @if ($book->id_room != 0)
                                         {{ $book->nameroom->name }}
                                     @else
                                         {{ $book->room }}
-                                    @endif
+                                    @endif --}}
+{{ $book->rooms->pluck('name')->join(', ') }}
+
                                 </td>
                                 <td class="px-4 py-3 text-sm">
 
@@ -100,58 +102,49 @@
 
         </div>
 
-        {{-- Show Modal --}}
-        <div class="hidden overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none justify-center items-center"
-            id="modal-id">
-            <div class="relative w-auto my-6 mx-auto max-w-3xl">
-                <!--content-->
-                <div
-                    class="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                    <!--header-->
-                    <div class="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                        <h3 class="text-3xl font-semibold">
-                            Checkout Charge
-                        </h3>
-                        <button
-                            class="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                            onclick="toggleModal('modal-id',0,0)">
-                            <span
-                                class="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                                ×
-                            </span>
-                        </button>
-                    </div>
-                    <!--body-->
-                    <form action="{{ Route('hotel.dashboard.checkOut') }}" method="POST">
-                        @csrf
-                        <div class="relative p-6 w-full">
-                            @foreach ($charges as $charge)
-                                <div class="flex items-center gap-4 w-screen">
-                                    <input id="checked-checkbox" class="w-3 h-3" type="checkbox" name="charge[]"
-                                        value="{{ $charge->id }}">
-                                    <label for="checked-checkbox" class="text-xs">{{ $charge->name }}</label>
-                                    <label for="checked-checkbox" class="text-xs    ">Rp.
-                                        {{ number_format($charge->charge) }}</label>
-                                </div>
-                            @endforeach
-                        </div>
-                        <input hidden id="id_booking" name="id_booking">
-                        <input hidden id="nota" name="nota">
-                        <!--footer-->
-                        <div class="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                            <button
-                                class="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                type="button" onclick="toggleModal('modal-id',0,0)">
-                                Close
-                            </button>
-                            <button class="bg-red-400 p-3 rounded-xl text-white" type="submit   " {{-- onclick="toggleModal('modal-id',0,0)" --}}>
-                                Submit checkout
-                            </button>
-                        </div>
-                    </form>
-                </div>
+<!-- Show Modal -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center overflow-x-hidden overflow-y-auto"
+    id="modal-id">
+    <div class="relative w-full max-w-3xl mx-auto my-6">
+        <!-- Content -->
+        <div class="bg-white rounded-lg shadow-lg border-0 flex flex-col w-full">
+            <!-- Header -->
+            <div class="flex items-center justify-between p-5 border-b border-slate-200 rounded-t">
+                <h3 class="text-2xl font-semibold">Checkout Charge</h3>
+                <button class="text-gray-500 hover:text-gray-700 text-2xl font-bold" onclick="toggleModal('modal-id',0,0)">
+                    ×
+                </button>
             </div>
+            <!-- Body -->
+            <form action="{{ Route('hotel.dashboard.checkOut') }}" method="POST">
+                @csrf
+                <div class="p-6">
+                    <div class="grid grid-cols-3 gap-4 items-center">
+                        @foreach ($charges as $charge)
+                            <div class="flex items-center gap-2">
+                                <input id="charge-{{ $charge->id }}" class="w-4 h-4 accent-blue-600" type="checkbox" name="charge[]" value="{{ $charge->id }}">
+                                <label for="charge-{{ $charge->id }}" class="text-sm font-medium text-gray-900">{{ $charge->name }}</label>
+                            </div>
+                            <span class="text-sm text-gray-700">Rp. {{ number_format($charge->charge) }}</span>
+                            <input type="number" id="price-{{ $charge->id }}" name="qty[]" class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg p-2 w-full" placeholder="Masukkan jumlah">
+                        @endforeach
+                    </div>
+                    <input type="hidden" id="id_booking" name="id_booking">
+                    <input type="hidden" id="nota" name="nota">
+                </div>
+                <!-- Footer -->
+                <div class="flex items-center justify-end p-6 border-t border-slate-200 rounded-b">
+                    <button class="text-gray-500 hover:text-gray-700 font-semibold uppercase px-6 py-2 text-sm" type="button"
+                        onclick="toggleModal('modal-id',0,0)">Close</button>
+                    <button class="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-3 rounded-lg ml-3" type="submit">
+                        Submit Checkout
+                    </button>
+                </div>
+            </form>
         </div>
+    </div>
+</div>
+
         <div class="hidden opacity-25 fixed inset-0 z-40 bg-black" id="modal-id-backdrop"></div>
 
 

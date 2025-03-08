@@ -10,7 +10,8 @@ class ChargePivot extends Model
     use HasFactory;
     protected $fillable = [
         "id_charge",
-        "id_book"
+        "id_book",
+        "qty"
     ];
 
     public function charge(){

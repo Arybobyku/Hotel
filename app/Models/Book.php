@@ -94,4 +94,8 @@ protected $dates = ['deleted_at'];
 
          return $query->where('books.id_platform', $platform);
     }
+    public function rooms()
+{
+    return $this->belongsToMany(Room::class, 'book_room_pivots', 'id_book', 'id_room');
+}
 }

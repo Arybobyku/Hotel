@@ -22,4 +22,8 @@ protected $dates = ['deleted_at'];
     public function bookings(){
         return $this->hasMany(Book::class,"id_room","id");
     }
+    public function books()
+{
+    return $this->belongsToMany(Book::class, 'book_room_pivot', 'room_id', 'book_id');
+}
 }

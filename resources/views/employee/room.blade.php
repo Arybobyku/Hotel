@@ -59,12 +59,22 @@
         </form>
     </div>
 
-    <div class="w-full grid grid-cols-1 md:grid-cols-3 pl-2">
-        @foreach ($rooms as $room)
+ <form method="GET" action="{{ route('hotel_book') }}">
+        @csrf
+        <div class="text-center mt-4">
+            <button type="submit" class="bg-green-900 text-white py-2 px-6 hover:opacity-75 rounded-lg">
+                Next
+            </button>
+        </div>
 
-            <div class="mb-2 m-4 ">
-                <a href='/hotel/book/{{ $startDate }}/{{ $room->id }}'
-                    class="flex flex-col p-3 rounded-md shadow-xl">
+        <div class="w-full grid grid-cols-1 md:grid-cols-3 pl-2">
+            @foreach ($rooms as $room)
+                <div class="mb-2 m-4 border p-3 rounded-md shadow-xl">
+                    <label class="flex items-center space-x-3">
+                        <input type="checkbox" name="rooms[]" value="{{ $room->id }}" class="w-5 h-5">
+                        <span class="text-lg font-bold">{{ $room->name }}</span>
+                    </label>
+                    
                     @if ($room->image)
                         <div class="grid m-6 place-items-center">
                             <img class="rounded-md" src="{{ asset($room->image) }}">
@@ -74,16 +84,14 @@
                             <img class="rounded-md" src="{{ asset('images/denatiobinjai.jpg') }}">
                         </div>
                     @endif
-                    <p class="text-xl mt-2">
-                        {{ $room->name }}
-                    </p>
-                    <p class="font-light text-sm">
-                        Rp {{ number_format($room->price) }}
-                    </p>
-                </a>
-            </div>
-        @endforeach
-    </div>
+                    
+                    <p class="font-light text-sm">Rp {{ number_format($room->price) }}</p>
+                </div>
+            @endforeach
+        </div>
+
+
+    </form>
 
     {{-- </div> --}}
 @endsection

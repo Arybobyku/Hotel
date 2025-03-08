@@ -190,7 +190,8 @@
                 @endif
                 <h4>--------------</h4>
                 @foreach ($charges as $charge)
-                    <h4> Rp. {{ number_format($charge->charge->charge) }},-</h4>
+                    {{-- <h4> Rp. {{ number_format($charge->charge->charge) }},-</h4> --}}
+                    <h4> Rp. {{ number_format($charge->charge->charge * $charge->qty) }},-</h4>
                 @endforeach
                 <br>
                     <h4>Rp. {{ number_format($book->price + $totalCharge + $book->platform_fee3 + $book->assured_stay + $book->tipforstaf + $book->upgraderoom + $book->travel_protection + $book->member_redclub

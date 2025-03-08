@@ -50,33 +50,44 @@ class ShiftExport implements FromQuery, WithHeadings, WithStyles, ShouldAutoSize
     {
         // if (!empty($this->id_user) && $this->tipee == null && $this->booktipe == null && $this->id_platform == null) {
             // user
-    $data = Book::selectRaw("
-        books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, 
-        rooms.name, users.name, books.price, books.payment_type, books.total_charge, books.platform_fee3, 
-        books.assured_stay, books.tipforstaf, books.upgrade_room, books.travel_protection, 
-        books.member_redclub, books.breakfast, books.early_checkin, books.late_checkout, books.is_qris,
-        books.total_amount, books.total_amount - books.platform_fee2 as total_amount1, 
-        platforms.platform_name, books.platform_fee2
-            ")
-            ->leftJoin('rooms', 'books.id_room', '=', 'rooms.id')
-            ->leftJoin('users', 'books.id_user', '=', 'users.id')
-            ->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
-            ->whereBetween('books.checkin', [$this->from, $this->to])
-            ->when($this->myId, function ($query, $myId) {
-                return $query->filterByHotel($myId);
-            })
-            ->when($this->id_user, function ($query, $idUser) {
-                return $query->filterByUser($idUser);
-            })
-            ->when($this->tipee, function ($query, $tipee) {
-                return $query->filterByPaymentType($tipee);
-            })
-            ->when($this->booktipe, function ($query, $bookTipe) {
-                return $query->filterByBookingType($bookTipe);
-            })
-            ->when($this->id_platform, function ($query, $idPlatform) {
-                return $query->filterByPlatform($idPlatform);
-            });
+$data = Book::selectRaw("
+    books.guestname, books.book_date, books.checkin, books.checkout, books.nota, books.days, 
+    GROUP_CONCAT(rooms.name SEPARATOR ', ') as room_name, users.name as pegawai, books.price, 
+    books.payment_type, books.total_charge, books.platform_fee3, books.assured_stay, 
+    books.tipforstaf, books.upgrade_room, books.travel_protection, books.member_redclub, 
+    books.breakfast, books.early_checkin, books.late_checkout, books.is_qris, books.total_amount, 
+    books.total_amount - books.platform_fee2 as total_amount1, platforms.platform_name, 
+    books.platform_fee2
+")
+->leftJoin('book_room_pivots', 'books.id', '=', 'book_room_pivots.id_book')
+->leftJoin('rooms', 'book_room_pivots.id_room', '=', 'rooms.id')
+->leftJoin('users', 'books.id_user', '=', 'users.id')
+->leftJoin('platforms', 'books.id_platform', '=', 'platforms.id')
+->whereBetween('books.checkin', [$this->from, $this->to])
+->when($this->myId, function ($query, $myId) {
+    return $query->filterByHotel($myId);
+})
+->when($this->id_user, function ($query, $idUser) {
+    return $query->filterByUser($idUser);
+})
+->when($this->tipee, function ($query, $tipee) {
+    return $query->filterByPaymentType($tipee);
+})
+->when($this->booktipe, function ($query, $bookTipe) {
+    return $query->filterByBookingType($bookTipe);
+})
+->when($this->id_platform, function ($query, $idPlatform) {
+    return $query->filterByPlatform($idPlatform);
+})
+->groupBy(
+    'books.id', 'books.guestname', 'books.book_date', 'books.checkin', 'books.checkout', 
+    'books.nota', 'books.days', 'users.name', 'books.price', 'books.payment_type', 
+    'books.total_charge', 'books.platform_fee3', 'books.assured_stay', 'books.tipforstaf', 
+    'books.upgrade_room', 'books.travel_protection', 'books.member_redclub', 'books.breakfast', 
+    'books.early_checkin', 'books.late_checkout', 'books.is_qris', 'books.total_amount', 
+    'books.platform_fee2', 'platforms.platform_name'
+);
+
 
         // } elseif (empty($this->id_user) && $this->tipee != null && $this->booktipe == null && $this->id_platform == null) {
         //     // payment type

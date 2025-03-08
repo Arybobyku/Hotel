@@ -2,15 +2,15 @@
 
 
 @section('contents')
-    @php
+    {{-- @php
         function unique_id($digits)
         {
             return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, $digits);
         }
         // 12 digits
 
-    @endphp
-    <input id="room_price" type="text" hidden value="{{ $room->price }}">
+    @endphp --}}
+    {{-- <input id="room_price" type="text" hidden value="{{ $room->price }}"> --}}
     <div class="w-full px-4">
                 @if ($errors->any())
      <div id="alert" class="alert mx-10 alert bg-red-200 rounded-lg py-5 px-6 mb-4 text-base text-red-500" role="alert">
@@ -29,9 +29,8 @@
             </div>
 
             <div class="block w-full overflow-x-auto p-8">
-                <form method="POST" action="{{ Route('insertcheckin') }}" enctype="multipart/form-data">
-                    @csrf
-                    <input name="id_room" value="{{ $room->id }}" hidden />
+               <form method="POST" action="/hotel/book1/multi/post" enctype="multipart/form-data">
+    @csrf
                     {{-- <input name="room" value="-" hidden /> --}}
                     {{-- <input name="price_app" value="0" hidden /> --}}
                     <input name="platform_fee2" value="0" hidden />
@@ -44,104 +43,89 @@
                     <input name="member_redclub" value="0" hidden />
                     <input name="early_checkin" value="0" hidden />
                     <input name="late_checkout" value="0" hidden />
-                    <div class="mb-6">
-                        <label for="nota" class="block mb-2 text-sm font-medium text-gray-900 ">Nomor Transaksi</label>
-                        <input type="text" id="nota" name="nota"
-                            value="{{ date('dmy') }}{{ $room->id_hotel }}{{ str_pad($counter,4,'0', STR_PAD_LEFT)}}"
-                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="" required readonly>
-                    </div>
-                    <div class="mb-6">
-                        <label for="guestname" class="block mb-2 text-sm font-medium text-gray-900 ">Nama</label>
-                        <input type="text" id="guestname" name="guestname"
-                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="" required>
-                    </div>
-                    <div class="mb-6">
-                        <label for="nik" class="block mb-2 text-sm font-medium text-gray-900 ">NIK</label>
-                        <input type="text" id="nik" name="nik"
-                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="" required>
-                    </div>
-                    <div class="mb-6">
-                        <label for="room" class="block mb-2 text-sm font-medium text-gray-900 ">Room</label>
-                        <input type="text" id="room" value="{{ $room->name }}" name="room" readonly
-                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="" required>
-                    </div>
-                    <div class="mb-6">
-                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">Harga</label>
-                        <input type="text" id="fakeprice" value="Rp. {{ $room->price }}" name="fakeprice" readonly
-                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="" required>
-                    </div>
-                <div class="mb-1">
-                        <label for="price" class="block mb-2 text-sm font-medium text-gray-900 ">QRIS</label>
-                </div>
-                <div class="mb-6 flex">
-                    <div class="mr-6">
-                        <input type="radio" id="html" name="is_qris" value="ya">
-                        <label class="block text-sm font-medium text-gray-900" for="html">Ya</label>
-                    </div>
-                    <div>
-                        <input type="radio" id="css" name="is_qris" value="tidak">
-                        <label class="block text-sm font-medium text-gray-900" for="css">Tidak</label>
-                    </div>
-                </div>
+            <div class="mb-6">
+            <label class="block mb-2 text-sm font-medium text-gray-900">Nomor Transaksi</label>
+            <input type="text" name="nota" 
+                value="inv{{ date('dmy') }}{{ str_pad($counter,4,'0', STR_PAD_LEFT)}}" 
+                class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5" 
+                readonly>
+        </div>
 
+    @foreach ($selectedRooms as $room)
+        <input type="hidden" name="id_room[]" value="{{ $room->id }}" />
 
-                    <input type="text" id="price" value="{{ $room->price }}" name="price"
-                        class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5 hidden"
-                        placeholder="">
-                    <div class="mb-6">
-                        <label for="booking" class="block mb-2 text-sm font-medium text-gray-900 ">Tanggal Booking</label>
-                        <input type="date" id="booking" name="booking" value="{{ $date }}" readonly
-                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="">
-                    </div>
-                    <div class="mb-6">
-                        <label for="nik" class="block mb-2 text-sm font-medium text-gray-900 ">Jumlah Hari</label>
-                        <input type="number" id="jumlah_hari" name="jumlah_hari"
-                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="Contoh: 1" onchange="" required>
-                    </div>
-                    <div class="mb-6">
-                        <label for="checkin" class="block mb-2 text-sm font-medium text-gray-900 ">Tanggal Checkin</label>
-                        <input type="date" id="checkin" name="checkin"
-                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            placeholder="">
-                    </div>
+        <div class="mb-6">
+            <label class="block mb-2 text-sm font-medium text-gray-900">Room</label>
+            <input type="text" value="{{ $room->name }}" name="room[]" readonly
+                class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5">
+        </div>
 
-                    {{-- <div class="mb-6">
-                        <label for="jenisPesan" class="block mb-2 text-sm font-medium text-gray-900 ">Jenis
-                            Pemesanan</label>
-                        <select
-                            class="form-select bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
-                            name="jenisPesan" id="jenisPesan" required>
-                            <option value="app">Dari Aplikasi</option>
-                            <option value="walkin">Walkin</option>
-                        </select>
-                    </div> --}}
-                    {{-- <label for="jenisPembayaran" class="block mb-2 text-sm font-medium text-gray-900 ">Jenis
-                        Pembayaran</label>
-                    <div class="flex items-center mb-6">
-                        <input checked id="cash" type="radio" value="cash" name="jenisPembayaran"
-                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500  focus:ring-2 ">
-                        <label for="default-radio-1" class="ml-2 text-sm font-medium text-gray-900 ">Cash</label>
-                    </div>
-                    <div class="flex items-center mb-6">
-                        <input id="app" type="radio" value="app" name="jenisPembayaran"
-                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
-                        <label for="default-radio-2" class="ml-2 text-sm font-medium text-gray-900">Dari Aplikasi </label>
-                    </div> --}}
-                    <input name="jenisPembayaran" value="Walkin" hidden />
-                    <input name="jenisPesan" value="Walkin" hidden />
-                    <input name="id_platform" value="1" hidden />
+        <div class="mb-6">
+            <label class="block mb-2 text-sm font-medium text-gray-900">Harga</label>
+            <input type="text" value="Rp. {{ number_format($room->price, 0, ',', '.') }}" readonly
+                class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5">
+            <input type="hidden" name="price[]" value="{{ $room->price }}">
+        </div>
 
+        <hr class="my-4 border-gray-300">
+    @endforeach
 
-                    <button type="submit"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                </form>
+    <div class="mb-6">
+        <label class="block mb-2 text-sm font-medium text-gray-900">Nama</label>
+        <input type="text" name="guestname"
+            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+            required>
+    </div>
+
+    <div class="mb-6">
+        <label class="block mb-2 text-sm font-medium text-gray-900">NIK</label>
+        <input type="text" name="nik"
+            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+            required>
+    </div>
+
+    <div class="mb-6">
+        <label class="block mb-2 text-sm font-medium text-gray-900">QRIS</label>
+        <div class="flex">
+            <div class="mr-6">
+                <input type="radio" id="qris_yes" name="is_qris" value="ya">
+                <label for="qris_yes">Ya</label>
+            </div>
+            <div>
+                <input type="radio" id="qris_no" name="is_qris" value="tidak">
+                <label for="qris_no">Tidak</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-6">
+        <label class="block mb-2 text-sm font-medium text-gray-900">Tanggal Booking</label>
+        <input type="date" name="booking" value=""
+            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5">
+    </div>
+
+    <div class="mb-6">
+        <label class="block mb-2 text-sm font-medium text-gray-900">Jumlah Hari</label>
+        <input type="number" name="jumlah_hari"
+            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+            placeholder="Contoh: 1" required>
+    </div>
+
+    <div class="mb-6">
+        <label class="block mb-2 text-sm font-medium text-gray-900">Tanggal Check-in</label>
+        <input type="date" name="checkin"
+            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5">
+    </div>
+
+    <input type="hidden" name="jenisPembayaran" value="Walkin">
+    <input type="hidden" name="jenisPesan" value="Walkin">
+    <input type="hidden" name="id_platform" value="1">
+
+    <button type="submit"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+        Submit
+    </button>
+</form>
             </div>
 
         </div>

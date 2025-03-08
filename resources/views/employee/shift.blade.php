@@ -122,11 +122,12 @@
                                 {{ $book->nota }}
                             </td>
                             <td class="px-4 py-3 text-sm">
-                                @if ($book->id_room != 0)
+                                {{-- @if ($book->id_room != 0)
                                     {{ $book->nameroom->name }}
                                 @else
                                     {{ $book->room }}
-                                @endif
+                                @endif --}}
+                                {{ $book->rooms->pluck('name')->join(', ') }}
                             </td>
                             <td class="px-4 py-3 text-sm">
                                 {{ $book->book_date }}
