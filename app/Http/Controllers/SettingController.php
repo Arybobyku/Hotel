@@ -50,7 +50,7 @@ public function update(Request $request, $id)
     // Update data user
     User::where('id', $id)->update($validatedData);
 
-    return redirect('admin/setting/' . $myId)->with('status', 'Berhasil Mengedit Profile');
+    return redirect('hotel/setting/' . $myId)->with('status', 'Berhasil Mengedit Profile');
 }
 
 public function adminedit(User $user)
