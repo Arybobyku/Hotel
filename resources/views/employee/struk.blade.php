@@ -40,7 +40,7 @@
             <div class="flex justify-between gap-4">
                 <div class="flex-col">
                     <h4>Tanggal</h4>
-                    <h4>Kamar</h4>
+                    {{-- <h4>Kamar</h4> --}}
                     <h4>CheckIn</h4>
                     <h4>CheckOut</h4>
                     <h4>Jenis Pembayaran</h4>
@@ -50,7 +50,7 @@
                     <h4>:</h4>
                     <h4>:</h4>
                     <h4>:</h4>
-                    <h4>:</h4>
+                    {{-- <h4>:</h4> --}}
                 </div>
                 <div class="flex-col">
                     <h4> {{ $book->book_date }}</h4>
@@ -80,9 +80,9 @@
 
             <div class="flex-col">
                 <h4>Jumlah Hari</h4>
-                @if ($book->id_room > 0)
-                    <h4>Harga Kamar</h4>
-                @endif
+                @foreach ($bookRoomPivots as $pivot)
+                    <h4>Harga Kamar {{$pivot->room->name}}</h4>
+                @endforeach
                 @if   ($book->platform_fee3 > 0)
                 <h4>Platfrom Fee</h4>
                 @endif
@@ -160,7 +160,10 @@
             </div>
             <div class="flex-col">
                     <h4>{{ $book->days }}</h4>
-<h4>Rp. {{ number_format($book->price) }},-</h4>
+{{-- {{-- <h4>Rp. {{ number_format($book->price) }},-</h4> --}}
+                @foreach ($bookRoomPivots as $pivot)
+                    <h4>Rp. {{ number_format($pivot->price) }},-</h4>
+                @endforeach
                 @if   ($book->platform_fee3 > 0)
                 <h4>Rp. {{ number_format($book->platform_fee3) }},-</h4>
                 @endif

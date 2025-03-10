@@ -165,6 +165,7 @@ public function indexwalkin(Request $request)
         Book::where('id', $request->id_booking)->update([
             'checkOut' => $date,
             'total_charge' => $totalCharge,
+            'price' => $price,
             'total_amount' => $totalAmount,
         ]);
 

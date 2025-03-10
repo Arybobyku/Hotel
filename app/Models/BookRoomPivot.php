@@ -14,4 +14,8 @@ class BookRoomPivot extends Model
         'id_book',
         'price',
     ];
+
+    public function room(){
+        return $this->hasOne(Room::class,'id','id_room');
+    }
 }

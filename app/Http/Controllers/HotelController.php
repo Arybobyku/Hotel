@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\BookRoomPivot;
 use App\Models\ChargePivot;
 use App\Models\ChargeType;
 use App\Models\Hotel;
@@ -447,24 +448,58 @@ class HotelController extends Controller
         ]);
     }
 
-    public function struk(Request $request)
-    {
-        $idHotel = Auth::user()->id_hotel;
-        $book = Book::where('id', $request->id)->first();
+    // public function struk(Request $request)
+    // {
+    //     $idHotel = Auth::user()->id_hotel;
+    //     $book = Book::where('id', $request->id)->first();
 
-        $charges = ChargePivot::where('id_book', $request->id)
-            ->with('charge')
-            ->get();
+    //     $charges = ChargePivot::where('id_book', $request->id)
+    //         ->with('charge')
+    //         ->get();
 
-        $totalCharge = 0;
-        foreach ($charges as $charge) {
-            $totalCharge += $charge->charge->charge * $charge->qty;
-        }
+    //     $totalCharge = 0;
+    //     foreach ($charges as $charge) {
+    //         $totalCharge += $charge->charge->charge * $charge->qty;
+    //     }
 
-        return view('employee.struk', [
-            'book' => $book,
-            'charges' => $charges,
-            'totalCharge' => $totalCharge,
-        ]);
+    //     return view('employee.struk', [
+    //         'book' => $book,
+    //         'charges' => $charges,
+    //         'totalCharge' => $totalCharge,
+    //     ]);
+    // }
+
+   public function struk(Request $request)
+{
+    $idHotel = Auth::user()->id_hotel;
+    $book = Book::where('id', $request->id)->first();
+
+    $charges = ChargePivot::where('id_book', $request->id)
+        ->with('charge')
+        ->get();
+
+    $bookRoomPivots = BookRoomPivot::where('id_book', $request->id)
+        ->with('room')
+        ->get();
+
+    $totalCharge = 0;
+    foreach ($charges as $charge) {
+        $totalCharge += $charge->charge->charge * $charge->qty;
     }
+
+    // Ambil harga kamar dari book_room_pivots
+    $roomPrice = DB::table('book_room_pivots')
+        ->where('id_book', $request->id)
+        ->sum('price'); // Jika ada beberapa kamar, ambil total harga
+
+    return view('employee.struk', [
+        'book' => $book,
+        'charges' => $charges,
+        'totalCharge' => $totalCharge,
+        'roomPrice' => $roomPrice, // Kirim ke view
+        'bookRoomPivots' => $bookRoomPivots, // Kirim ke view
+    ]);
+}
+
+
 }
