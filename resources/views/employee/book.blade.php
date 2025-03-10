@@ -59,24 +59,25 @@
                 readonly>
         </div>
 
-    @foreach ($selectedRooms as $room)
+@foreach ($selectedRooms as $room)
+    <div class="room-container mb-6">
         <input type="hidden" name="id_room[]" value="{{ $room->id }}" />
 
-        <div class="mb-6">
-            <label class="block mb-2 text-sm font-medium text-gray-900">Room</label>
-            <input type="text" value="{{ $room->name }}" name="room[]" readonly
-                class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5">
-        </div>
+        <label class="block mb-2 text-sm font-medium text-gray-900">Room</label>
+        <input type="text" value="{{ $room->name }}" name="room[]" readonly
+            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5">
 
-        <div class="mb-6">
-            <label class="block mb-2 text-sm font-medium text-gray-900">Harga</label>
-            <input type="text" value="Rp. {{ number_format($room->price, 0, ',', '.') }}" readonly
-                class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5">
-            <input type="hidden" name="price[]" value="{{ $room->price }}">
-        </div>
+        <label class="block mb-2 text-sm font-medium text-gray-900">Harga</label>
+        <input type="text" value="Rp. {{ number_format($room->price, 0, ',', '.') }}" readonly
+            class="form-control room-price-display bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5">
+        <input type="hidden" name="price[]" value="{{ $room->price }}" class="room-price-hidden"
+            data-original-price="{{ $room->price }}">
+    </div>
 
-        <hr class="my-4 border-gray-300">
-    @endforeach
+    <hr class="my-4 border-gray-300">
+@endforeach
+
+
 
     <div class="mb-6">
         <label class="block mb-2 text-sm font-medium text-gray-900">Nama</label>
@@ -114,7 +115,7 @@
 
     <div class="mb-6">
         <label class="block mb-2 text-sm font-medium text-gray-900">Jumlah Hari</label>
-        <input type="number" name="jumlah_hari"
+        <input type="number" name="jumlah_hari" id="jumlah_hari"
             class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
             placeholder="Contoh: 1" required>
     </div>
@@ -144,21 +145,27 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-    $(document).ready(function() {
-        // Get value on button click and show alert
-        $("#jumlah_hari").change(function() {
-            var price = $("#room_price").val();
-            var jumlah_hari = $("#jumlah_hari").val();
-            var hasil = jumlah_hari * price;
-            console.log(hasil);
-            $("#fakeprice").attr("value",
-                `Rp. ${parseFloat(hasil, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString()}`
-            );
-            $('#price').val(hasil);
-            // $('#total').val(hasil);
-        })
-    })
+    $(document).ready(function () {
+        $("#jumlah_hari").on("change", function () {
+            var jumlah_hari = $(this).val(); // Ambil jumlah hari dari input utama
+
+            $(".room-container").each(function () {
+                var priceInput = $(this).find(".room-price-hidden"); // Hidden input harga
+                var displayPriceInput = $(this).find(".room-price-display"); // Input harga tampil
+                
+                var originalPrice = parseFloat(priceInput.data("original-price")); // Ambil harga asli
+                var totalPrice = originalPrice * jumlah_hari; // Hitung harga total
+
+                // Update tampilan harga
+                displayPriceInput.val(`Rp. ${totalPrice.toLocaleString("id-ID")}`);
+                priceInput.val(totalPrice); // Update hidden input harga
+            });
+        });
+    });
 </script>
+
+
+
 
 <script>
     $(document).ready(function() {
