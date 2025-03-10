@@ -53,7 +53,7 @@
         </div>
         <div class="mb-6">
             <label class="block mb-2 text-sm font-medium text-gray-900">Harga</label>
-            <input type="text" class="price-input form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5" name="price[]" readonly>
+            <input type="text" class="price-input form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5" name="price[]" required>
         </div>
     </div>
 </div>
