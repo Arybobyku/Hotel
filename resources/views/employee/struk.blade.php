@@ -161,8 +161,12 @@
             <div class="flex-col">
                     <h4>{{ $book->days }}</h4>
 {{-- {{-- <h4>Rp. {{ number_format($book->price) }},-</h4> --}}
+
                 @foreach ($bookRoomPivots as $pivot)
                     <h4>Rp. {{ number_format($pivot->price) }},-</h4>
+                    {{-- @php 
+                    $totalPrice += $pivot->price
+                    @endphp --}}
                 @endforeach
                 @if   ($book->platform_fee3 > 0)
                 <h4>Rp. {{ number_format($book->platform_fee3) }},-</h4>

@@ -287,6 +287,7 @@ public function booking(Request $request)
 
     $platformFee = Platform::where('id', $request->id_platform)->sum('platform_fee');
     $potonganFee = ($platformFee * array_sum($request->price)) / 100;
+    $totalPrice = array_sum($request->price);
 
     $date = date_create($request->checkin);
     date_add($date, date_interval_create_from_date_string($request->jumlah_hari . ' days'));
@@ -302,6 +303,7 @@ public function booking(Request $request)
         'book_date' => $request->booking,
         'book_date_end' => $dateBookingEnd,
         'days' => $request->jumlah_hari,
+        'price' => $totalPrice,
         'checkin' => $request->checkin,
         'checkout' => $request->checkout,
         'booking_type' => $request->jenisPesan,
