@@ -147,7 +147,12 @@
 <script>
     $(document).ready(function () {
         $("#jumlah_hari").on("change", function () {
-            var jumlah_hari = $(this).val(); // Ambil jumlah hari dari input utama
+            var jumlah_hari = parseInt($(this).val()); // Ambil nilai sebagai integer
+            
+            if (isNaN(jumlah_hari) || jumlah_hari <= 0) {
+                jumlah_hari = 1; // Jika negatif atau 0, set ke 1
+                $(this).val(jumlah_hari); // Update input ke 1
+            }
 
             $(".room-container").each(function () {
                 var priceInput = $(this).find(".room-price-hidden"); // Hidden input harga
@@ -163,6 +168,7 @@
         });
     });
 </script>
+
 
 
 
