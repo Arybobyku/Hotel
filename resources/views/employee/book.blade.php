@@ -115,8 +115,8 @@
 
     <div class="mb-6">
         <label class="block mb-2 text-sm font-medium text-gray-900">Jumlah Hari</label>
-        <input type="number" name="jumlah_hari" id="jumlah_hari"
-            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+        <input type="text" name="jumlah_hari" id="jumlah_hari"
+            class="number-input form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
             placeholder="Contoh: 1" required>
     </div>
 
@@ -146,7 +146,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
-        $("#jumlah_hari").on("change", function () {
+        $("#jumlah_hari").on("keyup", function () {
             var jumlah_hari = parseInt($(this).val()); // Ambil nilai sebagai integer
             
             if (isNaN(jumlah_hari) || jumlah_hari <= 0) {

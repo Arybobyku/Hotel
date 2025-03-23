@@ -53,7 +53,7 @@
         </div>
         <div class="mb-6">
             <label class="block mb-2 text-sm font-medium text-gray-900">Harga</label>
-            <input type="text" class="price-input form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5" name="price[]" placeholder="Masukkan Harga Tanpa Titik Koma" required>
+            <input type="text" class="number-input price-input form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5" name="price[]" placeholder="Masukkan Harga Tanpa Titik Koma" required>
         </div>
     </div>
 </div>
@@ -80,8 +80,8 @@
                     </div>
                     <div class="mb-6">
                         <label for="nik" class="block mb-2 text-sm font-medium text-gray-900 ">Jumlah Hari</label>
-                        <input type="number" id="jumlah_hari" name="jumlah_hari"
-                            class="form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
+                        <input type="text" id="jumlah_hari" name="jumlah_hari"
+                            class="number-input form-control bg-gray-50 border border-gray-300 text-black text-sm rounded-lg block w-full p-2.5"
                             placeholder="Contoh: 1" onchange="" required>
                     </div>
                     <div class="mb-6">

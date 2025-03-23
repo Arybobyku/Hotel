@@ -39,3 +39,13 @@
 </body>
 
 </html>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.number-input').forEach(function (input) {
+            console.log("ngentod")
+            input.addEventListener("keyup", function () {
+                this.value = this.value.replace(/[^0-9]/g, ''); // Hanya angka yang diperbolehkan
+            });
+        });
+    });
+</script>
