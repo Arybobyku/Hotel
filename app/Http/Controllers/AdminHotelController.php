@@ -42,6 +42,7 @@ class AdminHotelController extends Controller
         $validatedData = $request->validate([
             'id_hotel' => 'required|max:11',
             'name' => 'required|max:255',
+            'is_weekend' => '',
             'price' => 'integer',
             'image' => 'image|file',
         ]);
@@ -80,6 +81,7 @@ class AdminHotelController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'price' => 'integer',
+            'is_weekend' => '',
             'image' => 'image|file',
         ]);
         if ($request->file('image')) {
