@@ -89,6 +89,7 @@ class HotelController extends Controller
 
     public function shift(Request $request)
     {
+        // $idBook = Book::all();
         $charges = ChargePivot::with('book')->get();
         $idHotel = Auth::user()->id_hotel;
         $isFinance = Auth::user()->isfinance;
@@ -161,7 +162,7 @@ class HotelController extends Controller
 
         return view('employee.shift', [
             'books' => $filter,
-            // 'charges' => $totalCharge,
+            // 'charges' => $totalFCharge,
             'grandTotalUangMasuk' => $totalUangMasuk - $totalCharge,
             'grandUangMasuk' => $uangMasuk,
             'grandTotalAmount' => $totalAmount,
