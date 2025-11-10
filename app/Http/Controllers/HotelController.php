@@ -89,7 +89,6 @@ class HotelController extends Controller
 
     public function shift(Request $request)
     {
-        $idBook = Book::all();
         $charges = ChargePivot::with('book')->get();
         $idHotel = Auth::user()->id_hotel;
         $isFinance = Auth::user()->isfinance;
