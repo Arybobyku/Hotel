@@ -89,15 +89,15 @@ class HotelController extends Controller
 
     public function shift(Request $request)
     {
-        // $idBook = Book::all();
+        $idBook = Book::all();
         $charges = ChargePivot::with('book')->get();
         $idHotel = Auth::user()->id_hotel;
         $isFinance = Auth::user()->isfinance;
         $idUser = Auth::id();
 
         if ($request->from == null && $request->to == null) {
-            $from = date('Y-m-d');
-            $to = date('Y-m-d');
+            $from = date('2010-10-01');
+            $to = date('2040-10-31');
         } else {
             $from = $request->from;
             $to = $request->to;
@@ -162,7 +162,7 @@ class HotelController extends Controller
 
         return view('employee.shift', [
             'books' => $filter,
-            // 'charges' => $totalFCharge,
+            // 'charges' => $totalCharge,
             'grandTotalUangMasuk' => $totalUangMasuk - $totalCharge,
             'grandUangMasuk' => $uangMasuk,
             'grandTotalAmount' => $totalAmount,
@@ -182,10 +182,8 @@ class HotelController extends Controller
         $idUser = Auth::id();
 
         if ($request->from == null && $request->to == null) {
-            // $from = date('2010-10-01');
-            // $to = date('2040-10-31');
-            $from = date('Y-m-d');
-            $to = date('Y-m-d');
+            $from = date('2010-10-01');
+            $to = date('2040-10-31');
         } else {
             $from = $request->from;
             $to = $request->to;
