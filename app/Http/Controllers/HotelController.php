@@ -96,8 +96,8 @@ class HotelController extends Controller
         $idUser = Auth::id();
 
         if ($request->from == null && $request->to == null) {
-            $from = date('2010-10-01');
-            $to = date('2040-10-31');
+            $from = date('Y-m-d');
+            $to = date('Y-m-d');
         } else {
             $from = $request->from;
             $to = $request->to;
@@ -182,8 +182,10 @@ class HotelController extends Controller
         $idUser = Auth::id();
 
         if ($request->from == null && $request->to == null) {
-            $from = date('2010-10-01');
-            $to = date('2040-10-31');
+            // $from = date('2010-10-01');
+            // $to = date('2040-10-31');
+            $from = date('Y-m-d');
+            $to = date('Y-m-d');
         } else {
             $from = $request->from;
             $to = $request->to;
